@@ -23,12 +23,22 @@ export async function signIn(formData: FormData) {
       throw new Error(error.message)
     }
 
-    // Get session to check if sign in was successful
+    // Get session to check if sign-in was successful
     const {
       data: { user },
     } = await supabase.auth.getUser()
+
     if (!user) {
-      throw new Error("Failed to get session after sign in")
+      throw new Error("Failed to get session after sign-in")
+    }
+
+    // ✅ Check if the user is banned
+    const banUntil = user?.app_metadata?.banned_until
+    if (banUntil && new Date(banUntil) > new Date()) {
+      await supabase.auth.signOut() // Force logout if banned
+      throw new Error(
+        `Your account is banned until ${new Date(banUntil).toLocaleString()}`
+      )
     }
 
     // Get user profile
@@ -67,8 +77,8 @@ export async function signUp(formData: FormData) {
   const password = formData.get("password") as string
   const userType = formData.get("userType") as "creator" | "brand"
   const referralCode = formData.get("referralCode") as string | null
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const redirectUrl = new URL(`/auth/${userType}/callback`, baseUrl);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+  const redirectUrl = new URL(`/auth/${userType}/callback`, baseUrl)
   if (!email || !password || !userType) {
     throw new Error("Missing required fields")
   }
@@ -85,7 +95,7 @@ export async function signUp(formData: FormData) {
     //   .from("pending_referrals")
     //   .upsert({ email, referral_code: referralCode })
 
-    redirectUrl.searchParams.set("ref", referralCode);
+    redirectUrl.searchParams.set("ref", referralCode)
   }
 
   // Proceed with signup
@@ -103,7 +113,6 @@ export async function signUp(formData: FormData) {
 
   return { success: true }
 }
-
 
 export async function signOut() {
   try {
@@ -163,53 +172,69 @@ export async function resetPassword(password: string) {
   }
 }
 
-export async function signInWithGoogle(userType: "creator" | "brand", isSignUp: boolean, referralCode?: string) {
-  const supabase = await createServerActionClient();
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+export async function signInWithGoogle(
+  userType: "creator" | "brand",
+  isSignUp: boolean,
+  referralCode?: string
+) {
+  const supabase = await createServerActionClient()
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
-  console.log("referral code",referralCode);
-  // 🔹 Create the redirect URL dynamically
-  const redirectUrl = new URL(`/auth/${userType}/callback`, baseUrl);
+  console.log("referral code", referralCode)
+  const redirectUrl = new URL(`/auth/${userType}/callback`, baseUrl)
 
-  // ✅ If this is a signup and a referral code exists, attach it to the redirect URL
   if (isSignUp && referralCode) {
-    redirectUrl.searchParams.set("ref", referralCode);
+    redirectUrl.searchParams.set("ref", referralCode)
   }
 
-  console.log("Redirecting to Google with URL:", redirectUrl.toString());
+  console.log("Redirecting to Google with URL:", redirectUrl.toString())
 
-  // 🔹 Proceed with Google OAuth
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: redirectUrl.toString(), // ✅ This URL now contains the referral code
+      redirectTo: redirectUrl.toString(),
       queryParams: {
         access_type: "offline",
         prompt: "consent",
       },
     },
-  });
+  })
 
   if (error) {
-    console.error("Google sign-in error:", error);
-    throw error;
+    console.error("Google sign-in error:", error)
+    throw error
   }
 
-  if (data?.url) {
-    console.log("data , url",data.url);
-    return data.url;
+  if (!data?.url) {
+    throw new Error("No authentication URL returned")
   }
 
-  throw new Error("No authentication URL returned");
+  // ✅ Fetch the user session after successful Google sign-in
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error("Failed to get session after Google sign-in")
+  }
+
+  // ✅ Check if the user is banned
+  const banUntil = user?.app_metadata?.banned_until
+  if (banUntil && new Date(banUntil) > new Date()) {
+    await supabase.auth.signOut()
+    throw new Error(
+      `Your account is banned until ${new Date(banUntil).toLocaleString()}`
+    )
+  }
+
+  return data.url
 }
-
-
 
 export async function connectYouTubeAccount() {
   const supabase = await createServerActionClient()
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-  const redirectUrl = new URL(`/auth/youtube/callback`, baseUrl)
+  const redirectUrl = new URL("/auth/youtube/callback", baseUrl)
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

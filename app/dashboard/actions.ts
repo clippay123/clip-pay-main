@@ -728,3 +728,55 @@ export async function updateCampaignViews(
     }
   }
 }
+
+export async function reportClient(
+  campaignId: string,
+  title: string,
+  reason: string
+) {
+  const supabase = await createServerSupabaseClient()
+
+  // Get the logged-in user
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+
+  if (authError || !user) {
+    console.error("Error fetching user:", authError?.message)
+    throw new Error("Not authenticated")
+  }
+
+  // Find the reported user from submissions where status is "approved"
+  const { data: submission, error: submissionError } = await supabase
+    .from("submissions")
+    .select("user_id")
+    .eq("campaign_id", campaignId)
+    .eq("status", "approved")
+    .single()
+
+  if (submissionError || !submission) {
+    console.error("No approved submission found:", submissionError?.message)
+    throw new Error("No approved submission found")
+  }
+
+  const reportedUserId = submission.user_id
+
+  // Insert report into Supabase
+  const { error } = await supabase.from("report").insert([
+    {
+      campaign_id: campaignId,
+      reported_user_id: reportedUserId, // The user who submitted the approved submission
+      reported_by_user_id: user.id, // The logged-in user's ID
+      title: title.trim(),
+      reason: reason.trim(),
+    },
+  ])
+
+  if (error) {
+    console.error("Error reporting client:", error.message)
+    throw new Error("Failed to report client")
+  }
+
+  return { success: true }
+}
