@@ -81,10 +81,7 @@ export default function FAQSection({ view }: { view: "brands" | "creators" }) {
   }
 
   return (
-    <section
-      className="py-16 px-4 bg-[#eef6fc]"
-      style={{ fontFamily: "'Satoshi Regular'" }}
-    >
+    <section className="py-16 px-4 bg-white">
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center mb-12">
           <div className="bg-black text-white text-xs font-medium px-4 py-1 rounded-full mb-4">

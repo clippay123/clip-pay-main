@@ -1,17 +1,17 @@
 
-import { ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export function LaunchCampaign({ view }: { view: "brands" | "creators" }) {
   return (
      <>
-      <Link href={view==="brands" ? '/signup/brand':"/signup/creator"} style={{ fontFamily: "'Satoshi Regular'" }}>
-        <button className="bg-black text-white flex gap-2 pl-7 px-2 items-center py-3 rounded-full  font-semibold hover:bg-gray-900 transition">
+      <Link href={view==="brands" ? '/signup/brand':"/signup/creator"}>
+        <button className="bg-white text-[#71717A] flex  px-4 text-sm items-center py-2 gap-1 rounded-full font-bold ">
          {view==="brands" ? "Launch a campaign" :"Start earning"}
-          <div className="bg-white border rounded-full">
-          <ChevronRight className="w-8 h-8 text-sm text-black" />
+         <div className="text-[#71717A] text-sm">
 
-          </div>
+         <ArrowRight className="w-5 h-5"/>
+         </div>
         </button>
       </Link>
      </>
