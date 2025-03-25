@@ -4,7 +4,10 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { formatDistanceToNow } from "date-fns"
-
+import referImage from "@/public/assets/referimg.svg"
+import Image from "next/image"
+import { Copy, Users } from "lucide-react"
+import { Card } from "@/components/ui/card"
 interface ReferredCreator {
   user_id: string
   organization_name: string | null
@@ -41,25 +44,221 @@ export function ReferralClient({
     return total + (creator.creators?.[0]?.total_earned || 0)
   }, 0)
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Join with my referral link",
+        url: referralLink,
+      })
+    } else {
+      handleCopy()
+      toast.info("Link copied! Share it with your friends")
+    }
+  }
   const referralLink = `${process.env.NEXT_PUBLIC_BASE_URL}/signup/creator?ref=${referralCode}`
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-zinc-900">Refer Creators</h1>
-        <p className="text-zinc-600">
-          Share your referral code with other creators and earn a bonus when
-          they create content
-        </p>
-      </div>
+    <>
+      <div className={"grid grid-cols-2 lg:grid-cols-5 gap-8 mb-4"}>
+        <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-zinc-600">
+              Total View
+            </span>
+            <div className="">
+              <Users className="w-5 h-5" />
+            </div>
+          </div>
+          <p className="text-2xl font-semibold text-zinc-900"> $ 1</p>
+        </Card>
 
-      {/* {!hasStripeAccount && (
+        <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-zinc-600">
+              Total View
+            </span>
+            <div className="">
+              <Users className="w-5 h-5" />
+            </div>
+          </div>
+          <p className="text-2xl font-semibold text-zinc-900"> $ 1</p>
+        </Card>
+
+        <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-zinc-600">
+              Total View
+            </span>
+            <div className="">
+              <Users className="w-5 h-5" />
+            </div>
+          </div>
+          <p className="text-2xl font-semibold text-zinc-900"> $ 1</p>
+        </Card>
+      </div>
+      <div className="space-y-6">
+        <div>
+          <div className="bg-[#FFBC0F] p-3 text-center font-bold">
+            OUR REFERRAL PROGRAM • Get rewarded for inviting people!
+          </div>
+        </div>
+        {/* Referral Description */}
+        <div className="text-center max-w-2xl mx-auto">
+          <p className="text-[#001246] font-medium">
+            Get your referral link to give your friends a $20 discount when they
+            shop at Hot Beans. If they use it, we'll reward you with $20.
+          </p>
+        </div>
+
+        {/* How it Works */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold text-center">How it Works</h2>
+
+          <div className="flex justify-center">
+            <div className="space-y-4 ">
+              <div className="flex items-center gap-4">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </div>
+                <p className="text-[#001246] font-medium">
+                  Invite your friends to Clip Pay.
+                </p>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </div>
+                <p className="text-[#001246] font-medium">
+                  Get paid for every 1000 views your content generates on
+                  offers.
+                </p>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                  </svg>
+                </div>
+                <p className="text-[#001246] font-medium">
+                  Earn a bonus for every 1000 views generated by creators you
+                  refer.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* {!hasStripeAccount && (
         <StripeConnectBanner
           totalEarnings={totalReferralEarnings}
           context="referral"
         />
       )} */}
 
-      <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-6">
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-4 w-full md:w-3/4 lg:w-1/2 mx-auto">
+          <div className="flex justify-center">
+            <Image src={referImage} alt="Refer" className="w-32 h-32" />
+          </div>
+
+          <h2 className="text-lg font-semibold text-center">
+            Your Referral Credentials
+          </h2>
+          <p className="text-sm text-gray-600 text-center">
+            Share the link with other creators to earn rewards
+          </p>
+
+          <div className="flex flex-col md:flex-row items-center gap-2 w-full overflow-hidden">
+            <div className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg flex-1 border border-gray-200 text-sm truncate w-full max-w-full">
+              {referralLink}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCopy}
+              className="flex items-center gap-1"
+            >
+              <Copy className="h-4 w-4" />
+              <span>{copied ? "Copied!" : "Copy Link"}</span>
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleShare}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Share
+            </Button>
+          </div>
+
+          <div className="space-y-3 mt-4">
+            {referredCreators.length > 0 ? (
+              referredCreators.map((creator) => (
+                <div
+                  key={creator.user_id}
+                  className="flex items-center justify-between p-3 rounded-lg bg-gray-100"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs">
+                      {creator.organization_name?.charAt(0) || "U"}
+                    </div>
+                    <p className="font-medium">
+                      {creator.organization_name || "Unnamed Creator"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 text-right">
+                    <p className="text-sm text-gray-600">500 Views</p>
+                    <p className="font-medium">
+                      ${(creator.creators?.[0]?.total_earned || 0).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-4 text-gray-600">
+                No referred creators yet
+              </div>
+            )}
+          </div>
+        </div>
+        {/* <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-6 mx-auto w-1/2 flex flex-col justify-center">
         <div>
           <h2 className="text-lg font-semibold text-zinc-900 mb-2">
             Your Referral Code
@@ -77,22 +276,6 @@ export function ReferralClient({
           </div>
         </div>
 
-        <div>
-          <h2 className="text-lg font-semibold text-zinc-900 mb-2">
-            How it Works
-          </h2>
-          <div className="space-y-4 text-zinc-600">
-            <p>1. Share your referral code with other creators</p>
-            <p>
-              2. When they sign up using your code, they become your referral
-            </p>
-            <p>
-              3. You earn a referral bonus based on each campaign's referral
-              rate when your referrals submit content
-            </p>
-            <p>4. Track your referral earnings in the Earnings page</p>
-          </div>
-        </div>
       </div>
 
       <div className="bg-white border border-zinc-200 rounded-lg p-6">
@@ -133,7 +316,8 @@ export function ReferralClient({
             </div>
           )}
         </div>
+      </div> */}
       </div>
-    </div>
+    </>
   )
 }

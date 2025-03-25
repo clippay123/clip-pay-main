@@ -88,16 +88,33 @@ export default async function EarningsPage() {
   // Get available for payout (approved submissions that haven't been paid out)
   const { data: availableData } = await supabase
     .from("submissions")
-    .select("creator_amount")
+    .select("creator_amount, paymentDate")
     .eq("user_id", user.id)
     .eq("status", "paid")
-  // .eq("payout_status", "pending")
 
   console.log(availableData)
+
+  const today = new Date()
+
+  // ✅ Calculate availableForPayout (Total Paid Submissions)
   const availableForPayout =
     availableData?.reduce((sum, sub) => sum + (sub.creator_amount || 0), 0) || 0
 
+  // ✅ Calculate eligibleForCashout (Only Submissions That Are 2+ Days Old)
+  const eligibleForCashout =
+    availableData?.filter((sub) => {
+      if (!sub.paymentDate) return false // Skip if no payment date
+      const paymentDate = new Date(sub.paymentDate)
+      paymentDate.setDate(paymentDate.getDate() + 2) // Add 2 days
+
+      return today >= paymentDate // Allow cashout only after 2 days
+    }) || []
+
+  // ✅ Determine if cashout is available
+  const isCashoutAvailable = eligibleForCashout.length > 0
+
   console.log({ availableForPayout })
+  console.log("cash", isCashoutAvailable)
   // Get pending earnings (pending submissions)
   const { data: pendingData } = await supabase
     .from("submissions")
@@ -109,27 +126,17 @@ export default async function EarningsPage() {
     pendingData?.reduce((sum, sub) => sum + (sub.creator_amount || 0), 0) || 0
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader
         userType="creator"
         email={user.email || ""}
         organization_name={profile.organization_name}
       />
-      <main className="lg:ml-64 min-h-screen">
+      <main className="lg:ml-72 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 lg:py-8 pt-20 lg:pt-8">
-          <div className="max-w-[800px] mx-auto">
+          <div className="mx-auto">
             <div className="space-y-6">
-              <div>
-                <h1 className="text-2xl font-bold text-zinc-900">Earnings</h1>
-                <p className="text-zinc-600">
-                  Manage your earnings and payouts
-                </p>
-              </div>
               <EarningsClient
-                // hasStripeAccount={
-                //   !!profile.creator?.stripe_account_id &&
-                //   profile.creator?.stripe_account_status === "active"
-                // }
                 totalEarned={totalEarned}
                 availableForPayout={availableForPayout}
                 pendingEarnings={pendingEarnings}
@@ -152,6 +159,7 @@ export default async function EarningsPage() {
                     ? "Connected"
                     : "Not Connected"
                 }
+                isCashoutAvailable={isCashoutAvailable}
               />
             </div>
           </div>

@@ -24,12 +24,18 @@ import Link from "next/link"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/logo"
+import { Poppins } from "next/font/google"
 
 interface DashboardHeaderProps {
   userType: "creator" | "brand"
   email: string
   organization_name?: string
 }
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], // Specify the weights you need
+})
+
 
 export function DashboardHeader({
   userType,
@@ -41,6 +47,7 @@ export function DashboardHeader({
   const [showNotifications, setShowNotifications] = useState(false)
   const [isNavOpen, setIsNavOpen] = useState(false)
 
+  
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut()
@@ -67,7 +74,7 @@ export function DashboardHeader({
   return (
     <>
       {/* Mobile/Tablet Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-zinc-200 z-50">
+      <div className={` lg:hidden fixed top-0 left-0 right-0 h-16  border-b border-zinc-200 z-50`}>
         <div className="flex items-center justify-between px-4 h-full">
           <button
             onClick={() => setIsNavOpen(true)}
@@ -85,7 +92,7 @@ export function DashboardHeader({
       {/* Left Navigation */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 w-64 bg-white border-r border-zinc-200 z-50 transition-transform duration-300 lg:translate-x-0",
+          "fixed inset-y-0 left-0 w-72  transition-transform duration-300 lg:translate-x-0",
           isNavOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -101,16 +108,18 @@ export function DashboardHeader({
           </div>
 
           {/* Logo */}
-          <div className="p-3 border-b border-zinc-200">
+        <div className="flex-1 mx-2">
+          <div className="p-3  bg-white m-4 rounded-2xl">
             <div className="flex justify-center">
               <Link href="/dashboard">
                 <Logo className="h-8 w-auto" />
               </Link>
             </div>
-          </div>
+          
 
           {/* Navigation Links */}
-          <nav className="flex-1 p-4">
+
+          <nav className="flex flex-col p-4 bg-white mt-4">
             <ul className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon
@@ -118,7 +127,7 @@ export function DashboardHeader({
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="flex items-center gap-3 px-4 py-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors"
+                      className="flex items-center gap-3 px-4 py-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors font-medium text-lg"
                       onClick={() => setIsNavOpen(false)}
                     >
                       <Icon className="w-5 h-5" />
@@ -129,7 +138,7 @@ export function DashboardHeader({
               })}
             </ul>
 
-            <div className="h-px bg-zinc-200 my-4" />
+            {/* <div className="h-px bg-zinc-200 my-4" /> */}
 
             <ul className="space-y-1">
               <li>
@@ -138,7 +147,7 @@ export function DashboardHeader({
                     setShowNotifications(true)
                     setIsNavOpen(false)
                   }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors"
+                                className="text-lg flex items-center gap-3 px-4 py-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors font-medium"
                 >
                   <Bell className="w-5 h-5" />
                   Notifications
@@ -147,8 +156,13 @@ export function DashboardHeader({
             </ul>
           </nav>
 
+          </div>
+          </div>
           {/* User Info & Settings */}
-          <div className="space-y-4 p-4 border-t border-zinc-200">
+          <div className="mx-2">
+
+        
+          <div className="p-3  bg-white m-4 rounded-2xl ">
             <div className="px-2">
               {organization_name && (
                 <span className="text-sm font-medium text-zinc-900 max-w-[180px] truncate block">
@@ -221,6 +235,7 @@ export function DashboardHeader({
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+          </div>
           </div>
         </div>
       </div>

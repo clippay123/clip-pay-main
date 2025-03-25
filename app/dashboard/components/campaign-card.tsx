@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CampaignWithSubmissions } from "@/types/campaigns"
 import { cn } from "@/lib/utils"
 
@@ -12,7 +12,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
-import { reportClient } from "../actions"
+import {
+  checkIfAlreadyReported,
+  hasApprovedOrPaidSubmission,
+  reportClient,
+} from "../actions"
 
 export const CampaignCard = ({
   campaign,
@@ -25,6 +29,23 @@ export const CampaignCard = ({
   const [title, setTitle] = useState("")
   const [reason, setReason] = useState("")
   const [loading, setLoading] = useState(false)
+  const [alreadyReported, setAlreadyReported] = useState(false)
+  const [canReport, setCanReport] = useState(false)
+  useEffect(() => {
+    if (campaign.id) {
+      checkIfAlreadyReported(campaign.id).then(setAlreadyReported)
+    }
+  }, [campaign.id])
+
+  // Check if campaign has an approved/paid submission
+  useEffect(() => {
+    if (campaign.id) {
+      hasApprovedOrPaidSubmission(campaign.id).then((result) => {
+        console.log("Can Report Status:", result) // Debugging
+        setCanReport(result)
+      })
+    }
+  }, [campaign.id])
 
   const handleReport = async () => {
     if (!title.trim() || !reason.trim()) return
@@ -101,22 +122,25 @@ export const CampaignCard = ({
             <p className="text-xs text-zinc-500">RPM</p>
           </div>
         </div>
-        <Button
-          variant="destructive"
-          onClick={(e) => {
-            e.stopPropagation()
-            setIsOpen(true)
-          }}
-        >
-          Report Client
-        </Button>
+        {canReport && (
+          <Button
+            variant="destructive"
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsOpen(true)
+            }}
+            disabled={alreadyReported}
+          >
+            {alreadyReported ? "Already Reported" : "Report Client"}
+          </Button>
+        )}
       </div>
 
       {/* Report Client Popup */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Report Client</DialogTitle>
+            <DialogTitle>Report Creator</DialogTitle>
           </DialogHeader>
 
           <Input

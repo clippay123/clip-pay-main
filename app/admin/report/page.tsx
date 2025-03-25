@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { fetchReports, updateReportStatus } from "./action"
+import { fetchReports, refundPayment, updateReportStatus } from "./action"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 
@@ -46,8 +46,23 @@ const ReportPage = () => {
     }
   }
 
+  const handleRefund = async (submissionId: string) => {
+    try {
+      await refundPayment(submissionId)
+      setReports((prevReports) =>
+        prevReports.map((report) =>
+          report.submission_id === submissionId
+            ? { ...report, submission_status: "refunded" }
+            : report
+        )
+      )
+      toast.success("Payment refunded successfully")
+    } catch (error) {
+      toast.error("Refund failed")
+    }
+  }
   return (
-    <div className="max-w-4xl mx-auto py-8">
+    <div className="max-w-6xl mx-auto py-8 text-white">
       <h1 className="text-2xl font-bold mb-6">Reports</h1>
       {loading ? (
         <p>Loading reports...</p>
@@ -56,9 +71,12 @@ const ReportPage = () => {
       ) : (
         <table className="w-full border border-gray-200">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-gray-100 text-black">
               <th className="p-2 text-left">Reported User</th>
               <th className="p-2 text-left">Reported By</th>
+              <th className="p-2 text-left">Campaign ID</th>
+              <th className="p-2 text-left">Submission Status</th>
+              <th className="p-2 text-left">Payout Amount</th>
               <th className="p-2 text-left">Title</th>
               <th className="p-2 text-left">Reason</th>
               <th className="p-2 text-left">Status</th>
@@ -70,6 +88,11 @@ const ReportPage = () => {
               <tr key={report.id} className="border-t border-gray-200">
                 <td className="p-2">{report.reported_user_org}</td>
                 <td className="p-2">{report.reported_by_org}</td>
+                <td className="p-2">{report.campaign_id}</td>
+                <td className="p-2">{report.submission_status}</td>
+                <td className="p-2">
+                  {report.payout_amount ? `$${report.payout_amount}` : "N/A"}
+                </td>
                 <td className="p-2">{report.title}</td>
                 <td className="p-2">{report.reason}</td>
                 <td className="p-2">{report.status}</td>
@@ -93,6 +116,15 @@ const ReportPage = () => {
                         Reject
                       </Button>
                     </div>
+                  )}
+                  {report.submission_status === "paid" && (
+                    <Button
+                      variant="outline"
+                      className="text-black"
+                      onClick={() => handleRefund(report.submission_id)}
+                    >
+                      Refund
+                    </Button>
                   )}
                 </td>
               </tr>

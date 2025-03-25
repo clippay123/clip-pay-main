@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/brands", label: "Brands" },
   { href: "/admin/campaigns", label: "Campaigns" },
   { href: "/admin/report", label: "Reports" },
+  { href: "/admin/banUser", label: "Ban User" },
 ]
 
 export function AdminNav() {

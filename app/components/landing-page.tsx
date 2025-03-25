@@ -304,7 +304,7 @@ export function LandingPage({ view }: LandingPageProps) {
             {/* Toggle Switch */}
             <label className="inline-flex items-center cursor-pointer font-bold text-lg md:text-2xl gap-4">
               <span
-                className={`${view === "creators" ? "text-gray-400" : "text-black"}`}
+                className={view === "creators" ? "text-gray-400" : "text-black"}
               >
                 Brands
               </span>
@@ -314,11 +314,13 @@ export function LandingPage({ view }: LandingPageProps) {
                 checked={view === "creators"}
                 onChange={toggleView}
               />
-              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-blue-600 transition">
-                <div className="absolute top-[2px] left-[2px] bg-white w-5 h-5 rounded-full peer-checked:translate-x-full transition"></div>
+              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-gray-700 transition">
+                <div
+                  className={`absolute top-[2px] left-[2px] bg-white w-5 h-5 rounded-full transition ${view === "creators" ? "translate-x-full" : ""}`}
+                ></div>
               </div>
               <span
-                className={`${view === "creators" ? "text-black" : "text-gray-400"}`}
+                className={view === "creators" ? "text-black" : "text-gray-400"}
               >
                 Creators
               </span>

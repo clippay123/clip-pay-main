@@ -65,12 +65,17 @@ export async function POST(request: Request) {
 
       console.log("[DEBUG] Transaction status updated successfully")
 
-      // Update submission status
       const { error: submissionError } = await supabase
         .from("submissions")
-        .update({ status: "paid" })
+        .update({
+          status: "paid",
+          paymentDate: new Date().toISOString(), // Store current date in ISO format
+        })
         .eq("id", submissionId)
 
+      if (submissionError) {
+        console.error("Error updating submission:", submissionError)
+      }
       await sendInvoiceEmail({
         email: user.email ?? "no-reply@example.com",
         name: user.user_metadata.full_name || "User",

@@ -1,6 +1,12 @@
 import { Card } from "@/components/ui/card"
 import { DollarSign, FileText, RotateCw, Users } from "lucide-react"
 import { CampaignWithSubmissions } from "@/types/campaigns"
+import { Montserrat } from "next/font/google"
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], // Add the weights you need
+})
 
 export function Metrics({
   campaigns,
@@ -8,19 +14,20 @@ export function Metrics({
   campaigns: CampaignWithSubmissions[]
 }) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <Card className="p-4 lg:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-              <DollarSign className="w-5 h-5 text-zinc-600" />
-            </div>
-            <span className="text-sm font-medium text-zinc-600">
-              Total Budget
-            </span>
+    <div
+      className={`grid grid-cols-2 lg:grid-cols-5 gap-8 ${montserrat.className}`}
+    >
+      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-zinc-600">
+            Total Budget
+          </span>
+          <div className="">
+            <Users className="w-5 h-5" />
           </div>
         </div>
-        <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
+        <p className="text-2xl font-semibold text-zinc-900">
+          {" "}
           $
           {campaigns
             .reduce(
@@ -30,35 +37,30 @@ export function Metrics({
             .toLocaleString()}
         </p>
       </Card>
-
-      <Card className="p-4 lg:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-              <FileText className="w-5 h-5 text-zinc-600" />
-            </div>
-            <span className="text-sm font-medium text-zinc-600">
-              Active Campaigns
-            </span>
+      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-zinc-600">
+            Active Campaigns
+          </span>
+          <div className="">
+            <FileText className="w-5 h-5 text-zinc-600" />
           </div>
         </div>
-        <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
+        <p className="text-2xl font-semibold text-zinc-900">
           {campaigns.filter((c) => c.status === "active").length}
         </p>
       </Card>
 
-      <Card className="p-4 lg:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-              <Users className="w-5 h-5 text-zinc-600" />
-            </div>
-            <span className="text-sm font-medium text-zinc-600">
-              Total Submissions
-            </span>
+      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col ">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-zinc-600">
+            Total Submissions
+          </span>
+          <div className="">
+            <Users className="w-5 h-5 text-zinc-600" />
           </div>
         </div>
-        <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
+        <p className="text-2xl font-semibold text-zinc-900">
           {campaigns.reduce(
             (total, campaign) => total + (campaign.submissions?.length || 0),
             0
@@ -66,18 +68,14 @@ export function Metrics({
         </p>
       </Card>
 
-      <Card className="p-4 lg:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-              <RotateCw className="w-5 h-5 text-zinc-600" />
-            </div>
-            <span className="text-sm font-medium text-zinc-600">
-              Average CPM
-            </span>
+      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-zinc-600">Average CPM</span>
+          <div className="">
+            <RotateCw className="w-5 h-5 text-zinc-600" />
           </div>
         </div>
-        <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
+        <p className="text-2xl font-semibold text-zinc-900">
           $
           {(
             campaigns.reduce(

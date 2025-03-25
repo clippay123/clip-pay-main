@@ -780,3 +780,39 @@ export async function reportClient(
 
   return { success: true }
 }
+
+export async function checkIfAlreadyReported(campaignId: string) {
+  const supabase = await createServerSupabaseClient()
+
+  // Find the reported user from submissions where status is "approved"
+
+  // Check if the user has already reported this campaign
+  const { data: existingReport, error: reportError } = await supabase
+    .from("report")
+    .select("id")
+    .eq("campaign_id", campaignId)
+    .single()
+  console.log("existing", existingReport)
+
+  return !!existingReport // Returns true if report exists, otherwise false
+}
+
+export async function hasApprovedOrPaidSubmission(campaignId: string) {
+  const supabase = await createServerSupabaseClient()
+
+  // Check if the campaign has at least one approved or paid submission
+  const { data, error } = await supabase
+    .from("submissions")
+    .select("id")
+    .eq("campaign_id", campaignId)
+    .in("status", ["approved", "paid"])
+    .limit(1) // We only need to check if one exists
+
+  console.log("data", data)
+  if (error) {
+    console.error("Error checking submissions:", error.message)
+    return false
+  }
+
+  return data.length > 0 // True if at least one submission exists
+}

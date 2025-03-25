@@ -653,7 +653,7 @@ export function CreatorDashboardClient({
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader
         userType="creator"
         email={email}

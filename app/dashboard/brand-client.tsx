@@ -233,7 +233,7 @@ export function DashboardClient({
   }, [selectedCampaign])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader
         userType="brand"
         email={email}
@@ -241,7 +241,7 @@ export function DashboardClient({
       />
 
       {/* Metrics */}
-      <main className="lg:ml-64 min-h-screen">
+      <main className="lg:ml-72 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 lg:py-8 pt-20 lg:pt-8">
           <Metrics campaigns={campaigns} />
           {brandId && <TeamManagement brandId={brandId} />}
