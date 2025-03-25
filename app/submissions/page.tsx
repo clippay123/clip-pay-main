@@ -81,6 +81,14 @@ export default async function SubmissionsPage() {
     return <div>Error loading submissions</div>
   }
 
+  const totalSubmissions = submissions.length
+  const approvedSubmissions = submissions.filter((sub) =>
+    ["approved", "paid", "fulfilled"].includes(sub.status)
+  ).length
+  const pendingSubmissions = submissions.filter(
+    (sub) => sub.status === "pending"
+  ).length
+
   return (
     <div className="min-h-screen bg-[#313338]">
       <DashboardHeader
@@ -91,6 +99,9 @@ export default async function SubmissionsPage() {
       <SubmissionsClient
         submissions={submissions || []}
         email={user.email || ""}
+        totalSubmissions={totalSubmissions}
+        approvedSubmissions={approvedSubmissions}
+        pendingSubmissions={pendingSubmissions}
       />
     </div>
   )

@@ -162,7 +162,7 @@ export function DashboardHeader({
           <div className="mx-2">
 
         
-          <div className="p-3  bg-white m-4 rounded-2xl ">
+          <div className="p-1 px-5  bg-white m-4 rounded-2xl ">
             <div className="px-2">
               {organization_name && (
                 <span className="text-sm font-medium text-zinc-900 max-w-[180px] truncate block">

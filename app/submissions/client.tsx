@@ -4,47 +4,32 @@ import { useState } from "react"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { cn } from "@/lib/utils"
 import type { SubmissionWithCampaign } from "./page"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Badge, Users } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface SubmissionsClientProps {
   submissions: SubmissionWithCampaign[]
   email: string
+  totalSubmissions: number
+  approvedSubmissions: number
+  pendingSubmissions: number
 }
 
-type TabType = "all" | "approved" | "pending" | "fulfilled" | "archived"
-
 export function SubmissionsClient({
-  submissions: initialSubmissions,
+  submissions,
   email,
+  totalSubmissions,
+  approvedSubmissions,
+  pendingSubmissions,
 }: SubmissionsClientProps) {
-  const [activeTab, setActiveTab] = useState<TabType>("approved")
-  const [submissions] = useState(initialSubmissions)
-
-  const tabs: { id: TabType; label: string }[] = [
-    { id: "all", label: "All Submissions" },
-    { id: "approved", label: "Approved Submissions" },
-    { id: "pending", label: "Pending Submissions" },
-    { id: "fulfilled", label: "Fulfilled" },
-    { id: "archived", label: "Archived (Rejected)" },
-  ]
-
-  const filteredSubmissions = submissions.filter((submission) => {
-    switch (activeTab) {
-      case "pending":
-        return submission.status === "pending"
-      case "approved":
-        return submission.status === "approved"
-      case "fulfilled":
-        return submission.status === "fulfilled"
-      case "archived":
-        return submission.status === "rejected"
-      case "all":
-      default:
-        return true
-    }
-  })
-
+  const formatViews = (views: number) => {
+    return views >= 1000
+      ? (views / 1000).toFixed(1).replace(/\.0$/, "") + "k"
+      : views
+  }
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader userType="creator" email={email} />
 
       {/* Main content */}
@@ -53,97 +38,62 @@ export function SubmissionsClient({
           <div className="space-y-6">
             {/* Title */}
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-[#101828]">Submissions</h1>
+              <h1 className="text-2xl font-medium text-[#101828]">
+                Creator Submissions
+              </h1>
             </div>
-
-            {/* Tabs */}
-            <div className="border-b border-[#E4E7EC]">
-              <nav className="flex -mb-px">
-                {tabs.map((tab) => {
-                  const count =
-                    tab.id === "all"
-                      ? submissions.length
-                      : submissions.filter((s) => {
-                          switch (tab.id) {
-                            case "pending":
-                              return s.status === "pending"
-                            case "approved":
-                              return s.status === "approved"
-                            case "fulfilled":
-                              return s.status === "fulfilled"
-                            case "archived":
-                              return s.status === "rejected"
-                            default:
-                              return false
-                          }
-                        }).length
-
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={cn(
-                        "px-4 py-3 text-sm font-medium whitespace-nowrap",
-                        activeTab === tab.id
-                          ? "text-[#5865F2] border-b-2 border-[#5865F2]"
-                          : "text-[#475467] hover:text-[#101828]"
-                      )}
-                    >
-                      {tab.label}
-                      <span className="ml-2 text-xs rounded-full bg-[#F9FAFB] text-[#475467] px-2 py-0.5">
-                        {count}
-                      </span>
-                    </button>
-                  )
-                })}
-              </nav>
-            </div>
-
-            {/* Conditional Payout Info
-            {activeTab === "approved" && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                <p className="text-sm text-blue-700">
-                  <span className="font-medium">Payout Requirements:</span> Your
-                  total approved submissions must reach $25 to start processing
-                  payouts, with each individual submission earning at least $10.
+            <div className={"grid grid-cols-2 lg:grid-cols-5 gap-8 mb-4"}>
+              <Card className="p-4 rounded-2xl  bg-white inline-flex flex-col">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-zinc-600">
+                    Total Submissions
+                  </span>
+                  <div className="">
+                    <Users className="w-5 h-5" />
+                  </div>
+                </div>
+                <p className="text-2xl font-semibold text-zinc-900">
+                  {" "}
+                  {totalSubmissions}
                 </p>
-              </div>
-            )} */}
+              </Card>
+
+              <Card className="p-4 rounded-2xl  bg-white inline-flex flex-col">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-zinc-600">
+                    Approved
+                  </span>
+                  <div className="">
+                    <Users className="w-5 h-5" />
+                  </div>
+                </div>
+                <p className="text-2xl font-semibold text-zinc-900">
+                  {" "}
+                  {approvedSubmissions}
+                </p>
+              </Card>
+
+              <Card className="p-4 rounded-2xl bg-white inline-flex flex-col">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-zinc-600">
+                    Pending Review
+                  </span>
+                  <div className="">
+                    <Users className="w-5 h-5" />
+                  </div>
+                </div>
+                <p className="text-2xl font-semibold text-zinc-900">
+                  {" "}
+                  {pendingSubmissions}
+                </p>
+              </Card>
+            </div>
 
             {/* Table Header */}
-            <div className="border border-[#E4E7EC] rounded-lg bg-white">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-[#E4E7EC]">
-                    <th className="px-4 py-3 text-left">
-                      <span className="text-sm font-medium text-[#475467]">
-                        Campaign
-                      </span>
-                    </th>
-                    <th className="px-4 py-3 text-left">
-                      <span className="text-sm font-medium text-[#475467]">
-                        Submitted
-                      </span>
-                    </th>
-                    <th className="px-4 py-3 text-left">
-                      <span className="text-sm font-medium text-[#475467]">
-                        Brand
-                      </span>
-                    </th>
-                    <th className="px-4 py-3 text-left">
-                      <span className="text-sm font-medium text-[#475467]">
-                        Performance
-                      </span>
-                    </th>
-                    <th className="px-4 py-3 text-left">
-                      <span className="text-sm font-medium text-[#475467]">
-                        Status
-                      </span>
-                    </th>
-                  </tr>
-                </thead>
+            {/* <div className="border border-[#E4E7EC] rounded-lg bg-white">
+              <div className="w-full">
                 <tbody className="divide-y divide-[#E4E7EC]">
-                  {filteredSubmissions.map((submission) => (
+                  {submissions.map((submission) => (
                     <tr
                       key={submission.id}
                       className="group hover:bg-[#F9FAFB] cursor-pointer"
@@ -190,7 +140,7 @@ export function SubmissionsClient({
                               Views
                             </span>
                             <span className="text-xs font-medium text-[#101828]">
-                              {/* Replace with actual data */}
+
                               --
                             </span>
                           </div>
@@ -204,7 +154,82 @@ export function SubmissionsClient({
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </div>
+            </div> */}
+            <div className="container mx-auto p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {submissions.map((submission) => (
+                  <Card
+                    className="overflow-hidden rounded-2xl"
+                    key={submission.id}
+                  >
+                    <CardHeader className="pb-2 pt-4 px-4">
+                      <div className="flex items-center gap-2 mb-1">
+                        {/* {approved && ( */}
+                        <div className="bg-emerald-400 hover:bg-emerald-400 text-emerald-950 font-medium rounded-full px-3 py-0.5">
+                          {submission.status}
+                        </div>
+                        {/* )} */}
+                        <span className="text-sm font-medium text-gray-700">
+                          dfd
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-semibold mt-1">
+                        {" "}
+                        {submission.campaign.title}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {" "}
+                        @ {submission.campaign.brand.profile?.organization_name}
+                      </p>
+                    </CardHeader>
+                    <CardContent className="px-0 py-0">
+                      <Tabs defaultValue="details" className="w-full">
+                        <div className="flex justify-center">
+                          <TabsList className="rounded-xl border-b bg-[#F4F4F5] h-10">
+                            <TabsTrigger
+                              value="details"
+                              className="rounded-lg  data-[state=active]:border-gray-900 data-[state=active]:shadow-none px-4"
+                            >
+                              Details
+                            </TabsTrigger>
+                            <TabsTrigger
+                              value="video"
+                              className="rounded-lg  data-[state=active]:border-gray-900 data-[state=active]:shadow-none px-4"
+                            >
+                              View Video
+                            </TabsTrigger>
+                            <TabsTrigger
+                              value="feedback"
+                              className="rounded-lg data-[state=active]:border-gray-900 data-[state=active]:shadow-none px-4"
+                            >
+                              Feedback
+                            </TabsTrigger>
+                          </TabsList>
+                        </div>
+                        <TabsContent value="details" className="px-4 py-3">
+                          <p className="text-sm text-gray-700">Descriptio</p>
+                        </TabsContent>
+                        <TabsContent value="video" className="px-4 py-3">
+                          <p className="text-sm text-gray-700">
+                            Video content would appear here.
+                          </p>
+                        </TabsContent>
+                        <TabsContent value="feedback" className="px-4 py-3">
+                          <p className="text-sm text-gray-700">
+                            Feedback would appear here.
+                          </p>
+                        </TabsContent>
+                      </Tabs>
+                    </CardContent>
+                    <CardFooter className="flex justify-between px-4 py-3 text-xs text-gray-500 border-t">
+                      <span>{formatViews(submission.views)} Views</span>
+                      <span>120k Likes</span>
+                      <span>25 Comments</span>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>
