@@ -34,17 +34,17 @@ export const CampaignCard = ({
   const [loading, setLoading] = useState(false)
   const [alreadyReported, setAlreadyReported] = useState(false)
   const [canReport, setCanReport] = useState(false)
-
   useEffect(() => {
     if (campaign.id) {
       checkIfAlreadyReported(campaign.id).then(setAlreadyReported)
     }
   }, [campaign.id])
 
-  // Check if the campaign has an approved/paid submission
+  // Check if campaign has an approved/paid submission
   useEffect(() => {
     if (campaign.id) {
       hasApprovedOrPaidSubmission(campaign.id).then((result) => {
+        console.log("Can Report Status:", result) // Debugging
         setCanReport(result)
       })
     }
@@ -55,7 +55,7 @@ export const CampaignCard = ({
     setLoading(true)
 
     try {
-      await reportClient(campaign.id, title, reason)
+      await reportClient(campaign.id, title, reason) // ✅ Call report function from actions
       alert("Report submitted successfully!")
       setIsOpen(false)
       setTitle("")
@@ -71,25 +71,25 @@ export const CampaignCard = ({
   return (
     <>
       <div
-        className="flex flex-wrap sm:flex-nowrap items-center gap-5 p-5 bg-white rounded-xl group cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-200"
+        className="flex flex-wrap md:flex-nowrap items-center gap-4 p-4 bg-white rounded-lg group cursor-pointer shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-all duration-300"
         onClick={onClick}
       >
         {/* Left Section */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3">
-            <h3 className="text-lg font-semibold text-zinc-900 truncate max-w-[200px] md:max-w-full">
+          <div className="flex items-center gap-2">
+            <h3 className="text-base font-medium text-zinc-900 truncate max-w-[180px] md:max-w-full">
               {campaign.title}
             </h3>
             <span
               className={cn(
-                "text-xs px-2.5 py-1 rounded-full font-medium whitespace-nowrap",
+                "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
                 campaign.has_insufficient_budget ||
                   campaign.remaining_budget === 0 ||
                   campaign.status === "inactive"
-                  ? "bg-red-100 text-red-700"
+                  ? "bg-red-50 text-red-700"
                   : campaign.status === "active"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-yellow-100 text-yellow-700"
+                    ? "bg-green-50 text-green-700"
+                    : "bg-yellow-50 text-yellow-700"
               )}
             >
               {campaign.has_insufficient_budget ||
@@ -103,7 +103,7 @@ export const CampaignCard = ({
 
           {/* Submissions Count */}
           {campaign.submissions.length > 0 && (
-            <span className="text-sm text-zinc-500 block mt-1">
+            <span className="text-sm text-zinc-600 block mt-1">
               {campaign.submissions.length}{" "}
               {campaign.submissions.length === 1 ? "submission" : "submissions"}
             </span>
@@ -113,13 +113,13 @@ export const CampaignCard = ({
         {/* Right Section */}
         <div className="flex flex-wrap justify-between items-center gap-6 w-full md:w-auto">
           <div className="text-right">
-            <p className="text-sm font-semibold text-zinc-900">
+            <p className="text-sm font-medium text-zinc-900">
               ${Number(campaign.remaining_budget || 0).toFixed(2)}
             </p>
             <p className="text-xs text-zinc-500">Remaining Budget</p>
           </div>
           <div className="text-right">
-            <p className="text-sm font-semibold text-zinc-900">
+            <p className="text-sm font-medium text-zinc-900">
               ${Number(campaign.rpm).toFixed(2)}
             </p>
             <p className="text-xs text-zinc-500">RPM</p>
@@ -133,66 +133,54 @@ export const CampaignCard = ({
                 setIsOpen(true)
               }}
               disabled={alreadyReported}
-              className="text-sm w-full md:w-auto bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+              className="text-sm w-full md:w-auto"
             >
               {alreadyReported ? "Already Reported" : "Report Client"}
             </Button>
           )}
-          <button
-            className="flex items-center text-sm font-medium text-zinc-900 hover:text-zinc-700 transition-colors"
-            onClick={(e) => {
-              e.stopPropagation()
-              onClick()
-            }}
-          >
-            View More
-            <ChevronDown
-              className={cn(
-                "ml-1 transition-transform duration-200",
-                isExpanded ? "rotate-180" : "rotate-0"
-              )}
-            />
-          </button>
+          <div className="text-right">
+            <button className="flex items-center text-sm font-medium text-zinc-900">
+              View More{" "}
+              <ChevronDown
+                className={cn(
+                  "transition-transform duration-200",
+                  isExpanded ? "rotate-180" : "rotate-0"
+                )}
+              />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Report Client Dialog */}
+      {/* Report Client Popup */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-lg mx-auto rounded-lg p-6">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle className="text-lg font-semibold text-zinc-900">
-              Report Creator
-            </DialogTitle>
+            <DialogTitle>Report Creator</DialogTitle>
           </DialogHeader>
 
           <Input
             placeholder="Report Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border-zinc-300 focus:border-zinc-500 focus:ring-0"
+            className="w-full"
           />
 
           <Textarea
             placeholder="Explain the reason for reporting..."
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            className="w-full mt-3 border-zinc-300 focus:border-zinc-500 focus:ring-0"
-            rows={4}
+            className="w-full"
           />
 
-          <DialogFooter className="flex justify-end gap-3 mt-4">
-            <Button
-              variant="outline"
-              onClick={() => setIsOpen(false)}
-              className="border-zinc-300 hover:bg-zinc-100 text-zinc-700"
-            >
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsOpen(false)}>
               Cancel
             </Button>
             <Button
               variant="destructive"
               onClick={handleReport}
               disabled={loading}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
             >
               {loading ? "Reporting..." : "Submit Report"}
             </Button>

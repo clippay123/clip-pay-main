@@ -15,10 +15,10 @@ import { CampaignWithSubmissions } from "@/types/campaigns"
 import { CreatorCampaign } from "./creator-campaigns"
 import { Submission } from "./creator-campaigns"
 import os from "os"
-
+import { Resend } from "resend"
 import fs from "fs"
 const execAsync = promisify(exec)
-
+const resend = new Resend(process.env.RESEND_API_KEY)
 // Ensure DEEPGRAM_API_KEY is available
 const DEEPGRAM_API_KEY = process.env.DEEPGRAM_API_KEY
 if (!DEEPGRAM_API_KEY) {
@@ -776,6 +776,24 @@ export async function reportClient(
   if (error) {
     console.error("Error reporting client:", error.message)
     throw new Error("Failed to report client")
+  }
+
+  try {
+    await resend.emails.send({
+      from: "notifications@clippay.live",
+      to: process.env.NEXT_ADMIN_MAIL || "admin@example.com", // Ensure you have this in your environment variables
+      subject: "New Report Submitted",
+      html: `
+        <h2>New Report Received</h2>
+        <p><strong>Reported User ID:</strong> ${reportedUserId}</p>
+        <p><strong>Reported By:</strong> ${user.id}</p>
+        <p><strong>Campaign ID:</strong> ${campaignId}</p>
+        <p><strong>Title:</strong> ${title}</p>
+        <p><strong>Reason:</strong> ${reason}</p>
+      `,
+    })
+  } catch (emailError) {
+    console.error("Error sending report email:", emailError)
   }
 
   return { success: true }

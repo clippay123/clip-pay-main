@@ -40,10 +40,10 @@ export function LandingNav({ view }: { view: "brands" | "creators" }) {
             <Link href="/brands" className="text-sm text-white">
               Home
             </Link>
-            <Link href="/brands" className="text-sm text-white">
+            <Link href="/#how-it-works" className="text-sm text-white">
               How it Works
             </Link>
-            <Link href="/brands" className="text-sm text-white">
+            <Link href="/#faq" className="text-sm text-white">
               FAQ
             </Link>
           </div>
@@ -81,20 +81,20 @@ export function LandingNav({ view }: { view: "brands" | "creators" }) {
           <Link href="/brands" className="text-sm py-2 w-full text-center text-black">
             Home
           </Link>
-          {view === "creators" ? (
-            <Link href="/" className="text-sm py-2 w-full text-center text-black">
-              Brands
-            </Link>
-          ) : (
-            <Link href="/creators" className="text-sm py-2 w-full text-center text-black">
-              Creators
-            </Link>
-          )}
+         
+          <Link href="/#how-it-works" className="text-sm py-2 w-full text-center text-black">
+       How it Work
+          </Link>
+         
+          <Link href="/#faq" className="text-sm py-2 w-full text-center text-black">
+          FAQ
+          </Link>
+         
           <Link
             href={view === "brands" ? "/signup/brand" : "/signup/creator"}
             className="flex items-center justify-center text-sm bg-black text-white p-2 px-6 border rounded-full w-full"
           >
-            Get Started <ChevronRight className="w-4 h-4 ml-2" />
+            Dashboard <ChevronRight className="w-4 h-4 ml-2" />
           </Link>
         </div>
       )}

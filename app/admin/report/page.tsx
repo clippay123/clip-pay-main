@@ -117,15 +117,16 @@ const ReportPage = () => {
                       </Button>
                     </div>
                   )}
-                  {report.submission_status === "paid" && (
-                    <Button
-                      variant="outline"
-                      className="text-black"
-                      onClick={() => handleRefund(report.submission_id)}
-                    >
-                      Refund
-                    </Button>
-                  )}
+                  {report.submission_status === "paid" &&
+                    report.status === "accepted" && (
+                      <Button
+                        variant="outline"
+                        className="text-black"
+                        onClick={() => handleRefund(report.submission_id)}
+                      >
+                        Refund
+                      </Button>
+                    )}
                 </td>
               </tr>
             ))}

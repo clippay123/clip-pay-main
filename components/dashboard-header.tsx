@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -100,7 +101,7 @@ export function DashboardHeader({
       
       <div
         className={cn(
-          "fixed inset-y-0 left-0 w-80  transition-transform duration-300 lg:translate-x-0",
+          "fixed inset-y-0 left-0 w-80  transition-transform duration-300 lg:translate-x-0 md:bg-transparent bg-white z-50",
           isNavOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

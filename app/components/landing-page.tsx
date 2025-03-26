@@ -300,7 +300,7 @@ export function LandingPage({ view }: LandingPageProps) {
         <div className="h-full mx-4 md:mx-8 mt-8 flex flex-col items-center rounded-3xl text-center bg-[url('/assets/heroImage.png')] bg-cover bg-center">
           <div className="max-w-3xl mx-auto space-y-6 mt-16 md:mt-24 px-4">
             {/* Toggle Switch */}
-            <label className="inline-flex items-center cursor-pointer font-bold text-lg md:text-2xl gap-4">
+            <label className="inline-flex items-center cursor-pointer font-bold text-lg md:text-2xl gap-4 mt-2">
               <span
                 className={view === "creators" ? "text-gray-400" : "text-black"}
               >
@@ -412,7 +412,7 @@ export function LandingPage({ view }: LandingPageProps) {
         </div>
 
         {/* How It Works Section */}
-        <section className="py-10">
+        <section className="py-10" id="how-it-works">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <h2 className="text-2xl md:text-3xl font-bold text-black text-center">
               {content.howItWorks.title}
@@ -436,7 +436,9 @@ export function LandingPage({ view }: LandingPageProps) {
         </p>
 
         {/* FAQ + Footer */}
-        <FAQSection view={view} />
+        <section id="faq">
+          <FAQSection view={view} />
+        </section>
         <BrandCTA />
         <Footer view={view} />
       </main>
