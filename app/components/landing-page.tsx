@@ -184,22 +184,20 @@ const creatorsContent = {
       {
         number: 1,
         title: "Join & Filter",
-        description:
-          "Sign up and create your profile in just a few minutes to unlock access to a wide range of brand campaigns. Whether you're an influencer, creator, or marketer, you'll be able to explore exciting opportunities, collaborate with top brands, and grow your network. Don't miss out—get started today and take the first step toward monetizing your influence!",
+        description: "Create your Creator Account",
         icon: joinpay,
       },
       {
         number: 2,
         title: "Create & Submit",
-        description:
-          "Explore a variety of opportunities tailored to your niche and content style. Browse through campaigns from top brands, filter based on your interests, and select the ones that align best with your audience. With countless options available, you can find the perfect fit to showcase your creativity and maximize your earning potential",
+        description: "Find brands that match your style",
+
         icon: client2,
       },
       {
         number: 3,
         title: "Track & Cash Out",
-        description:
-          "Create high-quality videos that align with the brand’s vision by following their brief and guidelines. Ensure your content meets their expectations by maintaining authenticity, creativity, and professionalism. Deliver engaging videos that resonate with your audience while effectively representing the brand’s message and values",
+        description: "Produce videos based on campaign briefs",
         icon: client3,
       },
       // {

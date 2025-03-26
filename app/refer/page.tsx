@@ -116,6 +116,7 @@ export default async function ReferPage() {
               }
               return total
             }, 0) || 0,
+          total_views: creator.creators?.total_views || 0, // Include total_views
         },
       ],
     })) || []

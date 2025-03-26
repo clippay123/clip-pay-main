@@ -21,32 +21,28 @@ export default async function TransactionHistory() {
   // Fetch brand details
   const { data: brand } = await supabase
     .from("brands")
-    .select("id, profiles!inner(user_type, organization_name)")
+    .select("id, profiles(user_type, organization_name)")
     .eq("user_id", user.id)
     .single()
 
-  if (!brand || brand.profiles?.user_type !== "brand") {
+  if (!brand) {
     redirect("/dashboard")
   }
 
   // Fetch transactions with submission_id and campaign_id
-  const { data: transactions, error: transactionError } = await supabase
+  const { data: transactions } = await supabase
     .from("transactions")
     .select(
       `
-      id, 
-      amount, 
-      created_at, 
-      submission_id,
-      submissions ( campaign_id, campaigns ( title ) )
-    `
+    id, 
+    amount, 
+    created_at, 
+    submission_id,
+    submissions ( campaign_id, campaigns:campaigns!inner(title) )
+  `
     )
     .eq("brand_id", brand.id)
     .order("created_at", { ascending: false })
-
-  if (transactionError) {
-    console.error("Error fetching transactions:", transactionError.message)
-  }
 
   // Calculate total amount spent
   const totalAmountSpent =
@@ -72,7 +68,7 @@ export default async function TransactionHistory() {
       <DashboardHeader
         userType="brand"
         email={user.email || ""}
-        organization_name={brand.profiles.organization_name}
+        organization_name={brand.profiles?.[0]?.organization_name}
       />
       <main className="lg:ml-72 min-h-screen pt-20 lg:pt-8">
         <div className="p-6">
@@ -131,7 +127,7 @@ export default async function TransactionHistory() {
                         <CircleArrowUpIcon />
                         <div>
                           <h3 className="font-medium text-zinc-900 text-xl">
-                            {txn.submissions?.campaigns?.title || "N/A"}
+                            title
                           </h3>
                           {/* <p className="text-sm text-zinc-600">
   {submission.brand_name}

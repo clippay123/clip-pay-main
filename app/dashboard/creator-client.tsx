@@ -148,7 +148,7 @@ function CampaignCard({
   )
 }
 
-function Section({ title, content }) {
+function Section({ title, content }: { title: string; content: string }) {
   return (
     <div>
       <h3 className="text-lg font-medium text-zinc-900 mb-2">{title}</h3>

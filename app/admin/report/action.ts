@@ -151,7 +151,7 @@ export async function updateReportStatus(
     try {
       const response = await resend.emails.send({
         from: "notifications@clippay.live",
-        to: userEmail,
+        to: userEmail || "default@example.com", // Provide a fallback email
         subject: "Your Account Has Been Suspended",
         text: `Dear User,
     

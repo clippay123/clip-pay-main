@@ -100,7 +100,7 @@ const ReportPage = () => {
                   {report.status === "pending" && (
                     <div className="flex gap-2">
                       <Button
-                        variant="success"
+                        variant="secondary"
                         onClick={() =>
                           handleUpdateStatus(report.id, "accepted")
                         }

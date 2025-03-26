@@ -232,7 +232,7 @@ export function DashboardClient({
     }
   }, [selectedCampaign])
 
-  const handleCardClick = (campaign) => {
+  const handleCardClick = (campaign: CampaignWithSubmissions) => {
     if (selectedCampaign?.id === campaign.id) {
       setSelectedCampaign(null) // Close modal
     } else {

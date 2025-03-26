@@ -38,14 +38,14 @@ const BanUserPage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-8">
+    <div className="max-w-6xl mx-auto py-8 text-white">
       <h1 className="text-2xl font-bold mb-6">Banned Users</h1>
       {loading ? (
         <p>Loading...</p>
       ) : bannedUsers.length === 0 ? (
         <p>No banned users found.</p>
       ) : (
-        <table className="w-full border border-gray-200">
+        <table className="w-full border border-gray-200 text-black">
           <thead>
             <tr className="bg-gray-100">
               <th className="p-2 text-left">Email</th>
@@ -55,7 +55,7 @@ const BanUserPage = () => {
           </thead>
           <tbody>
             {bannedUsers.map((user) => (
-              <tr key={user.id} className="border-t border-gray-200">
+              <tr key={user.id} className="border-t border-gray-200 text-white">
                 <td className="p-2">{user.email}</td>
                 <td className="p-2">
                   {new Date(user.banned_until).toLocaleString()}
@@ -63,6 +63,7 @@ const BanUserPage = () => {
                 <td className="p-2">
                   <Button
                     variant="outline"
+                    className="text-black"
                     onClick={() => handleUnban(user.id)}
                   >
                     Unban

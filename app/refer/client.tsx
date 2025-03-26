@@ -18,6 +18,7 @@ interface ReferredCreator {
   creators:
     | {
         total_earned: number | null
+        total_views: number | null
       }[]
     | null
 }
