@@ -56,48 +56,72 @@ export function EarningsClient({
             <h1 className="text-2xl font-bold text-zinc-900">Earnings</h1>
           </div>
 
-          <div>
+          <div className="flex gap-2 items-center">
             {/* <button className="bg-[#094283] flex gap-2 py-3 px-4 rounded-xl text-white">
 
                   Withdraw Fund
                   <Image src={moneywithdraw} alt="money ico" />
                   </button> */}
-            {availableForPayout > 0 && paypalAccountStatus && (
-              <Button
-                onClick={async () => {
-                  setIsLoading(true)
-                  try {
-                    const response = await fetch("/api/paypal/payout", {
-                      method: "POST",
-                    })
-                    const data = await response.json()
+            <div>
+              {!hasPayPalAccount ? (
+                <Button
+                  onClick={() => (window.location.href = "/api/paypal/connect")}
+                  className="bg-[#094283] flex gap-2 py-5 px-4 rounded-xl text-white"
+                  size="sm"
+                >
+                  Connect PayPal
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => (window.location.href = "/api/paypal/connect")}
+                  className="bg-[#094283] flex gap-2 py-5 px-4 rounded-xl text-white"
+                  size="sm"
+                >
+                  <span className="flex items-center">
+                    <span className="text-green-500 mr-1">●</span> Paypal
+                    Account Connected
+                  </span>
+                </Button>
+              )}
+            </div>
+            <div>
+              {availableForPayout > 0 && paypalAccountStatus && (
+                <Button
+                  onClick={async () => {
+                    setIsLoading(true)
+                    try {
+                      const response = await fetch("/api/paypal/payout", {
+                        method: "POST",
+                      })
+                      const data = await response.json()
 
-                    if (data.error) {
-                      toast.error(`Error: ${data.error}`)
-                    } else {
-                      toast.success("Cashout successful! Refreshing...")
-                      window.location.reload()
+                      if (data.error) {
+                        toast.error(`Error: ${data.error}`)
+                      } else {
+                        toast.success("Cashout successful! Refreshing...")
+                        window.location.reload()
+                      }
+                    } catch (error) {
+                      console.error("Payout error:", error)
+                      toast.error(
+                        "An error occurred while processing the payout."
+                      )
+                    } finally {
+                      setIsLoading(false)
                     }
-                  } catch (error) {
-                    console.error("Payout error:", error)
-                    toast.error(
-                      "An error occurred while processing the payout."
-                    )
-                  } finally {
-                    setIsLoading(false)
-                  }
-                }}
-                className="bg-[#094283] flex gap-2 py-3 px-4 rounded-xl text-white"
-                //  disabled={isLoading || !isCashoutAvailable} // Button enabled only after 2 days
-              >
-                {isLoading
-                  ? "Processing..."
-                  : isCashoutAvailable
-                    ? `Withdraw Fund ($${availableForPayout.toFixed(2)})`
-                    : "Withdraw Fund in 2 Days"}{" "}
-                <Image src={moneywithdraw} alt="money ico" />
-              </Button>
-            )}
+                  }}
+                  className="bg-[#094283] flex gap-2 py-3 px-4 rounded-xl text-white"
+                  //  disabled={isLoading || !isCashoutAvailable} // Button enabled only after 2 days
+                >
+                  {isLoading
+                    ? "Processing..."
+                    : isCashoutAvailable
+                      ? `Withdraw Fund ($${availableForPayout.toFixed(2)})`
+                      : "Withdraw Fund in 2 Days"}{" "}
+                  <Image src={moneywithdraw} alt="money ico" />
+                </Button>
+              )}
+            </div>
           </div>
         </div>
         <div className={"grid grid-cols-2 lg:grid-cols-5 gap-8 mt-4 "}>
@@ -136,7 +160,7 @@ export function EarningsClient({
           </Card>
         </div>
       </div>
-      <Card className="p-4 rounded-2xl shadow-lg bg-white inline-flex flex-col">
+      {/* <Card className="p-4 rounded-2xl shadow-lg bg-white inline-flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-zinc-600">
             Account Status
@@ -171,7 +195,7 @@ export function EarningsClient({
             )}
           </div>
         </div>
-      </Card>
+      </Card> */}
       <div className="space-y-6">
         {/* <div className="grid grid-cols-3">
         <div className="bg-white rounded-l-lg border border-l-2 border-t-2 border-b-2 border-zinc-200 p-6">

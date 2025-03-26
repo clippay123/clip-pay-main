@@ -212,7 +212,7 @@ export const LandingContent = () => {
                     key={`creator-${i}`}
                     className="flex items-center justify-center"
                   >
-                    <div className="w-20 h-20 rounded-full bg-gray-100 overflow-hidden shadow-md">
+                    <div className="w-20 h-20 rounded-full bg-gray-100 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
                       <Image
                         src={src}
                         alt={`Creator ${i + 1}`}
@@ -245,7 +245,7 @@ export const LandingContent = () => {
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-shadow"
               >
                 <div className="flex items-center mb-4">
                   <div className="mr-3 p-2 bg-[#5034FF]/10 rounded-lg">

@@ -10,6 +10,8 @@ import {
   ArrowUpRight,
   RotateCw,
   Pencil,
+  ArrowDown,
+  ChevronDown,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -55,7 +57,7 @@ function CampaignCard({
 }) {
   return (
     <div
-      className="flex items-center gap-4 p-4 hover:bg-zinc-50 rounded-lg group cursor-pointer"
+      className="flex items-center gap-4 p-4 bg-white rounded-lg group cursor-pointer"
       onClick={onClick}
     >
       <div className="flex-1 min-w-0">
@@ -115,7 +117,7 @@ function CampaignCard({
             </p>
           )}
         </div>
-        <div className="text-right">
+        {/* <div className="text-right">
           <p className="text-sm font-medium text-zinc-900">
             $
             {Number(campaign.rpm).toLocaleString(undefined, {
@@ -124,6 +126,11 @@ function CampaignCard({
             })}
           </p>
           <p className="text-xs text-zinc-500">RPM</p>
+        </div> */}
+        <div className="text-right">
+          <button className="flex items-center text-sm font-medium text-zinc-900">
+            View More <ChevronDown />
+          </button>
         </div>
       </div>
     </div>
@@ -670,135 +677,69 @@ export function CreatorDashboardClient({
             )} */}
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <Card className="p-4 lg:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-                    <DollarSign className="w-5 h-5 text-zinc-600" />
-                  </div>
-                  <span className="text-sm font-medium text-zinc-600">
-                    Total Earnings
-                  </span>
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <Card className="p-4 rounded-2xl  shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-zinc-600">
+                  Total Earnings
+                </span>
+                <div className="">
+                  <DollarSign className="w-5 h-5" />
                 </div>
-                <button className="p-1.5 hover:bg-zinc-100 rounded-lg text-zinc-400">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M8 3.5C8 3.22386 8.22386 3 8.5 3C8.77614 3 9 3.22386 9 3.5C9 3.77614 8.77614 4 8.5 4C8.22386 4 8 3.77614 8 3.5Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M8 7.5C8 7.22386 8.22386 7 8.5 7C8.77614 7 9 7.22386 9 7.5C9 7.77614 8.77614 8 8.5 8C8.22386 8 8 7.77614 8 7.5Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M8 11.5C8 11.2239 8.22386 11 8.5 11C8.77614 11 9 11.2239 9 11.5C9 11.7761 8.77614 12 8.5 12C8.22386 12 8 11.7761 8 11.5Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
               </div>
-              <div className="flex items-end justify-between">
-                <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
-                  {totalEarnings ? totalEarnings : 0}
-                </p>
-              </div>
+              <p className="text-2xl font-semibold text-zinc-900">
+                $ {totalEarnings ? totalEarnings : 0}
+              </p>
             </Card>
-            <Card className="p-4 lg:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-                    <DollarSign className="w-5 h-5 text-zinc-600" />
-                  </div>
-                  <span className="text-sm font-medium text-zinc-600">
-                    Total Earned
-                  </span>
+            <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-zinc-600">
+                  Total Earned
+                </span>
+                <div className="">
+                  <DollarSign className="w-5 h-5" />
                 </div>
-                <button className="p-1.5 hover:bg-zinc-100 rounded-lg text-zinc-400">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M8 3.5C8 3.22386 8.22386 3 8.5 3C8.77614 3 9 3.22386 9 3.5C9 3.77614 8.77614 4 8.5 4C8.22386 4 8 3.77614 8 3.5Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M8 7.5C8 7.22386 8.22386 7 8.5 7C8.77614 7 9 7.22386 9 7.5C9 7.77614 8.77614 8 8.5 8C8.22386 8 8 7.77614 8 7.5Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M8 11.5C8 11.2239 8.22386 11 8.5 11C8.77614 11 9 11.2239 9 11.5C9 11.7761 8.77614 12 8.5 12C8.22386 12 8 11.7761 8 11.5Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
               </div>
-              <div className="flex items-end justify-between">
-                <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
-                  {totalEarnings ? totalEarnings : 0}
-                </p>
-              </div>
+              <p className="text-2xl font-semibold text-zinc-900">
+                $ {totalEarnings ? totalEarnings : 0}
+              </p>
             </Card>
-
-            <Card className="p-4 lg:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-                    <svg
-                      className="w-5 h-5 text-zinc-600"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" />
-                      <path d="M12 7L12 13" strokeLinecap="round" />
-                      <path d="M16 13L12 13" strokeLinecap="round" />
-                    </svg>
-                  </div>
-                  <span className="text-sm font-medium text-zinc-600">
-                    Total Views
-                  </span>
-                </div>
-                <button className="p-1.5 hover:bg-zinc-100 rounded-lg text-zinc-400">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M8 3.5C8 3.22386 8.22386 3 8.5 3C8.77614 3 9 3.22386 9 3.5C9 3.77614 8.77614 4 8.5 4C8.22386 4 8 3.77614 8 3.5Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M8 7.5C8 7.22386 8.22386 7 8.5 7C8.77614 7 9 7.22386 9 7.5C9 7.77614 8.77614 8 8.5 8C8.22386 8 8 7.77614 8 7.5Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M8 11.5C8 11.2239 8.22386 11 8.5 11C8.77614 11 9 11.2239 9 11.5C9 11.7761 8.77614 12 8.5 12C8.22386 12 8 11.7761 8 11.5Z"
-                      fill="currentColor"
-                    />
+            <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-zinc-600">
+                  Total Views
+                </span>
+                <div className="">
+                  <svg
+                    className="w-5 h-5 text-zinc-600"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" />
+                    <path d="M12 7L12 13" strokeLinecap="round" />
+                    <path d="M16 13L12 13" strokeLinecap="round" />
                   </svg>
-                </button>
+                </div>
               </div>
-              <div className="flex items-end justify-between">
-                <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
-                  {campaigns
-                    .reduce((total, campaign) => {
-                      // Get the views from the submission if it exists
-                      const submissionViews = campaign.submission?.views || 0
-                      return total + submissionViews
-                    }, 0)
-                    .toLocaleString()}
-                </p>
-              </div>
+              <p className="text-2xl font-semibold text-zinc-900">
+                ${" "}
+                {campaigns
+                  .reduce((total, campaign) => {
+                    // Get the views from the submission if it exists
+                    const submissionViews = campaign.submission?.views || 0
+                    return total + submissionViews
+                  }, 0)
+                  .toLocaleString()}
+              </p>
             </Card>
-
-            <Card className="p-4 lg:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="hidden lg:flex bg-zinc-100 p-2 rounded-lg">
-                    <RotateCw className="w-5 h-5 text-zinc-600" />
-                  </div>
-                  <span className="text-sm font-medium text-zinc-600">
-                    Avg. RPM
-                  </span>
-                </div>
-                <button className="p-1.5 hover:bg-zinc-100 rounded-lg text-zinc-400">
+            <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-zinc-600">
+                  Avg. RPM
+                </span>
+                <div className="">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path
                       d="M8 3.5C8 3.22386 8.22386 3 8.5 3C8.77614 3 9 3.22386 9 3.5C9 3.77614 8.77614 4 8.5 4C8.22386 4 8 3.77614 8 3.5Z"
@@ -813,13 +754,9 @@ export function CreatorDashboardClient({
                       fill="currentColor"
                     />
                   </svg>
-                </button>
+                </div>
               </div>
-              <div className="flex items-end justify-between">
-                <p className="text-xl lg:text-2xl font-semibold text-zinc-900">
-                  $0
-                </p>
-              </div>
+              <p className="text-2xl font-semibold text-zinc-900">$0</p>
             </Card>
           </div>
 

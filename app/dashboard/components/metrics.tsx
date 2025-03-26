@@ -17,7 +17,7 @@ export function Metrics({
     <div
       className={`grid grid-cols-2 lg:grid-cols-5 gap-8 ${montserrat.className}`}
     >
-      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+      <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-zinc-600">
             Total Budget
@@ -37,7 +37,7 @@ export function Metrics({
             .toLocaleString()}
         </p>
       </Card>
-      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+      <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-zinc-600">
             Active Campaigns
@@ -51,7 +51,7 @@ export function Metrics({
         </p>
       </Card>
 
-      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col ">
+      <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col ">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-zinc-600">
             Total Submissions
@@ -68,7 +68,7 @@ export function Metrics({
         </p>
       </Card>
 
-      <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+      <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-zinc-600">Average CPM</span>
           <div className="">

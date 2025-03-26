@@ -69,6 +69,7 @@ export function DashboardHeader({
       : [
           { href: "/dashboard", label: "Dashboard", icon: Home },
           { href: "/payouts", label: "Payouts", icon: DollarSign },
+          { href: "/transactionHistory", label: "Transaction", icon: DollarSign },
         ]
 
   return (
@@ -243,7 +244,7 @@ export function DashboardHeader({
       {/* Navigation Overlay for mobile/tablet */}
       {isNavOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+          className="lg:hidden fixed inset-0   z-40"
           onClick={() => setIsNavOpen(false)}
         />
       )}

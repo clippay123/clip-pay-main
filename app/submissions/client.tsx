@@ -170,9 +170,9 @@ export function SubmissionsClient({
                           {submission.status}
                         </div>
                         {/* )} */}
-                        <span className="text-sm font-medium text-gray-700">
+                        {/* <span className="text-sm font-medium text-gray-700">
                           dfd
-                        </span>
+                        </span> */}
                       </div>
                       <h3 className="text-lg font-semibold mt-1">
                         {" "}
@@ -185,7 +185,7 @@ export function SubmissionsClient({
                     </CardHeader>
                     <CardContent className="px-0 py-0">
                       <Tabs defaultValue="details" className="w-full">
-                        <div className="flex justify-center">
+                        <div className="flex justify-center w-full">
                           <TabsList className="rounded-xl border-b bg-[#F4F4F5] h-10">
                             <TabsTrigger
                               value="details"

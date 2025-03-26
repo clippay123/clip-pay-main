@@ -103,7 +103,7 @@ export default function FAQSection({ view }: { view: "brands" | "creators" }) {
           {faqItems.map((item, index) => (
             <div
               key={index}
-              className={`rounded-xl overflow-hidden transition-all duration-300 shadow-md ${
+              className={`rounded-xl overflow-hidden transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.1)] ${
                 openIndex === index
                   ? "bg-black text-white"
                   : "bg-white text-black"

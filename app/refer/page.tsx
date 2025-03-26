@@ -77,19 +77,20 @@ export default async function ReferPage() {
     .from("profiles")
     .select(
       `
+    user_id,
+    organization_name,
+    created_at,
+    creators!inner (
       user_id,
-      organization_name,
-      created_at,
-      creators!inner (
-        user_id,
-        stripe_account_id,
-        stripe_account_status,
-        submissions (
-          creator_amount,
-          status
-        )
+      stripe_account_id,
+      stripe_account_status,
+      total_views,
+      submissions (
+        creator_amount,
+        status
       )
-    `
+    )
+  `
     )
     .eq("referred_by", user.id)
 
@@ -102,6 +103,7 @@ export default async function ReferPage() {
       user_id: creator.user_id,
       organization_name: creator.organization_name,
       created_at: creator.created_at,
+      total_views: creator.creators?.total_views || 0, // Fetch total_views from creators table
       creators: [
         {
           total_earned:

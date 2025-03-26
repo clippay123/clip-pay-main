@@ -68,17 +68,18 @@ export const CampaignCard = ({
   return (
     <>
       <div
-        className="flex items-center gap-4 p-4 hover:bg-zinc-50 rounded-lg group cursor-pointer"
+        className="flex flex-wrap md:flex-nowrap items-center gap-4 p-4 bg-white rounded-lg group cursor-pointer shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-all duration-300"
         onClick={onClick}
       >
+        {/* Left Section */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-medium text-zinc-900 truncate">
+            <h3 className="text-base font-medium text-zinc-900 truncate max-w-[180px] md:max-w-full">
               {campaign.title}
             </h3>
             <span
               className={cn(
-                "text-xs px-2 py-0.5 rounded-full font-medium",
+                "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
                 campaign.has_insufficient_budget ||
                   campaign.remaining_budget === 0 ||
                   campaign.status === "inactive"
@@ -96,19 +97,18 @@ export const CampaignCard = ({
                   (campaign.status || "Draft").slice(1)}
             </span>
           </div>
-          <div className="flex items-center gap-2 mt-1">
-            {campaign.submissions.length > 0 && (
-              <span className="text-sm text-zinc-600">
-                {campaign.submissions.length}{" "}
-                {campaign.submissions.length === 1
-                  ? "submission"
-                  : "submissions"}
-              </span>
-            )}
-          </div>
+
+          {/* Submissions Count */}
+          {campaign.submissions.length > 0 && (
+            <span className="text-sm text-zinc-600 block mt-1">
+              {campaign.submissions.length}{" "}
+              {campaign.submissions.length === 1 ? "submission" : "submissions"}
+            </span>
+          )}
         </div>
 
-        <div className="flex items-center gap-6">
+        {/* Right Section */}
+        <div className="flex flex-wrap justify-between items-center gap-6 w-full md:w-auto">
           <div className="text-right">
             <p className="text-sm font-medium text-zinc-900">
               ${Number(campaign.remaining_budget || 0).toFixed(2)}
@@ -121,19 +121,21 @@ export const CampaignCard = ({
             </p>
             <p className="text-xs text-zinc-500">RPM</p>
           </div>
+
+          {canReport && (
+            <Button
+              variant="destructive"
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsOpen(true)
+              }}
+              disabled={alreadyReported}
+              className="text-sm w-full md:w-auto"
+            >
+              {alreadyReported ? "Already Reported" : "Report Client"}
+            </Button>
+          )}
         </div>
-        {canReport && (
-          <Button
-            variant="destructive"
-            onClick={(e) => {
-              e.stopPropagation()
-              setIsOpen(true)
-            }}
-            disabled={alreadyReported}
-          >
-            {alreadyReported ? "Already Reported" : "Report Client"}
-          </Button>
-        )}
       </div>
 
       {/* Report Client Popup */}

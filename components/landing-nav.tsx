@@ -59,7 +59,7 @@ export function LandingNav({ view }: { view: "brands" | "creators" }) {
           </Link>
           <Link
             href={view === "brands" ? "/signup/brand" : "/signup/creator"}
-            className="flex font-medium items-center text-sm bg-white text-black px-5 py-2 rounded-full shadow-md hover:bg-gray-900 transition"
+            className="flex font-medium items-center text-sm bg-white text-black px-5 py-2 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:bg-gray-900 transition"
           >
             Dashboard <ChevronRight className="w-4 h-4 ml-2" />
           </Link>

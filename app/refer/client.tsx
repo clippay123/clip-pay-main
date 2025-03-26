@@ -44,6 +44,10 @@ export function ReferralClient({
     return total + (creator.creators?.[0]?.total_earned || 0)
   }, 0)
 
+  const totalReferralViews = referredCreators.reduce((total, creator) => {
+    return total + (creator.creators?.[0]?.total_views || 0)
+  }, 0)
+
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -59,7 +63,22 @@ export function ReferralClient({
   return (
     <>
       <div className={"grid grid-cols-2 lg:grid-cols-5 gap-8 mb-4"}>
-        <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+        <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-zinc-600">
+              Invited Creators
+            </span>
+            <div className="">
+              <Users className="w-5 h-5" />
+            </div>
+          </div>
+          <p className="text-2xl font-semibold text-zinc-900">
+            {" "}
+            {referredCreators.length}
+          </p>
+        </Card>
+
+        <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-zinc-600">
               Total View
@@ -68,25 +87,16 @@ export function ReferralClient({
               <Users className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-2xl font-semibold text-zinc-900"> $ 1</p>
+          <p className="text-2xl font-semibold text-zinc-900">
+            {" "}
+            {totalReferralViews}
+          </p>
         </Card>
 
-        <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
+        <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-zinc-600">
-              Total View
-            </span>
-            <div className="">
-              <Users className="w-5 h-5" />
-            </div>
-          </div>
-          <p className="text-2xl font-semibold text-zinc-900"> $ 1</p>
-        </Card>
-
-        <Card className="p-4 rounded-2xl shadow-2xl bg-white inline-flex flex-col">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-zinc-600">
-              Total View
+              Pending Balance
             </span>
             <div className="">
               <Users className="w-5 h-5" />
@@ -194,7 +204,7 @@ export function ReferralClient({
         />
       )} */}
 
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 space-y-4 w-full md:w-3/4 lg:w-1/2 mx-auto">
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] p-6 space-y-4 w-full md:w-3/4 lg:w-1/2 mx-auto">
           <div className="flex justify-center">
             <Image src={referImage} alt="Refer" className="w-32 h-32" />
           </div>
@@ -244,7 +254,9 @@ export function ReferralClient({
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-right">
-                    <p className="text-sm text-gray-600">500 Views</p>
+                    <p className="text-sm text-gray-600">
+                      {creator?.creators?.[0]?.total_views || 0} Views
+                    </p>
                     <p className="font-medium">
                       ${(creator.creators?.[0]?.total_earned || 0).toFixed(2)}
                     </p>
