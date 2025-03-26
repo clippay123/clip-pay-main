@@ -2,7 +2,9 @@ import { Card } from "@/components/ui/card"
 import { DollarSign, FileText, RotateCw, Users } from "lucide-react"
 import { CampaignWithSubmissions } from "@/types/campaigns"
 import { Montserrat } from "next/font/google"
-
+import totalViewImg from "@/public/assets/totalView.svg"
+import SealCheckImg from "@/public/assets/SealCheck.svg"
+import Image from "next/image"
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"], // Add the weights you need
@@ -23,7 +25,7 @@ export function Metrics({
             Total Budget
           </span>
           <div className="">
-            <Users className="w-5 h-5" />
+            <Image src={totalViewImg} alt="Total view" className="w-5 h-5" />
           </div>
         </div>
         <p className="text-2xl font-semibold text-zinc-900">
@@ -43,7 +45,11 @@ export function Metrics({
             Active Campaigns
           </span>
           <div className="">
-            <FileText className="w-5 h-5 text-zinc-600" />
+            <Image
+              alt="Active"
+              src={SealCheckImg}
+              className="w-5 h-5 text-zinc-600"
+            />
           </div>
         </div>
         <p className="text-2xl font-semibold text-zinc-900">

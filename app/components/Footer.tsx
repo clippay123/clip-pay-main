@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { LaunchCampaign } from "@/components/launchCampaign"
+import { ChevronRight } from "lucide-react"
 
 export default function Footer({ view }: { view: "brands" | "creators" }) {
   return (
@@ -24,7 +25,17 @@ export default function Footer({ view }: { view: "brands" | "creators" }) {
             </p>
           </div>
 
-          <LaunchCampaign view={view} />
+          <Link
+            href={view === "brands" ? "/signup/brand" : "/signup/creator"}
+            style={{ fontFamily: "'Satoshi Regular'" }}
+          >
+            <button className="bg-black text-white flex items-center gap-2 pl-5 pr-2 py-3 rounded-full font-semibold hover:bg-gray-900 transition group">
+              {view === "brands" ? "Launch a campaign" : "Start earning"}
+              <div className="bg-white border rounded-full ml-2 group-hover:bg-gray-100 transition">
+                <ChevronRight className="w-6 h-6 text-black" />
+              </div>
+            </button>
+          </Link>
           {/* </div> */}
         </div>
       </div>

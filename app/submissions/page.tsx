@@ -21,6 +21,7 @@ export type SubmissionWithCampaign = {
       }
     }
   }
+  video_urls: string[]
 }
 
 export default async function SubmissionsPage() {

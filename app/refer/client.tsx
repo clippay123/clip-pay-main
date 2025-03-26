@@ -8,6 +8,9 @@ import referImage from "@/public/assets/referimg.svg"
 import Image from "next/image"
 import { Copy, Users } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import totalViewImg from "@/public/assets/totalView.svg"
+import singleImg from "@/public/assets/singPImag.svg"
+import totalEarImg from "@/public/assets/earned.svg"
 interface ReferredCreator {
   user_id: string
   organization_name: string | null
@@ -69,7 +72,11 @@ export function ReferralClient({
               Invited Creators
             </span>
             <div className="">
-              <Users className="w-5 h-5" />
+              <Image
+                src={totalViewImg}
+                alt="Wallet Image"
+                className="w-5 h-5"
+              />
             </div>
           </div>
           <p className="text-2xl font-semibold text-zinc-900">
@@ -84,7 +91,7 @@ export function ReferralClient({
               Total View
             </span>
             <div className="">
-              <Users className="w-5 h-5" />
+              <Image src={singleImg} alt="Wallet Image" className="w-5 h-5" />
             </div>
           </div>
           <p className="text-2xl font-semibold text-zinc-900">
@@ -99,7 +106,7 @@ export function ReferralClient({
               Pending Balance
             </span>
             <div className="">
-              <Users className="w-5 h-5" />
+              <Image src={totalEarImg} alt="Wallet Image" className="w-5 h-5" />
             </div>
           </div>
           <p className="text-2xl font-semibold text-zinc-900"> $ 1</p>

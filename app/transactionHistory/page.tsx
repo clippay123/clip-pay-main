@@ -3,8 +3,10 @@ import { Card } from "@/components/ui/card"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import { CircleArrowUpIcon, FileText } from "lucide-react"
 import { redirect } from "next/navigation"
-
+import equlImg from "@/public/assets/equlImg.svg"
+import loadImg from "@/public/assets/loadImg.svg"
 import React from "react"
+import Image from "next/image"
 
 export default async function TransactionHistory() {
   const supabase = await createServerSupabaseClient()
@@ -83,7 +85,11 @@ export default async function TransactionHistory() {
                   Total Spent
                 </span>
                 <div className="">
-                  <FileText className="w-5 h-5 text-zinc-600" />
+                  <Image
+                    src={equlImg}
+                    alt="Total Speent"
+                    className="w-5 h-5 text-zinc-600"
+                  />
                 </div>
               </div>
               <p className="text-2xl font-semibold text-zinc-900">
@@ -96,7 +102,11 @@ export default async function TransactionHistory() {
                   Remaining Budget
                 </span>
                 <div className="">
-                  <FileText className="w-5 h-5 text-zinc-600" />
+                  <Image
+                    alt="REmainig budget"
+                    src={loadImg}
+                    className="w-5 h-5 text-zinc-600"
+                  />
                 </div>
               </div>
               <p className="text-2xl font-semibold text-zinc-900">
@@ -140,7 +150,9 @@ export default async function TransactionHistory() {
                   ))}
                 </ul>
               ) : (
-                <p>No transactions found.</p>
+                <div className="p-4 text-center">
+                  <p className="text-zinc-600">No Transactions Found.</p>
+                </div>
               )}
             </div>
           </div>

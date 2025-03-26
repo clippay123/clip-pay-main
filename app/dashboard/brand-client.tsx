@@ -232,6 +232,13 @@ export function DashboardClient({
     }
   }, [selectedCampaign])
 
+  const handleCardClick = (campaign) => {
+    if (selectedCampaign?.id === campaign.id) {
+      setSelectedCampaign(null) // Close modal
+    } else {
+      setSelectedCampaign(campaign)
+    }
+  }
   return (
     <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader
@@ -263,7 +270,7 @@ export function DashboardClient({
               </Button>
             </div>
 
-            <div className="border border-zinc-200 rounded-lg divide-y divide-zinc-200">
+            <div className="border-2 rounded-md border-zinc-200 overflow-hidden divide-y divide-zinc-200">
               {campaigns.length === 0 ? (
                 <div className="p-4 text-center">
                   <p className="text-zinc-600">No campaigns created yet.</p>
@@ -273,11 +280,26 @@ export function DashboardClient({
                 </div>
               ) : (
                 campaigns.map((campaign) => (
-                  <CampaignCard
-                    key={campaign.id}
-                    campaign={campaign}
-                    onClick={() => setSelectedCampaign(campaign)}
-                  />
+                  <>
+                    <CampaignCard
+                      key={campaign.id}
+                      campaign={campaign}
+                      onClick={() => handleCardClick(campaign)}
+                      isExpanded={selectedCampaign?.id === campaign.id}
+                    />
+                    <CampaignSlideIn
+                      selectedCampaign={selectedCampaign}
+                      setSelectedCampaign={setSelectedCampaign}
+                      isRefreshingViews={isRefreshingViews}
+                      handleApprove={handleApprove}
+                      handleReject={handleReject}
+                      setSelectedSubmission={setSelectedSubmission}
+                      selectedSubmission={selectedSubmission}
+                      setCampaigns={setCampaigns}
+                      setIsRefreshingViews={setIsRefreshingViews}
+                      updateCampaignViews={updateCampaignViews}
+                    />
+                  </>
                 ))
               )}
             </div>
@@ -291,26 +313,14 @@ export function DashboardClient({
         brandId={brandId}
         setCampaigns={setCampaigns}
       />
-      <CampaignSlideIn
-        selectedCampaign={selectedCampaign}
-        setSelectedCampaign={setSelectedCampaign}
-        isRefreshingViews={isRefreshingViews}
-        handleApprove={handleApprove}
-        handleReject={handleReject}
-        setSelectedSubmission={setSelectedSubmission}
-        selectedSubmission={selectedSubmission}
-        setCampaigns={setCampaigns}
-        setIsRefreshingViews={setIsRefreshingViews}
-        updateCampaignViews={updateCampaignViews}
-      />
 
       {/* Overlay */}
-      {selectedCampaign && (
+      {/* {selectedCampaign && (
         <div
           className="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity z-[55]"
           onClick={() => setSelectedCampaign(null)}
         />
-      )}
+      )} */}
     </div>
   )
 }

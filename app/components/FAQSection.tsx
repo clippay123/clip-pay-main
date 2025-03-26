@@ -84,48 +84,84 @@ export default function FAQSection({ view }: { view: "brands" | "creators" }) {
     <section className="py-16 px-4 bg-white">
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center mb-12">
-          <div className="bg-black text-white text-xs font-medium px-4 py-1 rounded-full mb-4">
-            FAQs
-          </div>
           <h2
-            className={`text-4xl font-bold text-center mb-4  ${figtree.className}`}
+            className={`text-4xl font-bold text-center mb-4 ${figtree.className} tracking-tight`}
           >
             <span className="text-[#00000099]">Frequently</span>{" "}
             <span className="text-black">Asked Questions</span>
           </h2>
-          <p className="text-center text-gray-600 max-w-xl">
+          <p className="text-center text-gray-600 max-w-xl opacity-80">
             Get answers to the most common questions about our platform and how
             it works for {view === "brands" ? "brands" : "creators"}.
           </p>
         </div>
-
-        <div className="space-y-4">
+        <div className="space-y-5">
           {faqItems.map((item, index) => (
             <div
               key={index}
-              className={`rounded-xl overflow-hidden transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.1)] ${
+              className={`
+              rounded-2xl overflow-hidden 
+              transition-all duration-500 ease-in-out 
+              transform 
+              ${
                 openIndex === index
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
-              }`}
+                  ? "shadows-xl bg-black text-white"
+                  : " shadow-sm bg-white text-black"
+              }
+              relative
+            `}
             >
               <button
-                className="w-full px-6 py-4 text-left flex justify-between items-center"
+                className="
+                w-full px-6 py-5 text-left flex justify-between items-center
+                group relative
+                transition-all duration-300 ease-in-out
+              "
                 onClick={() => toggleFAQ(index)}
               >
-                <span className="font-medium">{item.question}</span>
-                <span className="flex-shrink-0 ml-2">
+                <span
+                  className={`
+                font-medium text-lg 
+                ${
+                  openIndex === index
+                    ? "text-white"
+                    : "text-black group-hover:text-gray-700"
+                }
+                transition-colors duration-300
+              `}
+                >
+                  {item.question}
+                </span>
+                <span className="flex-shrink-0 ml-4 transition-transform duration-300 group-hover:rotate-90">
                   {openIndex === index ? (
-                    <Minus className="h-5 w-5" />
+                    <Minus className="h-6 w-6 text-white animate-pulse" />
                   ) : (
-                    <Plus className="h-5 w-5" />
+                    <Plus className="h-6 w-6 text-black group-hover:text-white-600" />
                   )}
                 </span>
               </button>
               <div
-                className={`px-6 pb-4 transition-all duration-300 ${openIndex === index ? "block" : "hidden"}`}
+                className={`
+                px-6 
+                transition-all duration-500 ease-in-out 
+                transform origin-top 
+                ${
+                  openIndex === index
+                    ? "opacity-100 max-h-screen"
+                    : "opacity-0  max-h-0"
+                }
+                overflow-hidden
+              `}
               >
-                <p className="text-sm">{item.answer}</p>
+                <p
+                  className={`
+                text-[15px] pb-4 leading-relaxed 
+                ${openIndex === index ? "text-white/80" : "text-gray-600"}
+                transition-colors duration-300
+              `}
+                >
+                  {item.answer}
+                </p>
               </div>
             </div>
           ))}

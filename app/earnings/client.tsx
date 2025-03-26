@@ -7,6 +7,8 @@ import { toast } from "sonner"
 import moneywithdraw from "@/public/assets/moneywithdraw.svg"
 import Image from "next/image"
 import { Card } from "@/components/ui/card"
+import earnedImg from "@/public/assets/earned.svg"
+import walletImg from "@/public/assets/Wallet.svg"
 interface Transaction {
   id: string
   amount: number
@@ -128,36 +130,48 @@ export function EarningsClient({
           <Card className="p-4 rounded-2xl shadow-lg bg-white inline-flex flex-col">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-zinc-600">
-                Active Campaigns
+                Total Earning
               </span>
               <div className="">
-                <FileText className="w-5 h-5 text-zinc-600" />
+                <Image
+                  src={walletImg}
+                  alt="walled "
+                  className="w-5 h-5 text-zinc-600"
+                />
               </div>
             </div>
-            <p className="text-2xl font-semibold text-zinc-900">25</p>
+            <p className="text-2xl font-semibold text-zinc-900">
+              {totalEarned}
+            </p>
           </Card>
           <Card className="p-4 rounded-2xl shadow-lg bg-white inline-flex flex-col">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-zinc-600">
-                Active Campaigns
+                Pending Earning
               </span>
               <div className="">
-                <FileText className="w-5 h-5 text-zinc-600" />
+                {/* <FileText className="w-5 h-5 text-zinc-600" /> */}
+                <Image
+                  src={earnedImg}
+                  alt="walled "
+                  className="w-5 h-5 text-zinc-600"
+                />
               </div>
             </div>
-            <p className="text-2xl font-semibold text-zinc-900">25</p>
+            <p className="text-2xl font-semibold text-zinc-900">0</p>
           </Card>
-          <Card className="p-4 rounded-2xl shadow-lg bg-white inline-flex flex-col">
+          {/* <Card className="p-4 rounded-2xl shadow-lg bg-white inline-flex flex-col">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-zinc-600">
-                Active Campaigns
+Total Withdraw
               </span>
               <div className="">
-                <FileText className="w-5 h-5 text-zinc-600" />
+
+                <Image src={moneywithdraw} alt="money withdraw" className="w-5 h-5 text-zinc-600"/>
               </div>
             </div>
             <p className="text-2xl font-semibold text-zinc-900">25</p>
-          </Card>
+          </Card> */}
         </div>
       </div>
       {/* <Card className="p-4 rounded-2xl shadow-lg bg-white inline-flex flex-col">

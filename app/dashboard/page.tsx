@@ -143,7 +143,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#313338]">
+    <div className="min-h-screen bg-41">
       {brandId ? (
         <DashboardClient
           initialCampaigns={await getBrandCampaigns()}

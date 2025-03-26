@@ -128,39 +128,12 @@ export const CampaignSlideIn = ({
   }, [selectedCampaign?.id])
 
   return (
-    <div
-      className={`fixed inset-y-0 right-0 w-full md:w-[800px] lg:w-[1000px] bg-white transform transition-transform duration-300 ease-in-out shadow-xl z-[60] overscroll-contain ${
-        selectedCampaign ? "translate-x-0" : "translate-x-full"
-      }`}
-    >
+    <div>
       {selectedCampaign && (
         <div className="h-full flex flex-col bg-white">
-          <div className="flex items-center justify-between p-3 border-b border-zinc-200 bg-white">
-            <div className="flex items-center gap-4">
-              <h2 className="text-lg font-semibold text-zinc-900">
-                Campaign Details
-              </h2>
-              {isRefreshingViews && (
-                <div className="flex items-center gap-2">
-                  <RefreshCw className="w-4 h-4 animate-spin text-zinc-500" />
-                  <span className="text-sm text-zinc-500">
-                    Updating views...
-                  </span>
-                </div>
-              )}
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSelectedCampaign(null)}
-              className="text-zinc-500 hover:text-zinc-900"
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-          <div className="flex-1 flex overflow-hidden">
+          <div className="flex flex-col md:flex-row overflow-hidden">
             {/* Submissions List Panel - 30% width */}
-            <div className="w-[30%] border-r border-zinc-200 overflow-y-auto">
+            <div className="md:w-[30%] border-r border-zinc-200 overflow-y-auto">
               <div className="p-3">
                 <h3 className="text-sm font-medium text-zinc-900 mb-2">
                   Submissions ({selectedCampaign.submissions.length})

@@ -138,7 +138,7 @@ const creatorsContent = {
       {
         title: "Performance-Based Pay",
         description:
-          "Get rewarded for your effort. The more views your content generates, the more you earn—ensuring fair pay based on actual engagement, not just content submission",
+          "Earn more as your content gains views—fair pay based on engagement, not just submission.",
         icon: (
           <path
             strokeLinecap="round"
@@ -151,7 +151,7 @@ const creatorsContent = {
       {
         title: "Work with Top Brands",
         description:
-          "Collaborate with trusted brands across different industries that value authentic creator content. Build your portfolio and grow your audience while getting paid.",
+          "Work with trusted brands, grow your audience, and get paid for authentic content.",
         icon: (
           <path
             strokeLinecap="round"
@@ -164,7 +164,7 @@ const creatorsContent = {
       {
         title: "Flexible Campaigns",
         description:
-          "Choose campaigns that align with your content style and schedule. Work when you want, how you want, and maintain creative freedom with every project.",
+          "Pick campaigns that match your style and schedule while keeping full creative freedom.",
         icon: (
           <path
             strokeLinecap="round"
@@ -238,8 +238,8 @@ function FeatureCard({
   icon: React.ReactNode
 }) {
   return (
-    <div className="bg-[#FAFAFA] p-6 rounded-xl shadow-xl">
-      <div className="flex items-center justify-between">
+    <div className="bg-[#FAFAFA] p-6 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
+      <div className="flex items-center justify-between pl-3">
         <div className="text-black font-medium text-lg">{title}</div>
         <div className="w-8 h-8 flex items-center justify-center rounded-full">
           <svg
@@ -370,7 +370,13 @@ export function LandingPage({ view }: LandingPageProps) {
             </h2>
 
             {/* Feature Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+            <div
+              className={`grid gap-6 mt-8 ${
+                content.features.items.length === 3
+                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center"
+                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+              } justify-center`}
+            >
               {content.features.items.map((feature, index) => (
                 <FeatureCard
                   key={index}
@@ -396,10 +402,10 @@ export function LandingPage({ view }: LandingPageProps) {
             </p>
             <div className="flex items-center justify-center">
               <Link href="/signup/creator">
-                <button className="relative p-[2px] rounded-xl bg-gradient-to-r from-pink-500 to-purple-500">
-                  <div className="text-md bg-white rounded-xl w-[250px] md:w-[300px] flex items-center justify-center p-2">
-                    Start Your Creator Journey{" "}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                <button className="relative p-[2px] rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:brightness-110 group">
+                  <div className="text-md bg-white rounded-xl w-[250px] md:w-[300px] flex items-center justify-center p-3 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-pink-50 group-hover:to-purple-50 group-hover:text-gray-800">
+                    Start Your Creator Journey
+                    <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-purple-600" />
                   </div>
                 </button>
               </Link>
