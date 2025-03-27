@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   try {
     const orderController = new OrdersController(client)
     const { submissionId, brandId } = await req.json()
-    console.log("[DEBUG] Processing PayPal order for submission:", submissionId)
+    // console.log("[DEBUG] Processing PayPal order for submission:", submissionId)
 
     const { data: brand, error: brandError } = await supabase
       .from("brands")
@@ -88,12 +88,12 @@ export async function POST(req: NextRequest) {
     const serviceFee = (creatorPayment + referrerPayment) * 0.2
     const totalAmount = creatorPayment + referrerPayment + serviceFee
 
-    console.log("[DEBUG] Final payment details:", {
-      creatorPayment,
-      referrerPayment,
-      serviceFee,
-      totalAmount: totalAmount / 100,
-    })
+    // console.log("[DEBUG] Final payment details:", {
+    //   creatorPayment,
+    //   referrerPayment,
+    //   serviceFee,
+    //   totalAmount: totalAmount / 100,
+    // })
 
     const budgetPool = Number(
       submission.campaign.remaining_budget || submission.campaign.budget_pool
@@ -128,7 +128,7 @@ export async function POST(req: NextRequest) {
       },
       prefer: "return=minimal",
     })
-    console.log("[DEBUG] Payment response:", { httpResponse, body })
+    // console.log("[DEBUG] Payment response:", { httpResponse, body })
 
     if (httpResponse.statusCode !== 201 && httpResponse.statusCode !== 200) {
       isError = true

@@ -76,7 +76,7 @@ export async function fetchReports() {
         : null,
   }))
 
-  console.log("Reports with details:", reportsWithDetails)
+  // console.log("Reports with details:", reportsWithDetails)
   return reportsWithDetails
 }
 
@@ -126,7 +126,7 @@ export async function updateReportStatus(
     const { data: user, error: userError } =
       await supabaseAdmin.auth.admin.getUserById(reported_user_id)
 
-    console.log("User,", user)
+    // console.log("User,", user)
     if (userError || !user) {
       console.error("Error fetching user email:", userError?.message)
       throw new Error("Failed to fetch user email")
@@ -163,7 +163,7 @@ export async function updateReportStatus(
     ClipPay Moderation Team`,
       })
 
-      console.log("Email sent successfully:", response)
+      // console.log("Email sent successfully:", response)
     } catch (emailError) {
       console.error("Error sending email:", emailError)
     }
@@ -175,7 +175,7 @@ export async function updateReportStatus(
 export async function refundPayment(submissionId: string) {
   const supabase = await createServerSupabaseClient()
 
-  console.log("Processing refund for submissionId:", submissionId)
+  // console.log("Processing refund for submissionId:", submissionId)
 
   if (!submissionId) {
     throw new Error("Invalid submission ID")
@@ -271,7 +271,7 @@ export async function refundPayment(submissionId: string) {
 
   // ✅ If transaction is already refunded, just update Supabase
   if (captureDetails.status === "REFUNDED") {
-    console.log("Transaction is already refunded. Updating Supabase.")
+    // console.log("Transaction is already refunded. Updating Supabase.")
 
     const { error: updateError } = await supabase
       .from("submissions")
@@ -314,7 +314,7 @@ export async function refundPayment(submissionId: string) {
     throw new Error("Failed to process refund via PayPal")
   }
 
-  console.log("PayPal refund successful:", refundData)
+  // console.log("PayPal refund successful:", refundData)
 
   // ✅ Step 4: Update Supabase to mark the payment as refunded
   const { error: updateError } = await supabase

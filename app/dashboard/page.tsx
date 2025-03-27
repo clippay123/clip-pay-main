@@ -192,7 +192,7 @@ export const updateVideoViews = async (
       videoSubmissions.map(async (submission) => {
         let info = null
 
-        console.log("submission", submission)
+        // console.log("submission", submission)
         if (submission.platform === "TikTok" && creator.tiktok_access_token) {
           info = await tiktokApi.getVideoInfo(
             submission.video_url!,

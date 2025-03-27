@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     if (storeError) {
       console.error("Error storing YouTube tokens:", storeError)
     } else {
-      console.log("YouTube tokens stored successfully!")
+      // console.log("YouTube tokens stored successfully!")
     }
   }
 

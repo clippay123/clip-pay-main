@@ -11,7 +11,7 @@ const supabaseAdmin = createClient(
 export async function POST(req: Request) {
   const { email, brandId } = await req.json()
 
-  console.log("Received request:", { email, brandId })
+  // console.log("Received request:", { email, brandId })
 
   // Validate input
   if (!email || !brandId) {
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
   }
 
   const userId = user.id
-  console.log("User found in auth:", userId)
+  // console.log("User found in auth:", userId)
 
   // ✅ Check if user is already a team member
   const { data: existingMember, error: checkError } = await supabaseAdmin
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
     .single()
 
   if (existingMember) {
-    console.log("User is already a team member, skipping insert.")
+    // console.log("User is already a team member, skipping insert.")
   } else {
     // ✅ Insert user into brand_team_members
     const { error: insertError } = await supabaseAdmin
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: insertError.message }, { status: 500 })
     }
 
-    console.log("Team member added successfully:", userId)
+    // console.log("Team member added successfully:", userId)
   }
 
   // ✅ Always update user_type to "brand_team"
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
     )
   }
 
-  console.log("User type updated to 'brand_team' for:", userId)
+  // console.log("User type updated to 'brand_team' for:", userId)
 
   return NextResponse.json({
     message: "Team member added & user_type updated successfully",
@@ -193,7 +193,7 @@ async function sendEmailNotification(email: string) {
 
     const result = await response.json()
     if (response.ok) {
-      console.log("Email sent successfully:", result)
+      // console.log("Email sent successfully:", result)
       return { success: true }
     } else {
       console.error("Error sending email:", result)

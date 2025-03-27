@@ -18,6 +18,7 @@ import os from "os"
 import { Resend } from "resend"
 import fs from "fs"
 import { YouTubeAPI } from "@/lib/youtube"
+import { getInstagramReelViews } from "@/lib/instagram"
 const execAsync = promisify(exec)
 const resend = new Resend(process.env.RESEND_API_KEY)
 // Ensure DEEPGRAM_API_KEY is available
@@ -301,7 +302,7 @@ export async function createCampaign({
       throw campaignError
     }
 
-    console.log("Campaign created successfully:", campaign)
+    // console.log("Campaign created successfully:", campaign)
 
     return { success: true, campaign }
   } catch (error) {
@@ -324,10 +325,10 @@ async function processVideo(videoPath: string, userId: string) {
     // Construct FFmpeg command
     const ffmpegCommand = `ffmpeg -i "${videoPath}" -vn -acodec pcm_s16le -ar 44100 -ac 2 -af "volume=1.5" "${audioPath}"`
 
-    console.log("Running FFmpeg command:", ffmpegCommand)
+    // console.log("Running FFmpeg command:", ffmpegCommand)
     await execAsync(ffmpegCommand)
 
-    console.log("Audio extraction successful:", audioPath)
+    // console.log("Audio extraction successful:", audioPath)
     return { audioPath, transcription: "Sample transcription placeholder" }
   } catch (error) {
     console.error("Error processing video with FFmpeg:", error)
@@ -684,27 +685,44 @@ export async function updateCampaignViews(
     const { data: submissions, error: submissionsError } = await supabase
       .from("submissions")
       .select(
-        `
-        id,
-        video_url,
-        creator:creators!inner (
-          tiktok_access_token
-        )
-      `
+        "id, video_urls, creator:creators!inner (tiktok_access_token,instagram_username)"
       )
       .eq("campaign_id", campaignId)
       .eq("status", "approved")
 
     if (submissionsError) throw submissionsError
 
-    // Update views for each submission
     for (const submission of submissions || []) {
-      if (submission.video_url && submission.creator[0]?.tiktok_access_token) {
+      if (!submission.video_urls || submission.video_urls.length === 0) {
+        continue
+      }
+
+      for (const videoUrl of submission.video_urls) {
         try {
-          const views = await tiktokApi.getVideoInfo(
-            submission.video_url,
-            submission.creator[0].tiktok_access_token
-          )
+          let views = 0
+
+          if (
+            videoUrl.includes("youtube.com") ||
+            videoUrl.includes("youtu.be")
+          ) {
+            const youtubeData = await YouTubeAPI.getVideoInfo(videoUrl)
+            views = youtubeData?.views || 0
+          } else if (videoUrl.includes("instagram.com/reel/")) {
+            const instaUsername = submission.creator?.[0]?.instagram_username
+            if (instaUsername) {
+              views = await getInstagramReelViews(videoUrl, instaUsername)
+            }
+          } else if (videoUrl.includes("tiktok.com")) {
+            const tiktokAccessToken =
+              submission.creator?.[0]?.tiktok_access_token
+            if (tiktokAccessToken) {
+              const videoInfo = await tiktokApi.getVideoInfo(
+                videoUrl,
+                tiktokAccessToken
+              )
+              views = videoInfo.views
+            }
+          }
 
           // Update only the views for this submission
           await supabase
@@ -712,7 +730,7 @@ export async function updateCampaignViews(
             .update({ views })
             .eq("id", submission.id)
         } catch (error) {
-          console.error("Error updating views for submission:", error)
+          console.error("Error updating views for video URL:", videoUrl, error)
         }
       }
     }
@@ -811,7 +829,7 @@ export async function checkIfAlreadyReported(campaignId: string) {
     .select("id")
     .eq("campaign_id", campaignId)
     .single()
-  console.log("existing", existingReport)
+  // console.log("existing", existingReport)
 
   return !!existingReport // Returns true if report exists, otherwise false
 }
@@ -827,7 +845,7 @@ export async function hasApprovedOrPaidSubmission(campaignId: string) {
     .in("status", ["approved", "paid"])
     .limit(1) // We only need to check if one exists
 
-  console.log("data", data)
+  // console.log("data", data)
   if (error) {
     console.error("Error checking submissions:", error.message)
     return false
@@ -865,7 +883,7 @@ export const updateVideoViews = async (
       videoSubmissions.map(async (submission) => {
         let info = null
 
-        console.log("submission", submission)
+        // console.log("submission", submission)
         if (submission.platform === "TikTok" && creator.tiktok_access_token) {
           info = await tiktokApi.getVideoInfo(
             submission.video_url!,

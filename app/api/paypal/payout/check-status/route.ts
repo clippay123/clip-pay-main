@@ -18,7 +18,7 @@ export async function GET() {
     )
 
     const data = await response.json()
-    console.log("Payout Status:", data)
+    // console.log("Payout Status:", data)
     return NextResponse.json(data)
   } catch (error) {
     console.log("[Error] - While Fetching Payout Status:", error)

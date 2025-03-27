@@ -94,8 +94,8 @@ export default async function ReferPage() {
     )
     .eq("referred_by", user.id)
 
-  console.log("Referred creators:", referredCreators)
-  console.log("Referred error:", referredError)
+  // console.log("Referred creators:", referredCreators)
+  // console.log("Referred error:", referredError)
 
   // Calculate total earned for each creator from their submissions
   const referredCreatorsWithEarnings =

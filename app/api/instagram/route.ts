@@ -14,7 +14,7 @@ export async function PATCH(req: Request) {
       )
     }
 
-    console.log("instagramUsername", instagramUsername)
+    // console.log("instagramUsername", instagramUsername)
     const supabase = await createServerSupabaseClient()
     // Get authenticated user
     const {
@@ -27,7 +27,7 @@ export async function PATCH(req: Request) {
 
     const userId = user.id
 
-    console.log("userId", userId)
+    // console.log("userId", userId)
     // Update creators table
     const { error: updateError } = await supabase
       .from("creators")

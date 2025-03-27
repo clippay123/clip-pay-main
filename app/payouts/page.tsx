@@ -148,19 +148,19 @@ export default async function PayoutsPage() {
     .returns<SubmissionQueryResult[]>()
 
   // Log all submissions before filtering
-  console.log(
-    "All submissions before filtering:",
-    allSubmissions?.map((s: SubmissionQueryResult) => ({
-      id: s.id,
-      status: s.status,
-      has_video_url: !!s.video_url,
-      payout_due_date: s.payout_due_date,
-      views: s.views,
-      stripe_status: s.creator.stripe_account_status,
-      has_stripe_account: !!s.creator.stripe_account_id,
-      campaign_brand_id: s.campaign.brand.user_id,
-    }))
-  )
+  // console.log(
+  //   "All submissions before filtering:",
+  //   allSubmissions?.map((s: SubmissionQueryResult) => ({
+  //     id: s.id,
+  //     status: s.status,
+  //     has_video_url: !!s.video_url,
+  //     payout_due_date: s.payout_due_date,
+  //     views: s.views,
+  //     stripe_status: s.creator.stripe_account_status,
+  //     has_stripe_account: !!s.creator.stripe_account_id,
+  //     campaign_brand_id: s.campaign.brand.user_id,
+  //   }))
+  // )
 
   // Get filtered submissions
   const { data: submissions, error: submissionsError } = await supabase
@@ -205,18 +205,18 @@ export default async function PayoutsPage() {
     .order("payout_due_date", { ascending: true })
     .returns<SubmissionQueryResult[]>()
 
-  console.log(
-    "Filtered submissions:",
-    submissions?.map((s: SubmissionQueryResult) => ({
-      id: s.id,
-      status: s.status,
-      has_video_url: !!s.video_url,
-      payout_due_date: s.payout_due_date,
-      views: s.views,
-      stripe_status: s.creator.stripe_account_status,
-      has_stripe_account: !!s.creator.stripe_account_id,
-    }))
-  )
+  // console.log(
+  //   "Filtered submissions:",
+  //   submissions?.map((s: SubmissionQueryResult) => ({
+  //     id: s.id,
+  //     status: s.status,
+  //     has_video_url: !!s.video_url,
+  //     payout_due_date: s.payout_due_date,
+  //     views: s.views,
+  //     stripe_status: s.creator.stripe_account_status,
+  //     has_stripe_account: !!s.creator.stripe_account_id,
+  //   }))
+  // )
 
   if (submissionsError) {
     console.error("Error fetching submissions:", {
@@ -306,10 +306,10 @@ export default async function PayoutsPage() {
     }
   )
 
-  console.log(
-    "submissions",
-    submissionsWithReferrers.map((s: SubmissionQueryResult) => s.creator)
-  )
+  // console.log(
+  //   "submissions",
+  //   submissionsWithReferrers.map((s: SubmissionQueryResult) => s.creator)
+  // )
 
   // Update views for each submission
   if (submissionsWithReferrers) {

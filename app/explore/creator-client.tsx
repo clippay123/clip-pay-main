@@ -190,7 +190,7 @@ export function CreatorDashboardClient({
         // Check for new campaigns
         const latestCampaigns = await getCreatorCampaigns()
 
-        console.log("latestCampaigns", latestCampaigns)
+        // console.log("latestCampaigns", latestCampaigns)
         // Update existing campaign statuses
         setCampaigns((prevCampaigns) => {
           return prevCampaigns.map((prevCampaign) => {
@@ -281,7 +281,7 @@ export function CreatorDashboardClient({
 
   useEffect(() => {
     if (selectedCampaign?.submission) {
-      console.log("selectedCampaign.submission", selectedCampaign.submission)
+      // console.log("selectedCampaign.submission", selectedCampaign.submission)
       if (
         Array.isArray(selectedCampaign.submission.video_urls) &&
         selectedCampaign.submission.video_urls.length > 0

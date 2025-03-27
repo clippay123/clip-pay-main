@@ -38,7 +38,7 @@ export function TeamManagement({ brandId }: { brandId: string }) {
         const res = await fetch(`/api/brands?brandId=${brandId}`)
         const data = await res.json()
 
-        console.log("API Response:", data) // Debugging
+        // console.log("API Response:", data) // Debugging
 
         if (Array.isArray(data)) {
           setTeamMembers(data)

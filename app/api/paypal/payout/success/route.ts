@@ -9,17 +9,17 @@ export async function POST(request: Request) {
 
   try {
     const { orderID, ...details } = await request.json()
-    console.log(
-      "[DEBUG] Starting payment confirmation for paymentIntentId:",
-      orderID,
-      details
-    )
+    // console.log(
+    //   "[DEBUG] Starting payment confirmation for paymentIntentId:",
+    //   orderID,
+    //   details
+    // )
 
     const {
       data: { user },
     } = await supabase.auth.getUser()
 
-    console.log("user", user)
+    // console.log("user", user)
     if (!user) {
       console.error("[DEBUG] No user found in session")
       return NextResponse.json(
@@ -33,21 +33,21 @@ export async function POST(request: Request) {
     })
 
     const order = JSON.parse(body.toString())
-    console.log("[DEBUG] Order captured:", order)
+    // console.log("[DEBUG] Order captured:", order)
 
     if (order?.status === "COMPLETED") {
-      console.log(`[DEBUG] Payment of order ${orderID} completed successfully`)
+      // console.log(`[DEBUG] Payment of order ${orderID} completed successfully`)
 
       const purchaseUnit = order.purchase_units?.[0]
       const purchaseUnitPayment = order.purchase_units?.[0].payments
       const purchaseUnitAmount = purchaseUnitPayment?.captures?.[0]
       const transactionId = purchaseUnitAmount.id
-      console.log(
-        "[DEBUG] Capture Details:",
-        JSON.stringify(purchaseUnitAmount, null, 2)
-      )
-      console.log("[DEBUG] Amount:", purchaseUnitAmount.amount.value)
-      console.log("[DEBUG] Currency:", purchaseUnitAmount.amount.currency_code)
+      // console.log(
+      //   "[DEBUG] Capture Details:",
+      //   JSON.stringify(purchaseUnitAmount, null, 2)
+      // )
+      // console.log("[DEBUG] Amount:", purchaseUnitAmount.amount.value)
+      // console.log("[DEBUG] Currency:", purchaseUnitAmount.amount.currency_code)
 
       const submissionId = order.purchase_units[0].reference_id
       const amount = purchaseUnitAmount.amount.value
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
         throw new Error("Failed to update transaction status")
       }
 
-      console.log("[DEBUG] Transaction status updated successfully")
+      // console.log("[DEBUG] Transaction status updated successfully")
 
       const { error: submissionError } = await supabase
         .from("submissions")
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
     }
     // JSON.parse(order.body.toString());
   } catch (error) {
-    console.log("Error processing payment confirmation:", error)
+    // console.log("Error processing payment confirmation:", error)
     return NextResponse.json(
       { error: "Error processing payment confirmation", reason: error },
       { status: 400 }

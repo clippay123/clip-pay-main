@@ -97,7 +97,7 @@ export async function middleware(req: NextRequest) {
 
     const creator = await getCreator(supabase, user)
     
-    console.log("creatore",creator);
+    // console.log("creatore",creator);
     // If no creator record or TikTok not connected, redirect to TikTok auth
  // Ensure a creator record exists
 if (!creator) {
@@ -109,10 +109,10 @@ if (!creator) {
   }
 }
 
-console.log("profil",profile);
+// console.log("profil",profile);
 // Always redirect to profile setup if organization_name is missing
 if (!profile.organization_name && !currentPath.startsWith("/onboarding/creator/profile")) {
-  console.log("Redirecting to /onboarding/creator/profile");
+  // console.log("Redirecting to /onboarding/creator/profile");
   return NextResponse.redirect(new URL('/onboarding/creator/profile', req.url));
 }
 

@@ -45,7 +45,7 @@ export const CampaignCard = ({
   useEffect(() => {
     if (campaign.id) {
       hasApprovedOrPaidSubmission(campaign.id).then((result) => {
-        console.log("Can Report Status:", result) // Debugging
+        // console.log("Can Report Status:", result) // Debugging
         setCanReport(result)
       })
     }

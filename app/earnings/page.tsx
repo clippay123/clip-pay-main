@@ -92,7 +92,7 @@ export default async function EarningsPage() {
     .eq("user_id", user.id)
     .eq("status", "paid")
 
-  console.log(availableData)
+  // console.log(availableData)
 
   const today = new Date()
 
@@ -113,8 +113,8 @@ export default async function EarningsPage() {
   // ✅ Determine if cashout is available
   const isCashoutAvailable = eligibleForCashout.length > 0
 
-  console.log({ availableForPayout })
-  console.log("cash", isCashoutAvailable)
+  // console.log({ availableForPayout })
+  // console.log("cash", isCashoutAvailable)
   // Get pending earnings (pending submissions)
   const { data: pendingData } = await supabase
     .from("submissions")

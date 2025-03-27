@@ -27,7 +27,7 @@ export async function getInstagramReelViews(videoUrl: string, username: string):
     }
 
     const data = await response.json();
-    console.log("Fetched Reels Data:", data);
+    // console.log("Fetched Reels Data:", data);
 
     // Extract Reel ID from the URL
     const reelId = extractReelId(videoUrl);

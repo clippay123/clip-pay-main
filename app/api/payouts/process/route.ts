@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
   try {
     const { submissionId, verifiedViews } = await request.json()
-    console.log("[DEBUG] Processing payment for submission:", submissionId)
+    // console.log("[DEBUG] Processing payment for submission:", submissionId)
 
     // Get the authenticated user first
     const {
@@ -108,14 +108,14 @@ export async function POST(request: Request) {
       .eq("id", submissionId)
       .single()
 
-    console.log("[DEBUG] Submission details:", {
-      id: submission?.id,
-      views: submission?.views,
-      campaignRpm: submission?.campaign?.rpm,
-      campaignBudgetPool: submission?.campaign?.budget_pool,
-      campaignReferralRate: submission?.campaign?.referral_bonus_rate,
-      referredBy: submission?.creator?.profile?.referred_by,
-    })
+    // console.log("[DEBUG] Submission details:", {
+    //   id: submission?.id,
+    //   views: submission?.views,
+    //   campaignRpm: submission?.campaign?.rpm,
+    //   campaignBudgetPool: submission?.campaign?.budget_pool,
+    //   campaignReferralRate: submission?.campaign?.referral_bonus_rate,
+    //   referredBy: submission?.creator?.profile?.referred_by,
+    // })
 
     if (submissionError || !submission) {
       console.error("Submission error:", submissionError)
@@ -163,10 +163,10 @@ export async function POST(request: Request) {
             stripe_account_status: creatorData.stripe_account_status,
           },
         }
-        console.log("[DEBUG] Referrer details:", {
-          hasStripeAccount: !!referrer.creator.stripe_account_id,
-          stripeStatus: referrer.creator.stripe_account_status,
-        })
+        // console.log("[DEBUG] Referrer details:", {
+        //   hasStripeAccount: !!referrer.creator.stripe_account_id,
+        //   stripeStatus: referrer.creator.stripe_account_status,
+        // })
       }
     }
 
@@ -187,12 +187,12 @@ export async function POST(request: Request) {
       (creatorPayment + referrerPayment + serviceFee) * 100
     )
 
-    console.log("[DEBUG] Final payment details:", {
-      creatorPayment,
-      referrerPayment,
-      serviceFee,
-      totalAmount: totalAmount / 100,
-    })
+    // console.log("[DEBUG] Final payment details:", {
+    //   creatorPayment,
+    //   referrerPayment,
+    //   serviceFee,
+    //   totalAmount: totalAmount / 100,
+    // })
 
     // Check if we have enough in the budget pool
     const budgetPool = Number(
@@ -200,11 +200,11 @@ export async function POST(request: Request) {
     )
     const totalNeeded = totalAmount / 100
 
-    console.log("[DEBUG] Budget check:", {
-      budgetPool,
-      totalNeeded,
-      hasEnoughBudget: budgetPool >= totalNeeded,
-    })
+    // console.log("[DEBUG] Budget check:", {
+    //   budgetPool,
+    //   totalNeeded,
+    //   hasEnoughBudget: budgetPool >= totalNeeded,
+    // })
 
     // Adjust payments if budget pool is insufficient
     let adjustedPaymentAmount = creatorPayment
@@ -221,10 +221,10 @@ export async function POST(request: Request) {
         adjustedPaymentAmount = creatorPayment
         adjustedReferrerPayment = budgetPool - creatorPayment
       }
-      console.log("[DEBUG] Adjusted payments due to budget:", {
-        adjustedPaymentAmount,
-        adjustedReferrerPayment,
-      })
+      // console.log("[DEBUG] Adjusted payments due to budget:", {
+      //   adjustedPaymentAmount,
+      //   adjustedReferrerPayment,
+      // })
     }
 
     // Validate referrer payment and Stripe account
@@ -232,9 +232,9 @@ export async function POST(request: Request) {
       const hasValidReferrer =
         referrer?.creator?.stripe_account_status === "active"
       if (!hasValidReferrer || !referrer?.creator?.stripe_account_id) {
-        console.log(
-          "[DEBUG] Resetting referrer payment - invalid Stripe account"
-        )
+        // console.log(
+        //   "[DEBUG] Resetting referrer payment - invalid Stripe account"
+        // )
         adjustedReferrerPayment = 0 // Reset referrer payment if no active Stripe account
       }
     }
@@ -243,11 +243,11 @@ export async function POST(request: Request) {
     const totalDeduction = adjustedPaymentAmount + adjustedReferrerPayment
     const remainingBudget = budgetPool - totalDeduction
 
-    console.log("[DEBUG] Updating campaign budget:", {
-      currentBudget: budgetPool,
-      totalDeduction,
-      newRemainingBudget: remainingBudget,
-    })
+    // console.log("[DEBUG] Updating campaign budget:", {
+    //   currentBudget: budgetPool,
+    //   totalDeduction,
+    //   newRemainingBudget: remainingBudget,
+    // })
 
     // Update campaign with new remaining budget
     const { error: campaignUpdateError } = await supabase
@@ -312,12 +312,12 @@ export async function POST(request: Request) {
       },
     })
 
-    console.log("[DEBUG] Created payment intent:", {
-      id: paymentIntent.id,
-      amount: paymentIntent.amount,
-      metadata: paymentIntent.metadata,
-      transferGroup,
-    })
+    // console.log("[DEBUG] Created payment intent:", {
+    //   id: paymentIntent.id,
+    //   amount: paymentIntent.amount,
+    //   metadata: paymentIntent.metadata,
+    //   transferGroup,
+    // })
 
     // Create creator transfer
     if (adjustedPaymentAmount > 0) {

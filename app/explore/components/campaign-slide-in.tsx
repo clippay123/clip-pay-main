@@ -45,7 +45,7 @@ export const CampaignSlideIn = ({
     return campaign.remaining_budget ?? Number(campaign.budget_pool)
   }
 
-  console.log({ selectedCampaign })
+  // console.log({ selectedCampaign })
   // Add effect to select first submission when campaign changes
   useEffect(() => {
     if (selectedCampaign && selectedCampaign.submissions.length > 0) {

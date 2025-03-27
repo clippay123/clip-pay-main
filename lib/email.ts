@@ -22,7 +22,7 @@ export async function sendInvoiceEmail({
   const filePath = await generateInvoice({ name, email, amount, currency, orderId, transactionId })
   const invoiceBuffer = fs.readFileSync(filePath)
 
-  console.log("[DEBUG] Invoice PDF loaded:", email)
+  // console.log("[DEBUG] Invoice PDF loaded:", email)
   return await resend.emails.send({
     from: "notifications@clippay.live",
     to: email,

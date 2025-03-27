@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       0
     )
 
-    console.log("Payable amount: ", payableAmount)
+    // console.log("Payable amount: ", payableAmount)
     // if (submission.creator_amount<25) {
     //     return NextResponse.json({ error: "Creator amount is too low. below $25!" }, { status: 400 })
     // }
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
         }),
       }
     ).then((res) => res.json())
-    console.log("Payable Response: ", payoutResponse)
+    // console.log("Payable Response: ", payoutResponse)
     const payoutId = payoutResponse?.batch_header?.id
     const payoutStatus = payoutResponse?.batch_header?.batch_status
 
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
         },
       })
     }
-    console.log("[DEBUG] Payout Response: ", payoutResponse)
+    // console.log("[DEBUG] Payout Response: ", payoutResponse)
     // }
     return NextResponse.json(payoutResponse)
   } catch (error) {

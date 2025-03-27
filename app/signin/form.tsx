@@ -176,7 +176,7 @@ export default function SignInForm() {
                 setIsGoogleSigningIn(true)
                 setError(null)
                 const url = await signInWithGoogle("creator", false)
-                console.log("url", url)
+                // console.log("url", url)
                 if (url) {
                   window.location.assign(url)
                 } else {

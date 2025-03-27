@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     )
   }
 
-  console.log("Authenticated Supabase User:", user)
+  // console.log("Authenticated Supabase User:", user)
 
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!
   const clientSecret = process.env.PAYPAL_CLIENT_SECRET!
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
     )
 
     const tokenData = await tokenResponse.json()
-    console.log("PayPal Token Data:", tokenData)
+    // console.log("PayPal Token Data:", tokenData)
 
     if (!tokenData.access_token) {
       return NextResponse.json(
@@ -81,7 +81,7 @@ export async function GET(req: NextRequest) {
     )
 
     const userInfo = await userResponse.json()
-    console.log("PayPal User Info:", userInfo)
+    // console.log("PayPal User Info:", userInfo)
 
     // Extract email correctly
     const email =

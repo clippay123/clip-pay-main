@@ -137,7 +137,7 @@ export function SettingsForm({
       return
     }
 
-    console.log("Submitting username:", username) // Debugging log
+    // console.log("Submitting username:", username) // Debugging log
 
     try {
       const response = await fetch("/api/instagram", {
@@ -146,10 +146,10 @@ export function SettingsForm({
         body: JSON.stringify({ instagramUsername: username }),
       })
 
-      console.log("API response received:", response)
+      // console.log("API response received:", response)
 
       const data = await response.json()
-      console.log("API response data:", data)
+      // console.log("API response data:", data)
 
       if (!response.ok) throw new Error(data.error || "Failed to update")
 

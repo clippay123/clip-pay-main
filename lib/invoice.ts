@@ -95,7 +95,7 @@ export async function generateInvoice({
     // Close browser
     await browser.close()
 
-    console.log("[DEBUG] Invoice PDF generated:", filePath)
+    // console.log("[DEBUG] Invoice PDF generated:", filePath)
     return filePath
   } catch (error) {
     console.error("[ERROR] Failed to generate PDF:", error)

@@ -19,7 +19,7 @@ export default async function CreatorProfilePage() {
     .eq("user_id", user.id)
     .single()
 
-    console.log("profile2", profile)
+  // console.log("profile2", profile)
   // const { data: creator } = await supabase
   //   .from("creators")
   //   .select("tiktok_connected")
@@ -36,11 +36,10 @@ export default async function CreatorProfilePage() {
   }
 
   // If organization_name is missing, let user complete it first
-if (!profile.organization_name) {
-  console.log("Organization name is missing")
-  return <ProfileForm />
-}
-
+  if (!profile.organization_name) {
+    // console.log("Organization name is missing")
+    return <ProfileForm />
+  }
 
   // If TikTok is not connected, go back to TikTok auth
   // if (!creator?.tiktok_connected) {

@@ -174,7 +174,7 @@ export function PayoutsClient({ submissions }: PayoutsClientProps) {
       </div>
     )
   }
-  console.log({ submissions })
+  // console.log({ submissions })
   return (
     <div className="flex h-[calc(100vh)]">
       {/* Left Panel - Submissions List */}
@@ -752,10 +752,10 @@ export function PayoutsClient({ submissions }: PayoutsClientProps) {
                               body: JSON.stringify({ ...data }),
                             }
                           )
-                          console.log(
-                            " capture order response",
-                            response.json()
-                          )
+                          // console.log(
+                          //   " capture order response",
+                          //   response.json()
+                          // )
                         }}
                       ></PayPalButtons>
                     </PayPalScriptProvider>

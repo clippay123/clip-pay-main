@@ -180,14 +180,14 @@ export async function signInWithGoogle(
   const supabase = await createServerActionClient()
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
-  console.log("referral code", referralCode)
+  // console.log("referral code", referralCode)
   const redirectUrl = new URL(`/auth/${userType}/callback`, baseUrl)
 
   if (isSignUp && referralCode) {
     redirectUrl.searchParams.set("ref", referralCode)
   }
 
-  console.log("Redirecting to Google with URL:", redirectUrl.toString())
+  // console.log("Redirecting to Google with URL:", redirectUrl.toString())
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

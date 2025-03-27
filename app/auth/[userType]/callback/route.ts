@@ -24,12 +24,12 @@ export async function GET(
   const userType = resolvedParams.userType
 
   const requestUrl = new URL(request.url)
-  console.log("Received OAuth Callback:", requestUrl.toString())
+  // console.log("Received OAuth Callback:", requestUrl.toString())
 
   const code = requestUrl.searchParams.get("code")
   const next = requestUrl.searchParams.get("next") || "/dashboard"
   const referralCode = requestUrl.searchParams.get("ref") // ✅ Extract referral code
-  console.log("Extracted Referral Code:", referralCode)
+  // console.log("Extracted Referral Code:", referralCode)
 
   if (!code) {
     return NextResponse.redirect(
@@ -60,8 +60,8 @@ export async function GET(
       )
     }
 
-    console.log("User Email:", userEmail)
-    console.log("Referral Code from URL:", referralCode)
+    // console.log("User Email:", userEmail)
+    // console.log("Referral Code from URL:", referralCode)
 
     let referredByUUID = null
 
@@ -73,8 +73,8 @@ export async function GET(
         .eq("code", referralCode)
         .single()
 
-      console.log("Referrer:", referrer)
-      console.log("Referrer Fetch Error:", referrerFetchError)
+      // console.log("Referrer:", referrer)
+      // console.log("Referrer Fetch Error:", referrerFetchError)
 
       if (!referrerFetchError && referrer?.profile_id) {
         referredByUUID = referrer.profile_id
@@ -100,14 +100,14 @@ export async function GET(
       .eq("user_id", userId)
       .single()
 
-    console.log("Existing Profile:", existingProfile)
+    // console.log("Existing Profile:", existingProfile)
 
-    console.log("Reffered by  :", referredByUUID)
+    // console.log("Reffered by  :", referredByUUID)
     if (!existingProfile) {
       // ✅ Insert new profile with referral if applicable
-      console.log(
-        `Inserting new profile for ${userId}, referred by ${referredByUUID}`
-      )
+      // console.log(
+      //   `Inserting new profile for ${userId}, referred by ${referredByUUID}`
+      // )
       const { error: insertError } = await supabase.from("profiles").insert({
         user_id: userId,
         user_type: userType,
@@ -120,9 +120,9 @@ export async function GET(
       }
     } else if (!existingProfile.referred_by && referredByUUID) {
       // ✅ Update `referred_by` only if it's missing
-      console.log(
-        `Updating referred_by for user ${userId} -> ${referredByUUID}`
-      )
+      // console.log(
+      //   `Updating referred_by for user ${userId} -> ${referredByUUID}`
+      // )
       const { error: updateError } = await supabase
         .from("profiles")
         .update({ referred_by: referredByUUID })

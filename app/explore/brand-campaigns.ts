@@ -75,7 +75,7 @@ export const getBrandCampaigns = async (): Promise<
     .eq("user_id", brandUserId) // Filter campaigns by the brand's user_id
     .order("created_at", { ascending: false })
 
-  console.log("dAta", campaigns)
+  // console.log("dAta", campaigns)
   if (error) {
     console.error("Brand campaigns error:", error)
     throw error

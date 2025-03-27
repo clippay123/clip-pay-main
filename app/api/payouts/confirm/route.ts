@@ -13,10 +13,10 @@ export async function POST(request: Request) {
 
   try {
     const { paymentIntentId } = await request.json()
-    console.log(
-      "[DEBUG] Starting payment confirmation for paymentIntentId:",
-      paymentIntentId
-    )
+    // console.log(
+    //   "[DEBUG] Starting payment confirmation for paymentIntentId:",
+    //   paymentIntentId
+    // )
 
     // Get the authenticated user first
     const {
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     )
 
     if (confirmedPayment.status === "succeeded") {
-      console.log("[DEBUG] Payment succeeded, updating transaction status")
+      // console.log("[DEBUG] Payment succeeded, updating transaction status")
       // Update transaction status
       const { error: transactionError } = await supabase
         .from("transactions")
@@ -80,10 +80,10 @@ export async function POST(request: Request) {
         console.error("[DEBUG] Transaction update error:", transactionError)
         throw new Error("Failed to update transaction status")
       }
-      console.log("[DEBUG] Transaction status updated successfully")
+      // console.log("[DEBUG] Transaction status updated successfully")
 
       // Update submission status
-      console.log("[DEBUG] Updating submission status to fulfilled")
+      // console.log("[DEBUG] Updating submission status to fulfilled")
       const { error: submissionError } = await supabase
         .from("submissions")
         .update({ status: "fulfilled" })
@@ -93,14 +93,14 @@ export async function POST(request: Request) {
         console.error("[DEBUG] Submission update error:", submissionError)
         throw new Error("Failed to update submission status")
       }
-      console.log("[DEBUG] Submission status updated successfully")
+      // console.log("[DEBUG] Submission status updated successfully")
 
       // Update referrer's total earned if applicable
       if (
         paymentIntent.metadata.referrerId &&
         Number(paymentIntent.metadata.referrerPayment) > 0
       ) {
-        console.log("[DEBUG] Updating referrer's total earned")
+        // console.log("[DEBUG] Updating referrer's total earned")
         const { data: referrer } = await supabase
           .from("creators")
           .select("total_earned")
@@ -122,17 +122,17 @@ export async function POST(request: Request) {
             updateError
           )
         } else {
-          console.log("[DEBUG] Referrer's total earned updated successfully")
+          // console.log("[DEBUG] Referrer's total earned updated successfully")
         }
       }
 
       return NextResponse.json({ status: "succeeded" })
     }
 
-    console.log(
-      "[DEBUG] Payment not succeeded, returning status:",
-      confirmedPayment.status
-    )
+    // console.log(
+    //   "[DEBUG] Payment not succeeded, returning status:",
+    //   confirmedPayment.status
+    // )
     return NextResponse.json({ status: confirmedPayment.status })
   } catch (error) {
     console.error("[DEBUG] Payment confirmation error:", error)

@@ -59,7 +59,7 @@ export const BrandsCampaignSlideIn = ({
         : "Unknown",
       views: entry.views ?? 0,
     })) || []
-  console.log("Selected campaiogn", selectedCampaign?.submissions)
+  // console.log("Selected campaiogn", selectedCampaign?.submissions)
   const earningsGraphData =
     selectedCampaign?.submissions?.[0].previous_views?.map((entry) => ({
       date: entry.date,
@@ -68,7 +68,7 @@ export const BrandsCampaignSlideIn = ({
         1000, // Convert views to earnings
     })) || []
 
-  console.log({ selectedCampaign })
+  // console.log({ selectedCampaign })
   // Add effect to select first submission when campaign changes
   useEffect(() => {
     if (selectedCampaign && selectedCampaign.submissions.length > 0) {
