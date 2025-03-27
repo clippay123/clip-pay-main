@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 import {
   checkIfAlreadyReported,
   hasApprovedOrPaidSubmission,
@@ -56,13 +57,13 @@ export const CampaignCard = ({
 
     try {
       await reportClient(campaign.id, title, reason) // ✅ Call report function from actions
-      alert("Report submitted successfully!")
+      toast.success("Report submitted successfully!")
       setIsOpen(false)
       setTitle("")
       setReason("")
     } catch (error) {
       console.error("Error reporting client:", error)
-      alert("Failed to submit report.")
+      toast.error("Failed to submit report.")
     }
 
     setLoading(false)
@@ -155,7 +156,7 @@ export const CampaignCard = ({
               disabled={alreadyReported}
               className="text-sm w-full md:w-auto"
             >
-              {alreadyReported ? "Already Reported" : "Report Client"}
+              {alreadyReported ? "Already Reported" : "Report Creator"}
             </Button>
           )}
           <button className="flex items-center text-sm font-medium text-zinc-900">

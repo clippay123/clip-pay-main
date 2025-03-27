@@ -162,17 +162,11 @@ export function SubmissionsClient({
                               >
                                 View Video
                               </TabsTrigger>
-                              <TabsTrigger
-                                value="feedback"
-                                className="rounded-lg data-[state=active]:border-gray-900 data-[state=active]:shadow-none px-4"
-                              >
-                                Feedback
-                              </TabsTrigger>
                             </TabsList>
                           </div>
                           <TabsContent value="details" className="px-4 py-3">
                             <p className="text-sm text-gray-700">
-                              Details would appear here.
+                              {submission.campaign.guidelines}
                             </p>
                           </TabsContent>
                           <TabsContent value="video" className="px-4 py-3">
@@ -213,18 +207,10 @@ export function SubmissionsClient({
                               </p>
                             )}
                           </TabsContent>
-
-                          <TabsContent value="feedback" className="px-4 py-3">
-                            <p className="text-sm text-gray-700">
-                              Feedback would appear here.
-                            </p>
-                          </TabsContent>
                         </Tabs>
                       </CardContent>
-                      <CardFooter className="flex justify-between px-4 py-3 text-xs text-gray-500 border-t">
+                      <CardFooter className="flex justify-center px-4 py-3 text-xs text-gray-500 border-t">
                         <span>{formatViews(submission.views)} Views</span>
-                        <span>120k Likes</span>
-                        <span>25 Comments</span>
                       </CardFooter>
                     </Card>
                   ))}

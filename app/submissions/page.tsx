@@ -14,7 +14,10 @@ export type SubmissionWithCampaign = {
   created_at: string
   views: number
   earned: number | null
-  campaign: Pick<Campaign, "id" | "title" | "rpm" | "budget_pool"> & {
+  campaign: Pick<
+    Campaign,
+    "id" | "title" | "rpm" | "budget_pool" | "guidelines"
+  > & {
     brand: {
       profile: {
         organization_name: string | null
@@ -65,6 +68,7 @@ export default async function SubmissionsPage() {
         title,
         rpm,
         budget_pool,
+        guidelines,
         brand:brands (
           profile:profiles (
             organization_name

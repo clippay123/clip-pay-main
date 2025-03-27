@@ -86,50 +86,55 @@ export const CampaignCardBrand = ({
         onClick={onClick}
       >
         {/* Left Section */}
-        <div className="flex min-w-0 w-fit">
-          <div className="flex flex-col items-start gap-2">
-            <div className="bg-gray-100 rounded-full px-3 py-1 text-sm font-medium text-gray-700">
-              {progressText}
-            </div>
-            <div className="flex rounded-2xl items-center gap-2 p-1 px-2 border-[#E4E4E7] border-[3px]">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span
-                className={cn(
-                  "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
-                  campaign.has_insufficient_budget ||
-                    campaign.remaining_budget === 0 ||
-                    campaign.status === "inactive"
-                    ? "bg-white text-red-700"
-                    : campaign.status === "active"
-                      ? "bg-white text-green-700"
-                      : "bg-white text-yellow-700"
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2">
+              <div className="bg-gray-100 rounded-full px-3 py-1 text-sm font-medium text-gray-700">
+                {progressText}
+              </div>
+              {campaign.has_insufficient_budget ||
+                campaign.remaining_budget === 0 || (
+                  <>
+                    <div className="flex w-1/2 mx-auto rounded-2xl items-center gap-2 p-1 px-2 border-[#E4E4E7] border-[3px] text-center">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span
+                        className={cn(
+                          "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
+                          campaign.has_insufficient_budget ||
+                            campaign.remaining_budget === 0 ||
+                            campaign.status === "inactive"
+                            ? "bg-white text-red-700"
+                            : campaign.status === "active"
+                              ? "bg-white text-green-700"
+                              : "bg-white text-yellow-700"
+                        )}
+                      >
+                        {campaign.has_insufficient_budget ||
+                        campaign.remaining_budget === 0 ||
+                        campaign.status === "inactive"
+                          ? "Campaign Closed"
+                          : (campaign.status || "Draft")
+                              .charAt(0)
+                              .toUpperCase() +
+                            (campaign.status || "Draft").slice(1)}
+                      </span>
+                    </div>
+                  </>
                 )}
-              >
-                {campaign.has_insufficient_budget ||
-                campaign.remaining_budget === 0 ||
-                campaign.status === "inactive"
-                  ? "Campaign Closed"
-                  : (campaign.status || "Draft").charAt(0).toUpperCase() +
-                    (campaign.status || "Draft").slice(1)}
+            </div>
+            <div>
+              <div className="text-center text-[#272830] text-lg font-medium">
+                {campaign.title}
+              </div>
+              <span className="text-sm font-light">
+                {campaign.brand?.name || "Unknown Brand"}
               </span>
             </div>
           </div>
-          <div className="flex flex-col ml-4 w-fit">
-            <div className="text-[#272830] text-left text-lg font-medium">
-              {campaign.title}
-            </div>
-            <span className="text-sm text-left font-light">
-              {campaign.brand?.name || "Unknown Brand"}
-            </span>
-          </div>
-
-          {/* Submissions Count */}
-          {/* {campaign.submissions.length > 0 && (
-    <span className="text-sm text-zinc-600 block mt-1">
-      {campaign.submissions.length}{" "}
-      {campaign.submissions.length === 1 ? "submission" : "submissions"}
-    </span>
-  )} */}
+          {/* <div className="flex items-center gap-1 mt-1">
+          <span className="text-sm text-zinc-500">by</span>
+          <span className="text-sm text-zinc-600">{campaign.brand?.name || "Unknown Brand"}</span>
+        </div> */}
         </div>
 
         {/* Right Section */}

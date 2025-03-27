@@ -122,17 +122,16 @@ export function TeamManagement({ brandId }: { brandId: string }) {
               </TableHeader>
               <TableBody>
                 {teamMembers.map((member) => (
-                  <TableRow
-                    key={member.id}
-                    className="flex justify-between items-center"
-                  >
-                    <span>{member.email}</span>
-                    <Button
-                      variant="destructive"
-                      onClick={() => removeMember(member.id)}
-                    >
-                      Remove
-                    </Button>
+                  <TableRow key={member.id}>
+                    <TableCell className="text-left">{member.email}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="destructive"
+                        onClick={() => removeMember(member.id)}
+                      >
+                        Remove
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

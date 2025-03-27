@@ -65,7 +65,7 @@ function CampaignCard({
             </div>
             {campaign.submission && (
               <>
-                <div className="flex rounded-2xl items-center gap-2 p-1 px-2 border-[#E4E4E7] border-[3px] text-center">
+                <div className="flex w-1/2 mx-auto rounded-2xl items-center gap-2 p-1 px-2 border-[#E4E4E7] border-[3px] text-center">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                   <span
                     className={cn(
