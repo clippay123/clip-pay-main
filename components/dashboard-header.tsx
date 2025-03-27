@@ -67,12 +67,14 @@ export function DashboardHeader({
     userType === "creator"
       ? [
           { href: "/dashboard", label: "Dashboard", icon: Category },
+          { href: "/explore", label: "Explore", icon: Category },
           { href: "/submissions", label: "My Submissions", icon: SeafCheck },
           { href: "/earnings", label: "Earnings", icon: Wallet },
           { href: "/refer", label: "Refer", icon: Gift },
         ]
       : [
-          { href: "/dashboard", label: "Dashboard", icon: Category },
+        { href: "/dashboard", label: "Dashboard", icon: Category },
+        { href: "/explore", label: "Explore", icon: Category },
           { href: "/payouts", label: "Payouts", icon: Wallet },
           { href: "/transactionHistory", label: "Transaction", icon: Wallet },
         ]

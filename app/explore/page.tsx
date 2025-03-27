@@ -1,17 +1,11 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import { redirect } from "next/navigation"
+import { DashboardClient } from "./brand-client"
+import { CreatorDashboardClient } from "./creator-client"
+import { CreatorCampaign, getCreatorCampaigns } from "./creator-campaigns"
+import { getBrandCampaigns } from "./brand-campaigns"
 import { TikTokAPI } from "@/lib/tiktok"
 import { YouTubeAPI } from "@/lib/youtube"
-import { CreatorDashboardClient } from "../explore/creator-client"
-import { DashboardClient } from "../explore/brand-client"
-import { getBrandCampaigns } from "../explore/brand-campaigns"
-import {
-  CreatorCampaign,
-  getCreatorCampaigns,
-} from "../explore/creator-campaigns"
-import { getSpecificCreatorCampaigns } from "./creatorcampaignSub"
-import { CreatorAnalysisDashboard } from "./creator-analysis"
-import { DashboardAnalysisBrand } from "./brand-analysis"
 export const maxDuration = 60
 export interface Brand {
   payment_verified?: boolean
@@ -151,15 +145,15 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-41">
       {brandId ? (
-        <DashboardAnalysisBrand
+        <DashboardClient
           initialCampaigns={await getBrandCampaigns()}
           brandId={brandId}
           email={user.email || ""}
           organization_name={profile.organization_name}
         />
       ) : (
-        <CreatorAnalysisDashboard
-          transformedCampaigns={await getSpecificCreatorCampaigns()}
+        <CreatorDashboardClient
+          transformedCampaigns={await getCreatorCampaigns()}
           email={user.email || ""}
           creator={creator}
           organization_name={profile.organization_name}

@@ -62,6 +62,7 @@ export const getBrandCampaigns = async (): Promise<
         status,
         created_at,
         views,
+        previous_views,
         auto_moderation_result,
         creator:creators!inner (
           profile:profiles!inner (
@@ -74,6 +75,7 @@ export const getBrandCampaigns = async (): Promise<
     .eq("user_id", brandUserId) // Filter campaigns by the brand's user_id
     .order("created_at", { ascending: false })
 
+  console.log("dAta", campaigns)
   if (error) {
     console.error("Brand campaigns error:", error)
     throw error
@@ -109,6 +111,7 @@ export const getBrandCampaigns = async (): Promise<
         creator_id: submission.user_id,
         created_at: submission.created_at,
         views: submission.views || 0,
+        previous_views: submission.previous_views,
         creator: {
           full_name: submission.creator?.profile?.organization_name || "",
         },

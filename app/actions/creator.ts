@@ -90,6 +90,21 @@ export async function updateSubmissionVideoUrl(
   }
 
   try {
+    // Fetch the current views and previous views history
+    const { data: existingSubmission, error: fetchError } = await supabase
+      .from("submissions")
+      .select("views, previous_views")
+      .eq("id", submissionId)
+      .eq("user_id", user.id)
+      .single()
+
+    if (fetchError) {
+      console.error("Error fetching submission:", fetchError)
+      throw fetchError
+    }
+
+    let previousViews = existingSubmission?.previous_views || []
+    let currentViews = existingSubmission?.views || 0
     let validUrls: string[] = []
     let platforms: string[] = []
     let totalViews = 0
@@ -161,11 +176,19 @@ export async function updateSubmissionVideoUrl(
       return { success: false, error: "No valid video URLs provided." }
     }
 
+    // Append the current views with a timestamp (limit to last 10 records)
+    previousViews = [
+      ...previousViews,
+      { views: currentViews, date: new Date().toISOString() },
+    ].slice(-10) // Keep only the last 10 records
+
+    // Update the submission with new views and previous views history
     const { data: updatedSubmission, error: updateError } = await supabase
       .from("submissions")
       .update({
         video_urls: validUrls,
-        views: totalViews,
+        previous_views: previousViews, // Store previous views as JSON array
+        views: totalViews, // Update to new views
         platforms: platforms,
       })
       .eq("id", submissionId)
