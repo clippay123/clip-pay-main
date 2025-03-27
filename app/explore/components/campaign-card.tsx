@@ -71,52 +71,63 @@ export const CampaignCard = ({
   return (
     <>
       <div
-        className="flex flex-wrap md:flex-nowrap items-center gap-4 p-4 bg-white rounded-lg group cursor-pointer shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-all duration-300"
+        className="relative bg-white border border-5 border-zinc-200/60 rounded-2xl hover:shadow-[0_2px_5px_rgba(0,0,0,0.12)] shadow-[0_1px_3px_rgba(0,0,0,0.1)] transition-all duration-300 p-5"
         onClick={onClick}
       >
-        {/* Left Section */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="text-base font-medium text-zinc-900 truncate max-w-[180px] md:max-w-full">
-              {campaign.title}
-            </h3>
-            <span
-              className={cn(
-                "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
-                campaign.has_insufficient_budget ||
-                  campaign.remaining_budget === 0 ||
-                  campaign.status === "inactive"
-                  ? "bg-red-50 text-red-700"
-                  : campaign.status === "active"
-                    ? "bg-green-50 text-green-700"
-                    : "bg-yellow-50 text-yellow-700"
-              )}
-            >
-              {campaign.has_insufficient_budget ||
-              campaign.remaining_budget === 0 ||
-              campaign.status === "inactive"
-                ? "Campaign Closed"
-                : (campaign.status || "Draft").charAt(0).toUpperCase() +
-                  (campaign.status || "Draft").slice(1)}
-            </span>
-          </div>
+        {/* Status and Title */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-medium text-zinc-900 truncate max-w-[180px] md:max-w-full">
+            {campaign.title}
+          </h3>
+          <span
+            className={cn(
+              "text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap",
+              campaign.has_insufficient_budget ||
+                campaign.remaining_budget === 0 ||
+                campaign.status === "inactive"
+                ? "bg-red-50 text-red-700"
+                : campaign.status === "active"
+                  ? "bg-green-50 text-green-700"
+                  : "bg-yellow-50 text-yellow-700"
+            )}
+          >
+            {campaign.has_insufficient_budget ||
+            campaign.remaining_budget === 0 ||
+            campaign.status === "inactive"
+              ? "Campaign Closed"
+              : (campaign.status || "Draft").charAt(0).toUpperCase() +
+                (campaign.status || "Draft").slice(1)}
+          </span>
+        </div>
 
-          {/* Submissions Count */}
-          {campaign.submissions.length > 0 && (
-            <span className="text-sm text-zinc-600 block mt-1">
-              {campaign.submissions.length}{" "}
-              {campaign.submissions.length === 1 ? "submission" : "submissions"}
+        {/* Brand Info */}
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-sm text-zinc-500">by</span>
+          <span className="text-sm font-medium text-zinc-700">
+            {campaign.brand?.name || "Unknown Brand"}
+          </span>
+          {campaign.brand?.payment_verified && (
+            <span className="inline-flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#5865F2]"></span>
+              <span className="text-xs text-[#5865F2]">Verified</span>
             </span>
           )}
         </div>
 
-        {/* Right Section */}
-        <div className="flex flex-wrap justify-between items-center gap-6 w-full md:w-auto">
-          <div className="text-right">
-            <p className="text-sm font-medium text-zinc-900">
-              ${Number(campaign.remaining_budget || 0).toFixed(2)}
+        {/* Budget, RPM & Submissions */}
+        <div className="flex flex-wrap justify-between items-center gap-6 w-full md:w-auto mt-4">
+          <div className="text-left">
+            <p className="text-lg font-semibold text-zinc-900">
+              $
+              {Number(
+                campaign.remaining_budget || campaign.budget_pool
+              ).toFixed(2)}
             </p>
-            <p className="text-xs text-zinc-500">Remaining Budget</p>
+            {campaign.remaining_budget !== Number(campaign.budget_pool) && (
+              <p className="text-xs text-zinc-500">
+                of ${Number(campaign.budget_pool).toFixed(2)} total
+              </p>
+            )}
           </div>
           <div className="text-right">
             <p className="text-sm font-medium text-zinc-900">
@@ -124,7 +135,16 @@ export const CampaignCard = ({
             </p>
             <p className="text-xs text-zinc-500">RPM</p>
           </div>
+          {campaign.submissions.length > 0 && (
+            <span className="text-sm text-zinc-600 block">
+              {campaign.submissions.length}{" "}
+              {campaign.submissions.length === 1 ? "submission" : "submissions"}
+            </span>
+          )}
+        </div>
 
+        {/* Actions */}
+        <div className="flex items-center justify-between mt-4">
           {canReport && (
             <Button
               variant="destructive"
@@ -138,17 +158,15 @@ export const CampaignCard = ({
               {alreadyReported ? "Already Reported" : "Report Client"}
             </Button>
           )}
-          <div className="text-right">
-            <button className="flex items-center text-sm font-medium text-zinc-900">
-              View More{" "}
-              <ChevronDown
-                className={cn(
-                  "transition-transform duration-200",
-                  isExpanded ? "rotate-180" : "rotate-0"
-                )}
-              />
-            </button>
-          </div>
+          <button className="flex items-center text-sm font-medium text-zinc-900">
+            View More
+            <ChevronDown
+              className={cn(
+                "transition-transform duration-200 ml-1",
+                isExpanded ? "rotate-180" : "rotate-0"
+              )}
+            />
+          </button>
         </div>
       </div>
 

@@ -27,7 +27,7 @@ export interface Submission {
   file_path: string | null
   campaign_id: string
   transcription: string | null
-
+  previous_views?: { date: string; views: number }[]
   user_id: string
   created_at: string
   views: number

@@ -11,6 +11,7 @@ export interface Submission {
   user_id: string
   created_at: string
   views: number
+  previous_views?: { date: string; views: number }[]
   transcription: string | null
   creator: {
     organization_name: string | null

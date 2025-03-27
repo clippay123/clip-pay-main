@@ -130,10 +130,19 @@ export const CampaignSlideIn = ({
   return (
     <div>
       {selectedCampaign && (
-        <div className="h-full flex flex-col bg-white">
-          <div className="flex flex-col md:flex-row overflow-hidden">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative max-h-[80vh] overflow-y-auto">
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-black"
+              onClick={() => setSelectedCampaign(null)}
+            >
+              ✕
+            </button>
+            <h2 className="text-2xl font-bold text-zinc-900">
+              {selectedCampaign.title}
+            </h2>
             {/* Submissions List Panel - 30% width */}
-            <div className="md:w-[30%] border-r border-zinc-200 overflow-y-auto">
+            <div className=" border-zinc-200 overflow-y-auto">
               <div className="p-3">
                 <h3 className="text-sm font-medium text-zinc-900 mb-2">
                   Submissions ({selectedCampaign.submissions.length})

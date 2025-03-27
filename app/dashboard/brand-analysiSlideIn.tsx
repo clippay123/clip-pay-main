@@ -14,7 +14,7 @@ import { VideoPlayer } from "@/components/video-player"
 import { SetStateAction, Dispatch, useEffect } from "react"
 import {
   ResponsiveContainer,
-  LineChart,
+  AreaChart,
   Line,
   XAxis,
   YAxis,
@@ -63,7 +63,9 @@ export const BrandsCampaignSlideIn = ({
   const earningsGraphData =
     selectedCampaign?.submissions?.[0].previous_views?.map((entry) => ({
       date: entry.date,
-      earnings: (entry.views * selectedCampaign.rpm) / 1000, // Convert views to earnings
+      earnings:
+        ((Number(entry.views) || 0) * (Number(selectedCampaign.rpm) || 0)) /
+        1000, // Convert views to earnings
     })) || []
 
   console.log({ selectedCampaign })
@@ -177,7 +179,7 @@ export const BrandsCampaignSlideIn = ({
 
               {graphData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
-                  <LineChart
+                  <AreaChart
                     data={graphData}
                     margin={{
                       top: 20,
@@ -235,9 +237,9 @@ export const BrandsCampaignSlideIn = ({
                     <Area
                       type="monotone"
                       dataKey="views"
-                      stroke="none"
+                      stroke="#54CC8B"
                       fill="url(#greenGradient)"
-                      fillOpacity={1}
+                      strokeWidth={2}
                     />
 
                     {/* Smooth Line */}
@@ -253,7 +255,7 @@ export const BrandsCampaignSlideIn = ({
                     />
 
                     {/* Floating Label for Latest Data Point */}
-                  </LineChart>
+                  </AreaChart>
                 </ResponsiveContainer>
               ) : (
                 <p className="text-sm text-zinc-500">No views data available</p>
@@ -278,7 +280,7 @@ export const BrandsCampaignSlideIn = ({
               <p className="text-green-600 text-sm font-medium">+8.5% ↑</p>
               {earningsGraphData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
-                  <LineChart
+                  <AreaChart
                     data={earningsGraphData}
                     margin={{
                       top: 20,
@@ -312,7 +314,7 @@ export const BrandsCampaignSlideIn = ({
                             <p className="font-semibold text-zinc-600">
                               {payload[0].payload.date}
                             </p>
-                            <p className="text-[#548CCC]">{`$${payload[0].value.toFixed(2)}`}</p>
+                            <p className="text-[#548CCC]">{`$${(Number(payload?.[0]?.value) ?? 0).toFixed(2)}`}</p>
                           </div>
                         ) : null
                       }
@@ -322,7 +324,8 @@ export const BrandsCampaignSlideIn = ({
                     <Area
                       type="monotone"
                       dataKey="earnings"
-                      stroke="none"
+                      stroke="#5494CC59"
+                      strokeWidth={2}
                       fill="url(#earningsGradient)"
                     />
 
@@ -334,7 +337,7 @@ export const BrandsCampaignSlideIn = ({
                       strokeWidth={3}
                       dot={{ r: 4, fill: "#548CCC" }}
                     />
-                  </LineChart>
+                  </AreaChart>
                 </ResponsiveContainer>
               ) : (
                 <p className="text-sm text-zinc-500">

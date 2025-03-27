@@ -31,6 +31,7 @@ import Category from "@/public/assets/Category.svg"
 import Gift from "@/public/assets/Gift.svg"
 import SeafCheck from "@/public/assets/SealCheck.svg"
 import Wallet from "@/public/assets/Wallet.svg"
+import Gauge from "@/public/assets/Gauge.svg"
 import Image from "next/image"
 interface DashboardHeaderProps {
   userType: "creator" | "brand"
@@ -67,14 +68,14 @@ export function DashboardHeader({
     userType === "creator"
       ? [
           { href: "/dashboard", label: "Dashboard", icon: Category },
-          { href: "/explore", label: "Explore", icon: Category },
+          { href: "/explore", label: "Explore", icon: Gauge },
           { href: "/submissions", label: "My Submissions", icon: SeafCheck },
           { href: "/earnings", label: "Earnings", icon: Wallet },
           { href: "/refer", label: "Refer", icon: Gift },
         ]
       : [
         { href: "/dashboard", label: "Dashboard", icon: Category },
-        { href: "/explore", label: "Explore", icon: Category },
+        { href: "/explore", label: "Explore", icon: Gauge },
           { href: "/payouts", label: "Payouts", icon: Wallet },
           { href: "/transactionHistory", label: "Transaction", icon: Wallet },
         ]
@@ -109,14 +110,14 @@ export function DashboardHeader({
       >
         <div className="flex flex-col h-full">
           {/* Close button for mobile/tablet */}
-          <div className="lg:hidden flex justify-end p-4">
+          {/* <div className="md:hidden flex justify-end p-4">
             <button
               onClick={() => setIsNavOpen(false)}
               className="p-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg"
             >
               <X className="w-5 h-5" />
             </button>
-          </div>
+          </div> */}
 
          {/* Logo and Navigation */}
 <div className="flex-1 mx-2">

@@ -6,6 +6,7 @@ import { CreatorCampaign, getCreatorCampaigns } from "./creator-campaigns"
 import { getBrandCampaigns } from "./brand-campaigns"
 import { TikTokAPI } from "@/lib/tiktok"
 import { YouTubeAPI } from "@/lib/youtube"
+import { updateVideoViews } from "./actions"
 export const maxDuration = 60
 export interface Brand {
   payment_verified?: boolean
@@ -161,76 +162,4 @@ export default async function DashboardPage() {
       )}
     </div>
   )
-}
-
-export const updateVideoViews = async (
-  campaigns: CreatorCampaign[],
-  creator: Creator
-) => {
-  const tiktokApi = new TikTokAPI()
-  const supabase = await createServerSupabaseClient()
-
-  // Get all video submissions that need updating (with platform info)
-  const videoSubmissions = campaigns
-    .map((campaign) => campaign.submission)
-    .filter(
-      (submission): submission is Submission =>
-        !!submission?.video_url && !!submission?.platform
-    )
-
-  if (videoSubmissions.length === 0) return
-
-  try {
-    // Fetch views concurrently for TikTok and YouTube videos
-    const videoInfoResults = await Promise.all(
-      videoSubmissions.map(async (submission) => {
-        let info = null
-
-        console.log("submission", submission)
-        if (submission.platform === "TikTok" && creator.tiktok_access_token) {
-          info = await tiktokApi.getVideoInfo(
-            submission.video_url!,
-            creator.tiktok_access_token,
-            creator.user_id
-          )
-        } else if (submission.platform === "YouTube") {
-          if (submission.video_url) {
-            info = await YouTubeAPI.getVideoInfo(submission.video_url)
-          }
-        }
-
-        return { url: submission.video_url, info }
-      })
-    )
-
-    // Filter out failed results
-    const validResults = videoInfoResults.filter(({ info }) => info !== null)
-
-    // Create a map of video URL to views
-    const videoInfoMap = Object.fromEntries(
-      validResults.map(({ url, info }) => [url, info])
-    )
-
-    // Update views in the database concurrently
-    await Promise.all(
-      validResults.map(({ url, info }) =>
-        supabase
-          .from("submissions")
-          .update({ views: info?.views })
-          .eq("video_url", url)
-      )
-    )
-
-    // Update campaigns with new view counts
-    campaigns.forEach((campaign) => {
-      if (campaign.submission?.video_url) {
-        const info = videoInfoMap[campaign.submission.video_url]
-        if (info) {
-          campaign.submission.views = info.views
-        }
-      }
-    })
-  } catch (error) {
-    console.error("Error updating video views:", error)
-  }
 }

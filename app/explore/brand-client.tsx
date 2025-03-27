@@ -270,43 +270,45 @@ export function DashboardClient({
               </Button>
             </div>
 
-            <div className="border-2 rounded-md border-zinc-200 overflow-hidden divide-y divide-zinc-200">
+            <div className="">
               {campaigns.length === 0 ? (
-                <div className="p-4 text-center">
+                <div className="border-2 rounded-md border-zinc-200 overflow-hidden divide-y divide-zinc-200 p-4 text-center">
                   <p className="text-zinc-600">No campaigns created yet.</p>
                   <p className="text-sm text-zinc-500 mt-1">
                     Create your first campaign to start receiving submissions!
                   </p>
                 </div>
               ) : (
-                campaigns.map((campaign) => (
-                  <>
-                    <CampaignCard
-                      key={campaign.id}
-                      campaign={campaign}
-                      onClick={() => handleCardClick(campaign)}
-                      isExpanded={selectedCampaign?.id === campaign.id}
-                    />
-                    <CampaignSlideIn
-                      selectedCampaign={selectedCampaign}
-                      setSelectedCampaign={setSelectedCampaign}
-                      isRefreshingViews={isRefreshingViews}
-                      handleApprove={handleApprove}
-                      handleReject={handleReject}
-                      setSelectedSubmission={setSelectedSubmission}
-                      selectedSubmission={selectedSubmission}
-                      setCampaigns={setCampaigns}
-                      setIsRefreshingViews={setIsRefreshingViews}
-                      updateCampaignViews={updateCampaignViews}
-                    />
-                  </>
-                ))
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {campaigns.map((campaign) => (
+                    <>
+                      <CampaignCard
+                        key={campaign.id}
+                        campaign={campaign}
+                        onClick={() => handleCardClick(campaign)}
+                        isExpanded={selectedCampaign?.id === campaign.id}
+                      />
+                    </>
+                  ))}
+                </div>
               )}
             </div>
           </div>
         </div>
       </main>
 
+      <CampaignSlideIn
+        selectedCampaign={selectedCampaign}
+        setSelectedCampaign={setSelectedCampaign}
+        isRefreshingViews={isRefreshingViews}
+        handleApprove={handleApprove}
+        handleReject={handleReject}
+        setSelectedSubmission={setSelectedSubmission}
+        selectedSubmission={selectedSubmission}
+        setCampaigns={setCampaigns}
+        setIsRefreshingViews={setIsRefreshingViews}
+        updateCampaignViews={updateCampaignViews}
+      />
       <CreateCampaignModal
         open={showNewCampaign}
         onOpenChange={setShowNewCampaign}

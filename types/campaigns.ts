@@ -13,6 +13,7 @@ export type Submission = {
   created_at: string
   transcription: string | null
   views: number
+  previous_views?: { date: string; views: number }[]; 
   user_id: string
   creator: SubmissionCreator
   payout_status?: string

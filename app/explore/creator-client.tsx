@@ -11,6 +11,7 @@ import {
   RotateCw,
   Pencil,
   ArrowDown,
+  ExternalLink,
   ChevronDown,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -62,47 +63,49 @@ function CampaignCard({
 }) {
   return (
     <div
-      className="flex items-center gap-4 p-4 bg-white border group cursor-pointer"
+      className="relative bg-white border border-5 border-zinc-200/60 rounded-2xl hover:shadow-[0_2px_5px_rgba(0,0,0,0.12)] shadow-[0_1px_3px_rgba(0,0,0,0.1)] transition-all duration-300 p-5"
       onClick={onClick}
     >
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <h3 className="text-base font-medium text-zinc-900 truncate">
-            {campaign.title}
-          </h3>
-          {campaign.submission && (
-            <span
-              className={cn(
-                "text-xs px-2 py-0.5 rounded-full font-medium",
-                campaign.submission.status === "approved"
-                  ? "bg-green-50 text-green-700"
-                  : campaign.submission.status === "rejected"
-                    ? "bg-red-50 text-red-700"
-                    : "bg-[#5865F2]/10 text-[#5865F2]"
-              )}
-            >
-              {campaign.submission.status.charAt(0).toUpperCase() +
-                campaign.submission.status.slice(1)}
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-1 mt-1">
-          <span className="text-sm text-zinc-500">by</span>
-          <span className="text-sm text-zinc-600">
-            {campaign.brand?.name || "Unknown Brand"}
+      {/* Status and Title */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-medium text-zinc-900 truncate">
+          {campaign.title}
+        </h3>
+        {campaign.submission && (
+          <span
+            className={cn(
+              "text-xs px-2 py-0.5 rounded-full font-medium",
+              campaign.submission.status === "approved"
+                ? "bg-green-50 text-green-700"
+                : campaign.submission.status === "rejected"
+                  ? "bg-red-50 text-red-700"
+                  : "bg-[#5865F2]/10 text-[#5865F2]"
+            )}
+          >
+            {campaign.submission.status.charAt(0).toUpperCase() +
+              campaign.submission.status.slice(1)}
           </span>
-          {campaign.brand?.payment_verified && (
-            <span className="inline-flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#5865F2]"></span>
-              <span className="text-xs text-[#5865F2]">Verified</span>
-            </span>
-          )}
-        </div>
+        )}
       </div>
 
-      <div className="flex items-center gap-6">
-        <div className="text-right">
-          <p className="text-sm font-medium text-zinc-900">
+      {/* Brand Info */}
+      <div className="flex items-center gap-2 mt-2">
+        <span className="text-sm text-zinc-500">by</span>
+        <span className="text-sm font-medium text-zinc-700">
+          {campaign.brand?.name || "Unknown Brand"}
+        </span>
+        {campaign.brand?.payment_verified && (
+          <span className="inline-flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#5865F2]"></span>
+            <span className="text-xs text-[#5865F2]">Verified</span>
+          </span>
+        )}
+      </div>
+
+      {/* Budget & Button */}
+      <div className="flex items-center justify-between mt-4">
+        <div className="text-left">
+          <p className="text-lg font-semibold text-zinc-900">
             $
             {Number(
               campaign.remaining_budget || campaign.budget_pool
@@ -122,27 +125,15 @@ function CampaignCard({
             </p>
           )}
         </div>
-        {/* <div className="text-right">
-          <p className="text-sm font-medium text-zinc-900">
-            $
-            {Number(campaign.rpm).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </p>
-          <p className="text-xs text-zinc-500">RPM</p>
-        </div> */}
-        <div className="text-right">
-          <button className="flex items-center text-sm font-medium text-zinc-900">
-            View More{" "}
-            <ChevronDown
-              className={cn(
-                "transition-transform duration-200",
-                isExpanded ? "rotate-180" : "rotate-0"
-              )}
-            />
-          </button>
-        </div>
+        <button className="cursor-pointer flex items-center text-sm  bg-zinc-50 hover:bg-[@] px-2 py-1 rounded-lg text-zinc-800 hover:text-black transition-colors duration-700">
+          View More{" "}
+          <ExternalLink
+            className={cn(
+              "w-3.5 h-3.5 ml-1 transition-transform duration-300",
+              isExpanded ? "rotate-180" : "rotate-0"
+            )}
+          />
+        </button>
       </div>
     </div>
   )
@@ -692,6 +683,10 @@ export function CreatorDashboardClient({
     }
   }
 
+  const closeModal = () => {
+    setSelectedCampaign(null)
+  }
+
   return (
     <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader
@@ -800,9 +795,9 @@ export function CreatorDashboardClient({
               )}
             </div>
 
-            <div className="border-2 rounded-md border-zinc-200 overflow-hidden divide-y divide-zinc-200">
+            <div className="">
               {campaigns.length === 0 ? (
-                <div className="p-4 text-center">
+                <div className="border-2 rounded-md border-zinc-200 overflow-hidden divide-y divide-zinc-200 p-4 text-center">
                   <p className="text-zinc-600">
                     No campaigns available at the moment.
                   </p>
@@ -811,102 +806,102 @@ export function CreatorDashboardClient({
                   </p>
                 </div>
               ) : (
-                campaigns.map((campaign) => (
-                  <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {campaigns.map((campaign, index) => (
                     <CampaignCard
                       key={campaign.id}
                       campaign={campaign}
                       onClick={() => handleCardClick(campaign)}
                       isExpanded={selectedCampaign?.id === campaign.id}
                     />
-                    <div
-                      className={`
-            `}
-                    >
-                      {selectedCampaign?.id === campaign.id && (
-                        <div className="h-full flex flex-col bg-white">
-                          <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-white">
-                            <div className="space-y-6">
-                              {/* Campaign details */}
-                              <div className="space-y-6">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                  <div className="bg-white border border-zinc-200 p-4 rounded-xl shadow-sm">
-                                    <p className="text-sm text-zinc-600 mb-1">
-                                      Budget Pool
-                                    </p>
-                                    <div className="space-y-1">
-                                      <p className="text-2xl font-semibold text-zinc-900 break-words">
-                                        $
-                                        {Number(
-                                          selectedCampaign.remaining_budget ||
-                                            selectedCampaign.budget_pool
-                                        ).toLocaleString(undefined, {
-                                          minimumFractionDigits: 2,
-                                          maximumFractionDigits: 2,
-                                        })}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="bg-white border border-zinc-200 p-4 rounded-xl shadow-sm">
-                                    <p className="text-sm text-zinc-600 mb-1">
-                                      RPM
-                                    </p>
-                                    <p className="text-2xl font-semibold text-zinc-900 break-words">
-                                      $
-                                      {Number(
-                                        selectedCampaign.rpm
-                                      ).toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                      })}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                {/* Guidelines Section */}
-                                {selectedCampaign.guidelines && (
-                                  <Section
-                                    title="Guidelines"
-                                    content={selectedCampaign.guidelines}
-                                  />
-                                )}
-                                {selectedCampaign.video_outline && (
-                                  <Section
-                                    title="Video Outline"
-                                    content={selectedCampaign.video_outline}
-                                  />
-                                )}
-                                {selectedCampaign.community_link && (
-                                  <Section
-                                    title="Community Link"
-                                    content={selectedCampaign.community_link}
-                                  />
-                                )}
-                                {selectedCampaign.google_drive_link && (
-                                  <Section
-                                    title="Google Drive Link"
-                                    content={selectedCampaign.google_drive_link}
-                                  />
-                                )}
-                                {selectedCampaign.example_video && (
-                                  <Section
-                                    title="Example Video"
-                                    content={selectedCampaign.example_video}
-                                  />
-                                )}
-                              </div>
-                              {/* Submission section */}
-                              {renderSubmissionSection()}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                ))
+                  ))}
+                </div>
               )}
             </div>
           </div>
+          {selectedCampaign && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+              <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative max-h-[80vh] overflow-y-auto">
+                {/* Close Button */}
+                <button
+                  className="absolute top-4 right-4 text-gray-600 hover:text-black"
+                  onClick={closeModal}
+                >
+                  ✕
+                </button>
+
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-zinc-900">
+                    {selectedCampaign.title}
+                  </h2>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <p className="text-sm text-zinc-600 mb-1">Budget Pool</p>
+                      <p className="text-2xl font-semibold text-zinc-900">
+                        $
+                        {Number(
+                          selectedCampaign.remaining_budget ||
+                            selectedCampaign.budget_pool
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </p>
+                    </div>
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <p className="text-sm text-zinc-600 mb-1">RPM</p>
+                      <p className="text-2xl font-semibold text-zinc-900">
+                        $
+                        {Number(selectedCampaign.rpm).toLocaleString(
+                          undefined,
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Guidelines and Links */}
+                  {selectedCampaign.guidelines && (
+                    <Section
+                      title="Guidelines"
+                      content={selectedCampaign.guidelines}
+                    />
+                  )}
+                  {selectedCampaign.video_outline && (
+                    <Section
+                      title="Video Outline"
+                      content={selectedCampaign.video_outline}
+                    />
+                  )}
+                  {selectedCampaign.community_link && (
+                    <Section
+                      title="Community Link"
+                      content={selectedCampaign.community_link}
+                    />
+                  )}
+                  {selectedCampaign.google_drive_link && (
+                    <Section
+                      title="Google Drive Link"
+                      content={selectedCampaign.google_drive_link}
+                    />
+                  )}
+                  {selectedCampaign.example_video && (
+                    <Section
+                      title="Example Video"
+                      content={selectedCampaign.example_video}
+                    />
+                  )}
+
+                  {/* Submission Section */}
+                  {renderSubmissionSection()}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Campaign Details Slide-in */}
 

@@ -192,6 +192,12 @@ export function DashboardAnalysisBrand({
                         setCampaigns={setCampaigns}
                         setIsRefreshingViews={setIsRefreshingViews}
                         updateCampaignViews={updateCampaignViews}
+                        handleApprove={function (submissionId: string): void {
+                          throw new Error("Function not implemented.")
+                        }}
+                        handleReject={function (submissionId: string): void {
+                          throw new Error("Function not implemented.")
+                        }}
                       />
                     )}
                   </>

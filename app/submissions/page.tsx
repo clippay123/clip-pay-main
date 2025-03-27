@@ -4,7 +4,7 @@ import { DashboardHeader } from "@/components/dashboard-header"
 import { SubmissionsClient } from "./client"
 import type { Campaign } from "@/types/database"
 import { updateVideoViews } from "../dashboard/page"
-import { getCreatorCampaigns } from "../dashboard/creator-campaigns"
+import { getCreatorCampaigns } from "../explore/actions"
 
 export type SubmissionWithCampaign = {
   id: string

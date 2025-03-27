@@ -1,8 +1,8 @@
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import { redirect } from "next/navigation"
 import { NotificationsClient, type Notification } from "./client"
-import { DashboardHeader } from "../dashboard/header"
 import { Database } from "@/types/supabase"
+import { DashboardHeader } from "../explore/header"
 
 type NotificationRow = Database["public"]["Tables"]["notifications"]["Row"]
 

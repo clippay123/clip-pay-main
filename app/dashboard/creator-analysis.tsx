@@ -18,7 +18,9 @@ import {
   YAxis,
   Tooltip,
   Area,
+  AreaChart,
 } from "recharts"
+import { CreatorCampaign } from "./creatorcampaignSub"
 
 interface CreatorDashboardClientProps {
   transformedCampaigns: CreatorCampaign[]
@@ -39,14 +41,15 @@ function CampaignCard({
   onClick: () => void
   isExpanded: boolean
 }) {
-  const moneySpent = campaign.budget_pool - campaign.remaining_budget
+  const moneySpent =
+    Number(campaign.budget_pool) - Number(campaign.remaining_budget)
   const progressPercentage =
-    campaign.budget_pool > 0
-      ? Math.round((moneySpent / campaign.budget_pool) * 100)
+    Number(campaign.budget_pool) > 0
+      ? Math.round((moneySpent / Number(campaign.budget_pool)) * 100)
       : 0
 
   const progressText =
-    moneySpent >= campaign.budget_pool
+    moneySpent >= Number(campaign.budget_pool)
       ? "Campaign Complete"
       : `${progressPercentage}% Campaign Progress`
   return (
@@ -56,29 +59,31 @@ function CampaignCard({
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <div className="bg-gray-100 rounded-full px-3 py-1 text-sm font-medium text-gray-700">
-            {progressText}% Campaign Progress
+          <div className="flex flex-col gap-2">
+            <div className="bg-gray-100 rounded-full px-3 py-1 text-sm font-medium text-gray-700">
+              {progressText}
+            </div>
+            {campaign.submission && (
+              <>
+                <div className="flex rounded-2xl items-center gap-2 p-1 px-2 border-[#E4E4E7] border-[3px] text-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span
+                    className={cn(
+                      "text-xs  rounded-full font-medium",
+                      campaign.submission.status === "approved"
+                        ? "bg-white text-green-700"
+                        : campaign.submission.status === "rejected"
+                          ? "bg-white text-red-700"
+                          : "bg-white text-[#5865F2]"
+                    )}
+                  >
+                    {campaign.submission.status.charAt(0).toUpperCase() +
+                      campaign.submission.status.slice(1)}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
-          {campaign.submission && (
-            <>
-              <div className="flex rounded-2xl items-center gap-2 p-1 px-2 border-[#E4E4E7] border-[3px]">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span
-                  className={cn(
-                    "text-xs  rounded-full font-medium",
-                    campaign.submission.status === "approved"
-                      ? "bg-white text-green-700"
-                      : campaign.submission.status === "rejected"
-                        ? "bg-white text-red-700"
-                        : "bg-white text-[#5865F2]"
-                  )}
-                >
-                  {campaign.submission.status.charAt(0).toUpperCase() +
-                    campaign.submission.status.slice(1)}
-                </span>
-              </div>
-            </>
-          )}
           <div>
             <div className="text-center text-[#272830] text-lg font-medium">
               {campaign.title}
@@ -103,7 +108,7 @@ function CampaignCard({
             })}
           </p>
         </div> */}
-        <button className="flex items-center text-sm text-[#E4E4E7] font-semibold">
+        <button className="flex items-center text-sm text-black font-semibold">
           View More{" "}
           <ChevronDown
             className={cn(
@@ -140,7 +145,7 @@ export function CreatorAnalysisDashboard({
   const earningsGraphData =
     selectedCampaign?.submission?.previous_views?.map((entry) => ({
       date: entry.date,
-      earnings: (entry.views * selectedCampaign.rpm) / 1000, // Convert views to earnings
+      earnings: (entry.views * Number(selectedCampaign.rpm)) / 1000, // Convert views to earnings
     })) || []
 
   const handleCardClick = (campaign: CreatorCampaign) => {
@@ -232,7 +237,7 @@ export function CreatorAnalysisDashboard({
 
                             {graphData.length > 0 ? (
                               <ResponsiveContainer width="100%" height={200}>
-                                <LineChart
+                                <AreaChart
                                   data={graphData}
                                   margin={{
                                     top: 20,
@@ -252,13 +257,12 @@ export function CreatorAnalysisDashboard({
                                     >
                                       <stop
                                         offset="0%"
-                                        stopColor="rgba(72, 199, 142, 0.15)"
+                                        stopColor="rgba(72, 199, 142, 0.5)"
                                       />
                                       <stop
                                         offset="100%"
-                                        stopColor="rgba(72, 199, 142, 0.15)"
+                                        stopColor="rgba(72, 199, 142, 0)"
                                       />
-                                      {/* Fade out */}
                                     </linearGradient>
                                   </defs>
 
@@ -291,9 +295,9 @@ export function CreatorAnalysisDashboard({
                                   <Area
                                     type="monotone"
                                     dataKey="views"
-                                    stroke="none"
+                                    stroke="#54CC8B"
+                                    strokeWidth={2}
                                     fill="url(#greenGradient)"
-                                    fillOpacity={1}
                                   />
 
                                   {/* Smooth Line */}
@@ -309,7 +313,7 @@ export function CreatorAnalysisDashboard({
                                   />
 
                                   {/* Floating Label for Latest Data Point */}
-                                </LineChart>
+                                </AreaChart>
                               </ResponsiveContainer>
                             ) : (
                               <p className="text-sm text-zinc-500">
@@ -338,7 +342,7 @@ export function CreatorAnalysisDashboard({
                             </p>
                             {earningsGraphData.length > 0 ? (
                               <ResponsiveContainer width="100%" height={200}>
-                                <LineChart
+                                <AreaChart
                                   data={earningsGraphData}
                                   margin={{
                                     top: 20,
@@ -378,7 +382,7 @@ export function CreatorAnalysisDashboard({
                                           <p className="font-semibold text-zinc-600">
                                             {payload[0].payload.date}
                                           </p>
-                                          <p className="text-[#548CCC]">{`$${payload[0].value.toFixed(2)}`}</p>
+                                          <p className="text-[#548CCC]">{`$${(Number(payload[0].value) ?? 0).toFixed(2)}`}</p>
                                         </div>
                                       ) : null
                                     }
@@ -388,7 +392,8 @@ export function CreatorAnalysisDashboard({
                                   <Area
                                     type="monotone"
                                     dataKey="earnings"
-                                    stroke="none"
+                                    stroke="#5494CC59"
+                                    strokeWidth={2}
                                     fill="url(#earningsGradient)"
                                   />
 
@@ -400,7 +405,7 @@ export function CreatorAnalysisDashboard({
                                     strokeWidth={3}
                                     dot={{ r: 4, fill: "#548CCC" }}
                                   />
-                                </LineChart>
+                                </AreaChart>
                               </ResponsiveContainer>
                             ) : (
                               <p className="text-sm text-zinc-500">

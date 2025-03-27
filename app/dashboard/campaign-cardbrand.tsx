@@ -68,14 +68,15 @@ export const CampaignCardBrand = ({
 
     setLoading(false)
   }
-  const moneySpent = campaign.budget_pool - campaign.remaining_budget
+  const moneySpent =
+    Number(campaign.budget_pool) - Number(campaign.remaining_budget)
   const progressPercentage =
-    campaign.budget_pool > 0
-      ? Math.round((moneySpent / campaign.budget_pool) * 100)
+    Number(campaign.budget_pool) > 0
+      ? Math.round((moneySpent / Number(campaign.budget_pool)) * 100)
       : 0
 
   const progressText =
-    moneySpent >= campaign.budget_pool
+    moneySpent >= Number(campaign.budget_pool)
       ? "Campaign Complete"
       : `${progressPercentage}% Campaign Progress`
   return (
@@ -85,8 +86,8 @@ export const CampaignCardBrand = ({
         onClick={onClick}
       >
         {/* Left Section */}
-        <div className="flex min-w-0">
-          <div className="flex items-center gap-2">
+        <div className="flex min-w-0 w-fit">
+          <div className="flex flex-col items-start gap-2">
             <div className="bg-gray-100 rounded-full px-3 py-1 text-sm font-medium text-gray-700">
               {progressText}
             </div>
@@ -113,25 +114,26 @@ export const CampaignCardBrand = ({
               </span>
             </div>
           </div>
-          <div className="flex flex-col justify-center ml-4">
-            <div className="text-center text-[#272830] text-lg font-medium">
+          <div className="flex flex-col ml-4 w-fit">
+            <div className="text-[#272830] text-left text-lg font-medium">
               {campaign.title}
             </div>
-            <span className="text-sm font-light">
+            <span className="text-sm text-left font-light">
               {campaign.brand?.name || "Unknown Brand"}
             </span>
           </div>
+
           {/* Submissions Count */}
           {/* {campaign.submissions.length > 0 && (
-            <span className="text-sm text-zinc-600 block mt-1">
-              {campaign.submissions.length}{" "}
-              {campaign.submissions.length === 1 ? "submission" : "submissions"}
-            </span>
-          )} */}
+    <span className="text-sm text-zinc-600 block mt-1">
+      {campaign.submissions.length}{" "}
+      {campaign.submissions.length === 1 ? "submission" : "submissions"}
+    </span>
+  )} */}
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-wrap justify-between items-center gap-6 w-full md:w-auto">
+        <div className="flex flex-wrap h-fit gap-6 w-full md:w-auto">
           {/* <div className="text-right">
             <p className="text-sm font-medium text-zinc-900">
               ${Number(campaign.remaining_budget || 0).toFixed(2)}
@@ -146,7 +148,7 @@ export const CampaignCardBrand = ({
           </div> */}
 
           <div className="text-right">
-            <button className="flex items-center text-sm text-[#E4E4E7] font-semibold">
+            <button className="flex items-center text-sm text-black font-semibold">
               View More{" "}
               <ChevronDown
                 className={cn(
