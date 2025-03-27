@@ -211,8 +211,8 @@ export function CreatorAnalysisDashboard({
                     />
                     {selectedCampaign?.id === campaign.id && (
                       <>
-                        <div className="flex md:flex-row flex-col p-4  gap-4 w-full ">
-                          <div className="flex flex-col md:w-1/2  p-4 bg-white rounded-2xl shadow-md">
+                        <div className="flex md:flex-row flex-col p-4 gap-4 w-full">
+                          <div className="flex flex-col md:w-1/2 p-4 bg-white rounded-2xl shadow-md">
                             {/* Latest Views Count Display */}
                             <div className="flex flex-col">
                               <h4 className="text-sm text-[#272830] font-medium">
@@ -231,8 +231,7 @@ export function CreatorAnalysisDashboard({
                               </p>
                               <p className="text-green-600 text-sm font-medium">
                                 +8.5% ↑
-                              </p>{" "}
-                              {/* Dynamic Percentage */}
+                              </p>
                             </div>
 
                             {graphData.length > 0 ? (
@@ -246,41 +245,37 @@ export function CreatorAnalysisDashboard({
                                     bottom: 0,
                                   }}
                                 >
-                                  {/* Gradient Fill for Area Background */}
+                                  {/* Blue Gradient for Impressions */}
                                   <defs>
                                     <linearGradient
-                                      id="greenGradient"
+                                      id="blueGradient"
                                       x1="0"
                                       y1="0"
                                       x2="0"
                                       y2="1"
                                     >
-                                      <stop
-                                        offset="0%"
-                                        stopColor="rgba(72, 199, 142, 0.5)"
-                                      />
+                                      <stop offset="0%" stopColor="#094283" />
                                       <stop
                                         offset="100%"
-                                        stopColor="rgba(72, 199, 142, 0)"
+                                        stopColor="rgba(84, 140, 204, 0)"
                                       />
                                     </linearGradient>
                                   </defs>
 
-                                  {/* Hide Axes */}
                                   <XAxis dataKey="date" hide />
                                   <YAxis hide />
 
                                   {/* Tooltip */}
                                   <Tooltip
                                     content={({ active, payload }) => {
-                                      if (active && payload && payload.length) {
+                                      if (active && payload?.length) {
                                         const dataPoint = payload[0].payload
                                         return (
                                           <div className="bg-white shadow-md px-4 py-2 rounded-lg text-sm text-gray-900 border border-gray-200">
                                             <p className="font-semibold text-zinc-600">
                                               {dataPoint.date}
                                             </p>
-                                            <p className="text-green-600">
+                                            <p className="text-[#548CCC]">
                                               {dataPoint.views.toLocaleString()}{" "}
                                               views
                                             </p>
@@ -291,28 +286,22 @@ export function CreatorAnalysisDashboard({
                                     }}
                                   />
 
-                                  {/* AREA (Background Fill Below Line) */}
+                                  {/* Blue Area & Line */}
                                   <Area
                                     type="monotone"
                                     dataKey="views"
-                                    stroke="#54CC8B"
+                                    stroke="#094283"
                                     strokeWidth={2}
-                                    fill="url(#greenGradient)"
+                                    fill="url(#blueGradient)"
                                   />
 
-                                  {/* Smooth Line */}
                                   <Line
                                     type="monotone"
                                     dataKey="views"
-                                    stroke="rgba(72, 199, 142, 1)"
+                                    stroke="#094283"
                                     strokeWidth={3}
-                                    dot={{
-                                      r: 4,
-                                      fill: "rgba(72, 199, 142, 1)",
-                                    }}
+                                    dot={{ r: 4, fill: "#094283" }}
                                   />
-
-                                  {/* Floating Label for Latest Data Point */}
                                 </AreaChart>
                               </ResponsiveContainer>
                             ) : (
@@ -322,7 +311,7 @@ export function CreatorAnalysisDashboard({
                             )}
                           </div>
 
-                          <div className="flex flex-col  md:w-1/2  p-4 bg-white rounded-2xl shadow-md">
+                          <div className="flex flex-col md:w-1/2 p-4 bg-white rounded-2xl shadow-md">
                             <h4 className="text-sm font-medium text-zinc-600 mb-2">
                               Earning
                             </h4>
@@ -351,22 +340,19 @@ export function CreatorAnalysisDashboard({
                                     bottom: 0,
                                   }}
                                 >
-                                  {/* Blue Gradient Fill for Earnings */}
+                                  {/* Green Gradient for Earnings */}
                                   <defs>
                                     <linearGradient
-                                      id="earningsGradient"
+                                      id="greenGradient"
                                       x1="0"
                                       y1="0"
                                       x2="0"
                                       y2="1"
                                     >
-                                      <stop
-                                        offset="0%"
-                                        stopColor="rgba(84, 140, 204, 0.3)"
-                                      />
+                                      <stop offset="0%" stopColor="#54CC8B" />
                                       <stop
                                         offset="100%"
-                                        stopColor="rgba(84, 140, 204, 0)"
+                                        stopColor="rgba(72, 199, 142, 0)"
                                       />
                                     </linearGradient>
                                   </defs>
@@ -382,28 +368,29 @@ export function CreatorAnalysisDashboard({
                                           <p className="font-semibold text-zinc-600">
                                             {payload[0].payload.date}
                                           </p>
-                                          <p className="text-[#548CCC]">{`$${(Number(payload[0].value) ?? 0).toFixed(2)}`}</p>
+                                          <p className="text-[#54CC8B]">{`$${(
+                                            Number(payload[0].value) ?? 0
+                                          ).toFixed(2)}`}</p>
                                         </div>
                                       ) : null
                                     }
                                   />
 
-                                  {/* Area for Earnings */}
+                                  {/* Green Area & Line */}
                                   <Area
                                     type="monotone"
                                     dataKey="earnings"
-                                    stroke="#5494CC59"
+                                    stroke="#54CC8B"
                                     strokeWidth={2}
-                                    fill="url(#earningsGradient)"
+                                    fill="url(#greenGradient)"
                                   />
 
-                                  {/* Line for Earnings (Now in #548CCC) */}
                                   <Line
                                     type="monotone"
                                     dataKey="earnings"
-                                    stroke="#548CCC"
+                                    stroke="#54CC8B"
                                     strokeWidth={3}
-                                    dot={{ r: 4, fill: "#548CCC" }}
+                                    dot={{ r: 4, fill: "#54CC8B" }}
                                   />
                                 </AreaChart>
                               </ResponsiveContainer>

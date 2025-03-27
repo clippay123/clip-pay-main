@@ -264,7 +264,7 @@ export function DashboardClient({
               </div>
               <Button
                 onClick={() => setShowNewCampaign(true)}
-                className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
+                className="bg-[#094283] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
               >
                 Create Campaign
               </Button>

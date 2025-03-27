@@ -501,7 +501,7 @@ export function CreatorDashboardClient({
     if (selectedCampaign?.submission) {
       return (
         <div className="space-y-4 border-t border-zinc-200 pt-6">
-          <div className="bg-[#5865F2]/10 text-[#5865F2] p-4 rounded-lg border border-[#5865F2]/20 space-y-3">
+          <div className="bg-white text-[#094283] p-4 rounded-lg border border-[#5865F2]/20 space-y-3">
             <h3 className="text-lg font-medium">
               {selectedCampaign.submission.status === "approved"
                 ? "Your submission has been approved! 🎉"
@@ -511,10 +511,11 @@ export function CreatorDashboardClient({
             </h3>
             {selectedCampaign.submission.status === "approved" ? (
               <div className="space-y-3">
-                <p className="text-sm text-zinc-600">
+                <p className="text-sm text-black">
                   Your submission has been approved! To start earning, please
                   update your submission with a public video URL.
                 </p>
+
                 <VideoUrlInput
                   videoViews={selectedCampaign.submission.views}
                   submissionId={selectedCampaign.submission.id}
@@ -569,9 +570,14 @@ export function CreatorDashboardClient({
           </div>
           {selectedCampaign.submission.file_path && (
             <div className="bg-white border border-zinc-200 p-4 rounded-lg">
-              <h4 className="text-sm font-medium text-zinc-900 mb-3">
-                Your Submission
-              </h4>
+              <div className="flex justify-between">
+                <h4 className="text-sm font-medium text-zinc-900 mb-3">
+                  Your Submission
+                </h4>
+                <span className="text-sm text-zinc-500">
+                  View Count: {selectedCampaign.submission.views}
+                </span>
+              </div>
               <VideoPlayer
                 url={selectedCampaign.submission.file_path}
                 isSupabaseStorage={true}

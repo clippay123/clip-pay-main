@@ -87,7 +87,7 @@ export function TeamManagement({ brandId }: { brandId: string }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)} className="mt-4">
+        <Button onClick={() => setIsOpen(true)} className="mt-4 bg-[#094283]">
           Manage Team
         </Button>
       </DialogTrigger>

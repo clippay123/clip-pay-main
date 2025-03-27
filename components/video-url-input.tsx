@@ -111,9 +111,20 @@ export function VideoUrlInput({
             </Button>
           </>
         ) : (
-          <div className="bg-[#5865F2]/10 text-[#5865F2] p-3 rounded-lg border border-[#5865F2]/20 break-all">
-            {currentUrls.length > 0 ? currentUrls.join(", ") : "No video URLs provided"}
-          </div>
+<div className="space-y-2">
+  {currentUrls.length > 0 ? (
+    currentUrls.map((url, index) => (
+      <div
+        key={index}
+        className="bg-whites text-black p-3 rounded-lg border border-[#5865F2]/20 break-all"
+      >
+        {url}
+      </div>
+    ))
+  ) : (
+    <p className="text-zinc-500">No video URLs provided</p>
+  )}
+</div>
         )}
       </div>
       {isEditing && (
@@ -125,7 +136,7 @@ export function VideoUrlInput({
           {isUpdating ? "Updating..." : "Update"}
         </Button>
       )}
-      <span className="text-sm text-zinc-500">View Count: {videoViews}</span>
+      {/* <span className="text-sm text-zinc-500">View Count: {videoViews}</span> */}
     </div>
   );
 }
