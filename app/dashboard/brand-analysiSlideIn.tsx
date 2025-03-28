@@ -158,9 +158,7 @@ export const BrandsCampaignSlideIn = ({
             <div className="flex flex-col md:w-1/2 p-4 bg-white rounded-2xl shadow-md">
               {/* Latest Views Count Display */}
               <div className="flex flex-col">
-                <h4 className="text-sm text-[#272830] font-medium">
-                  Impressions
-                </h4>
+                <h4 className="text-sm text-[#272830] font-medium">Views</h4>
                 {/* Extract the latest view count dynamically */}
                 <p className="text-7xl font-bold text-zinc-900">
                   {graphData.length > 0
@@ -188,7 +186,7 @@ export const BrandsCampaignSlideIn = ({
                       bottom: 0,
                     }}
                   >
-                    {/* Blue Gradient for Impressions */}
+                    {/* Blue Gradient for Views */}
                     <defs>
                       <linearGradient
                         id="blueGradient"

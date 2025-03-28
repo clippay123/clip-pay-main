@@ -216,7 +216,7 @@ export function CreatorAnalysisDashboard({
                             {/* Latest Views Count Display */}
                             <div className="flex flex-col">
                               <h4 className="text-sm text-[#272830] font-medium">
-                                Impressions
+                                Views
                               </h4>
                               {/* Extract the latest view count dynamically */}
                               <p className="text-7xl font-bold text-zinc-900">
@@ -245,7 +245,7 @@ export function CreatorAnalysisDashboard({
                                     bottom: 0,
                                   }}
                                 >
-                                  {/* Blue Gradient for Impressions */}
+                                  {/* Blue Gradient for Views */}
                                   <defs>
                                     <linearGradient
                                       id="blueGradient"

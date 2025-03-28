@@ -35,7 +35,7 @@ export function Step1Form() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 relative overflow-hidden">
       <div className="w-full max-w-[400px] space-y-8">
         {/* Logo */}
         <div className="flex justify-center items-center gap-3">
