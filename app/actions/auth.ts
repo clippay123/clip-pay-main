@@ -171,7 +171,6 @@ export async function resetPassword(password: string) {
     }
   }
 }
-
 export async function signInWithGoogle(
   userType: "creator" | "brand",
   isSignUp: boolean,
@@ -180,14 +179,10 @@ export async function signInWithGoogle(
   const supabase = await createServerActionClient()
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
-  // console.log("referral code", referralCode)
   const redirectUrl = new URL(`/auth/${userType}/callback`, baseUrl)
-
   if (isSignUp && referralCode) {
     redirectUrl.searchParams.set("ref", referralCode)
   }
-
-  // console.log("Redirecting to Google with URL:", redirectUrl.toString())
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
@@ -209,25 +204,7 @@ export async function signInWithGoogle(
     throw new Error("No authentication URL returned")
   }
 
-  // ✅ Fetch the user session after successful Google sign-in
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    throw new Error("Failed to get session after Google sign-in")
-  }
-
-  // ✅ Check if the user is banned
-  const banUntil = user?.app_metadata?.banned_until
-  if (banUntil && new Date(banUntil) > new Date()) {
-    await supabase.auth.signOut()
-    throw new Error(
-      `Your account is banned until ${new Date(banUntil).toLocaleString()}`
-    )
-  }
-
-  return data.url
+  return data.url // ✅ Return the redirect URL for Google sign-in
 }
 
 export async function connectYouTubeAccount() {

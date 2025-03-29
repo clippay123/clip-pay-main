@@ -24,12 +24,9 @@ export async function GET(
   const userType = resolvedParams.userType
 
   const requestUrl = new URL(request.url)
-  // console.log("Received OAuth Callback:", requestUrl.toString())
-
   const code = requestUrl.searchParams.get("code")
   const next = requestUrl.searchParams.get("next") || "/dashboard"
-  const referralCode = requestUrl.searchParams.get("ref") // ✅ Extract referral code
-  // console.log("Extracted Referral Code:", referralCode)
+  const referralCode = requestUrl.searchParams.get("ref")
 
   if (!code) {
     return NextResponse.redirect(
@@ -40,12 +37,13 @@ export async function GET(
   const supabase = await createServerActionClient()
 
   try {
+    // ✅ Exchange the code for a session
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
-    if (error) {
+    if (error || !data.session) {
       console.error("Session exchange error:", error)
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/signin?error=${encodeURIComponent(error.message)}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/signin?error=${encodeURIComponent(error?.message || "Unknown error")}`
       )
     }
 
@@ -60,9 +58,6 @@ export async function GET(
       )
     }
 
-    // console.log("User Email:", userEmail)
-    // console.log("Referral Code from URL:", referralCode)
-
     let referredByUUID = null
 
     // ✅ Fetch referrer if referral code exists
@@ -72,9 +67,6 @@ export async function GET(
         .select("profile_id")
         .eq("code", referralCode)
         .single()
-
-      // console.log("Referrer:", referrer)
-      // console.log("Referrer Fetch Error:", referrerFetchError)
 
       if (!referrerFetchError && referrer?.profile_id) {
         referredByUUID = referrer.profile_id
@@ -100,37 +92,20 @@ export async function GET(
       .eq("user_id", userId)
       .single()
 
-    // console.log("Existing Profile:", existingProfile)
-
-    // console.log("Reffered by  :", referredByUUID)
     if (!existingProfile) {
       // ✅ Insert new profile with referral if applicable
-      // console.log(
-      //   `Inserting new profile for ${userId}, referred by ${referredByUUID}`
-      // )
-      const { error: insertError } = await supabase.from("profiles").insert({
+      await supabase.from("profiles").insert({
         user_id: userId,
         user_type: userType,
         onboarding_completed: false,
         referred_by: referredByUUID || null, // ✅ Store referral only if available
       })
-
-      if (insertError) {
-        console.error("Error inserting profile:", insertError)
-      }
     } else if (!existingProfile.referred_by && referredByUUID) {
       // ✅ Update `referred_by` only if it's missing
-      // console.log(
-      //   `Updating referred_by for user ${userId} -> ${referredByUUID}`
-      // )
-      const { error: updateError } = await supabase
+      await supabase
         .from("profiles")
         .update({ referred_by: referredByUUID })
         .eq("user_id", userId)
-
-      if (updateError) {
-        console.error("Error updating referred_by:", updateError)
-      }
     }
 
     // ✅ Ensure redirect URL is properly formatted
@@ -144,7 +119,20 @@ export async function GET(
       ? `${process.env.NEXT_PUBLIC_BASE_URL}/onboarding/${onboardingPath}`
       : `${process.env.NEXT_PUBLIC_BASE_URL}${next}`
 
-    return NextResponse.redirect(redirectUrl)
+    // ✅ Store session in cookies
+    const response = NextResponse.redirect(redirectUrl)
+    response.cookies.set("sb-access-token", data.session.access_token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    })
+    response.cookies.set("sb-refresh-token", data.session.refresh_token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    })
+
+    return response
   } catch (error) {
     console.error("Auth error:", error)
     return NextResponse.redirect(
