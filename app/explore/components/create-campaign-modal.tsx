@@ -92,12 +92,8 @@ export function CreateCampaignModal({
         google_drive_link: newCampaign.google_drive_link || "",
       })
 
-      if (
-        !newCampaignData ||
-        !newCampaignData.success ||
-        !newCampaignData.campaign
-      ) {
-        throw new Error("Campaign creation failed, no valid response received")
+      if (!newCampaignData || !newCampaignData.success) {
+        throw new Error(newCampaignData.error || "Campaign creation failed")
       }
 
       setCampaigns((prevCampaigns) => [
@@ -139,7 +135,9 @@ export function CreateCampaignModal({
       router.refresh()
     } catch (error) {
       console.error("Failed to create campaign:", error)
-      toast.error("Failed to create campaign")
+      toast.error(
+        error instanceof Error ? error.message : "Failed to create campaign"
+      )
     } finally {
       setIsLoading(false)
     }

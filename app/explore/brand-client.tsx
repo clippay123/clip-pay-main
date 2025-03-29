@@ -281,14 +281,12 @@ export function DashboardClient({
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {campaigns.map((campaign) => (
-                    <>
-                      <CampaignCard
-                        key={campaign.id}
-                        campaign={campaign}
-                        onClick={() => handleCardClick(campaign)}
-                        isExpanded={selectedCampaign?.id === campaign.id}
-                      />
-                    </>
+                    <CampaignCard
+                      key={campaign.id}
+                      campaign={campaign}
+                      onClick={() => handleCardClick(campaign)}
+                      isExpanded={selectedCampaign?.id === campaign.id}
+                    />
                   ))}
                 </div>
               )}
@@ -315,14 +313,6 @@ export function DashboardClient({
         brandId={brandId}
         setCampaigns={setCampaigns}
       />
-
-      {/* Overlay */}
-      {/* {selectedCampaign && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity z-[55]"
-          onClick={() => setSelectedCampaign(null)}
-        />
-      )} */}
     </div>
   )
 }

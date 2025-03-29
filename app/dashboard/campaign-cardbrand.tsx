@@ -24,10 +24,12 @@ export const CampaignCardBrand = ({
   campaign,
   onClick,
   isExpanded,
+  organization_name,
 }: {
   campaign: CampaignWithSubmissions
   onClick: () => void
   isExpanded: boolean
+  organization_name: string
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [title, setTitle] = useState("")
@@ -127,7 +129,7 @@ export const CampaignCardBrand = ({
                 {campaign.title}
               </div>
               <span className="text-sm font-light">
-                {campaign.brand?.name || "Unknown Brand"}
+                {organization_name || "Unknown Brand"}
               </span>
             </div>
           </div>

@@ -37,10 +37,12 @@ export async function POST(req: Request) {
   const user = userList.users.find((u) => u.email === email)
 
   if (!user) {
-    return NextResponse.json(
-      { error: "User not found in authentication" },
-      { status: 404 }
-    )
+    if (!user) {
+      return NextResponse.json(
+        { error: "User account must be present for adding in team" },
+        { status: 404 }
+      )
+    }
   }
 
   const userId = user.id

@@ -273,7 +273,7 @@ export async function createCampaign({
     numericReferralRate < 0 ||
     numericReferralRate > 100
   ) {
-    throw new Error("Invalid referral bonus rate")
+    throw new Error("Referral rate should between 0 to 100")
   }
 
   try {

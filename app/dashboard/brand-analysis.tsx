@@ -181,8 +181,9 @@ export function DashboardAnalysisBrand({
                       campaign={campaign}
                       onClick={() => handleCardClick(campaign)}
                       isExpanded={selectedCampaign?.id === campaign.id}
+                      organization_name={organization_name}
                     />
-                    {selectedCampaign && (
+                    {selectedCampaign?.id === campaign.id && (
                       <BrandsCampaignSlideIn
                         selectedCampaign={selectedCampaign}
                         setSelectedCampaign={setSelectedCampaign}

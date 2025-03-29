@@ -59,14 +59,21 @@ export function TeamManagement({ brandId }: { brandId: string }) {
     const res = await fetch("/api/brands", {
       method: "POST",
       body: JSON.stringify({ email, brandId }),
+      headers: { "Content-Type": "application/json" },
     })
+
+    const data = await res.json()
 
     if (res.ok) {
       toast.success("Team member added!")
       setEmail("")
       setTeamMembers([...teamMembers, { id: crypto.randomUUID(), email }])
     } else {
-      toast.error("Failed to add team member")
+      if (data.error === "User account must be present for adding in team") {
+        toast.warning(data.error) // Show warning if user not found
+      } else {
+        toast.error("Failed to add team member")
+      }
     }
   }
 

@@ -66,7 +66,7 @@ export function LandingNav({ view }: { view: "brands" | "creators" }) {
       {isOpen && (
         <div className="absolute top-14 left-1/2 transform -translate-x-1/2 bg-white/80 backdrop-blur-md shadow-lg rounded-lg w-[90%] max-w-xs flex flex-col items-center p-4 md:hidden">
         
-          <Link href="/brands" className="text-sm py-2 w-full text-center text-black">
+          <Link href="/" className="text-sm py-2 w-full text-center text-black">
             Home
           </Link>
           {view === "creators" ? (

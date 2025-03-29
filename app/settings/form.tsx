@@ -110,8 +110,13 @@ export function SettingsForm({
     e.preventDefault()
     setPasswordError("")
 
+    if (newPassword.length < 6) {
+      toast.warning("Password must be at least 6 characters long")
+      return
+    }
+
     if (newPassword !== confirmPassword) {
-      setPasswordError("Passwords do not match")
+      toast.warning("Passwords do not match")
       return
     }
 
@@ -236,9 +241,9 @@ export function SettingsForm({
       <div className="py-6 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-medium text-zinc-900">Password</h3>
-          <p className="text-sm text-zinc-600 mt-1">
+          {/* <p className="text-sm text-zinc-600 mt-1">
             Last changed 3 months ago
-          </p>
+          </p> */}
         </div>
         <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
           <DialogTrigger asChild>
@@ -305,7 +310,7 @@ export function SettingsForm({
           <div className="py-6 flex items-center justify-between">
             <div>
               <h3 className="text-sm font-medium text-zinc-900">
-                Tittok Account
+                Tiktok Account
               </h3>
             </div>
 
@@ -335,7 +340,7 @@ export function SettingsForm({
         </>
       )}
       {/* Auto-Approval Section for Brands */}
-      {userType === "brand" && (
+      {/* {userType === "brand" && (
         <div className="py-6">
           <div className="flex items-center justify-between">
             <div>
@@ -383,19 +388,7 @@ export function SettingsForm({
             </div>
           )}
         </div>
-      )}
-
-      {/* Payment Settings Section for Brands */}
-      {userType === "brand" && (
-        <div className="py-6">
-          <div className="flex items-center gap-2 mb-4">
-            <h3 className="text-sm font-medium text-zinc-900">
-              Payment Method
-            </h3>
-          </div>
-          <PaymentMethodDisplay />
-        </div>
-      )}
+      )} */}
 
       {/* Payment Settings Section for Creators */}
       {userType === "creator" && (

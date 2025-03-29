@@ -53,20 +53,20 @@ export const BrandsCampaignSlideIn = ({
   }
 
   const graphData =
-    selectedCampaign?.submissions?.[0].previous_views?.map((entry) => ({
+    selectedCampaign?.submissions?.[0]?.previous_views?.map((entry) => ({
       date: entry.date
         ? new Date(entry.date).toISOString().split("T")[0]
         : "Unknown",
       views: entry.views ?? 0,
-    })) || []
-  // console.log("Selected campaiogn", selectedCampaign?.submissions)
+    })) || [] // Ensure it always returns an array
+
   const earningsGraphData =
-    selectedCampaign?.submissions?.[0].previous_views?.map((entry) => ({
+    selectedCampaign?.submissions?.[0]?.previous_views?.map((entry) => ({
       date: entry.date,
       earnings:
-        ((Number(entry.views) || 0) * (Number(selectedCampaign.rpm) || 0)) /
+        ((Number(entry.views) || 0) * (Number(selectedCampaign?.rpm) || 0)) /
         1000, // Convert views to earnings
-    })) || []
+    })) || [] // Ensure it always returns an array
 
   // console.log({ selectedCampaign })
   // Add effect to select first submission when campaign changes
@@ -171,7 +171,7 @@ export const BrandsCampaignSlideIn = ({
                       )
                     : "0"}
                 </p>
-                <p className="text-green-600 text-sm font-medium">+8.5% ↑</p>{" "}
+                {/* <p className="text-green-600 text-sm font-medium">+8.5% ↑</p>{" "} */}
                 {/* Dynamic Percentage */}
               </div>
 
@@ -261,7 +261,7 @@ export const BrandsCampaignSlideIn = ({
                   : "$0"}
               </p>
 
-              <p className="text-green-600 text-sm font-medium">+8.5% ↑</p>
+              {/* <p className="text-green-600 text-sm font-medium">+8.5% ↑</p> */}
               {earningsGraphData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
                   <AreaChart
