@@ -4,7 +4,7 @@ import { LandingNav } from "@/components/landing-nav"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight, CircleCheckBig } from "lucide-react"
-import { Figtree, Inter } from "next/font/google"
+import { Figtree } from "next/font/google"
 import { LaunchCampaign } from "@/components/launchCampaign"
 import Image, { StaticImageData } from "next/image"
 import FAQSection from "./FAQSection"
@@ -15,17 +15,10 @@ import client3 from "@/public/assets/client3.svg"
 import brand1 from "@/public/assets/brand1.svg"
 import brand2 from "@/public/assets/brand2.svg"
 import brand3 from "@/public/assets/brand3.svg"
-import herobrand from "@/public/assets/herobrand.png"
-import herocreator from "@/public/assets/herocreator.png"
-import { useRouter } from "next/navigation"
-import BrandCTA from "./BrandCTA"
 const figtree = Figtree({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"], // Choose weights you need
 })
-
-const inter = Inter({ subsets: ["latin"] })
-
 const brandsContent = {
   hero: {
     title: "Go Viral with Performance-Based Creators",
@@ -43,7 +36,7 @@ const brandsContent = {
       {
         title: "Performance-Based Model",
         description:
-          "Earn based on your content's performance. The more views, the more you make!",
+          "Pay only for actual views and engagement. ClipPay ensures that every dollar you invest generates real results, making your campaigns efficient and ROI-driven. Maximize your impact with transparent and performance-based pricing. Reach the right audience and drive meaningful interactions effortlessly",
         icon: (
           <path
             strokeLinecap="round"
@@ -56,7 +49,7 @@ const brandsContent = {
       {
         title: "Cost-Effective Advertising",
         description:
-          "Earn based on your content's performance. The more views, the more you make!.",
+          "Achieve maximum impact without overspending. ClipPay connects you with creators who deliver high-quality content while optimizing your ad budget. Get real engagement, real results, and the best value for your investment. Turn every campaign into a success with data-driven performance insights.",
         icon: (
           <path
             strokeLinecap="round"
@@ -69,7 +62,7 @@ const brandsContent = {
       {
         title: "Access to Diverse Creators",
         description:
-          "Earn based on your content's performance. The more views, the more you make!",
+          "Collaborate with a wide range of talented creators across multiple niches and platforms, ensuring your content reaches the right audience. Leverage authentic storytelling to boost brand credibility and engagement. Gain full control over your campaigns with real-time performance tracking and insights.",
         icon: (
           <path
             strokeLinecap="round"
@@ -82,7 +75,7 @@ const brandsContent = {
       {
         title: "Real-time Analytics",
         description:
-          "Earn based on your content's performance. The more views, the more you make!",
+          "Track your campaign’s success with detailed, real-time insights. Get performance data that helps you optimize and maximize results. Make data-driven decisions to enhance engagement and ROI. Stay ahead of the competition with AI-powered analytics and trend predictions",
         icon: (
           <path
             strokeLinecap="round"
@@ -97,24 +90,27 @@ const brandsContent = {
   howItWorks: {
     title: "How it Works for",
     title2: "Brands",
-    description: "Ready to Boost Your Brand with Creator Content?",
+    description: "Seamless Process to Launch, Manage, and Scale Campaigns",
     steps: [
       {
         number: 1,
         title: "Launch a Campaign",
-        description: "Create your Creator Account",
+        description:
+          "Set your goals, define your budget, and share your content brief with creators. Seamlessly connect with the right talent to bring your vision to life. Ensure your brand message is delivered authentically while maintaining full creative control. Watch your campaign unfold with measurable results and real engagement.",
         icon: brand1,
       },
       {
         number: 2,
         title: "Creators Submit Videos",
-        description: "Find brands that match your style",
+        description:
+          "Review, approve, and publish content created by top-performing creators. Ensure every piece aligns with your brand’s vision before going live. Gain full control over the creative process while leveraging influencer expertise to maximize impact. Track performance in real-time and refine your strategy for even better results.",
         icon: brand2,
       },
       {
         number: 3,
         title: "Watch the Views Roll In",
-        description: "Produce videos based on campagin briefs",
+        description:
+          "Track performance in real-time and pay only for verified engagement. Gain valuable insights with detailed analytics to optimize your campaigns. Maximize your ROI by reaching the right audience with authentic, high-impact content. Eliminate guesswork with data-driven decisions that drive real results. Stay ahead of the competition with AI-powered tracking and performance metrics.",
         icon: brand3,
       },
     ],
@@ -138,7 +134,7 @@ const creatorsContent = {
       {
         title: "Performance-Based Pay",
         description:
-          "Earn more as your content gains views—fair pay based on engagement, not just submission.",
+          "Get rewarded for your effort. The more views your content generates, the more you earn—ensuring fair pay based on actual engagement, not just content submission",
         icon: (
           <path
             strokeLinecap="round"
@@ -151,7 +147,7 @@ const creatorsContent = {
       {
         title: "Work with Top Brands",
         description:
-          "Work with trusted brands, grow your audience, and get paid for authentic content.",
+          "Collaborate with trusted brands across different industries that value authentic creator content. Build your portfolio and grow your audience while getting paid.",
         icon: (
           <path
             strokeLinecap="round"
@@ -164,7 +160,7 @@ const creatorsContent = {
       {
         title: "Flexible Campaigns",
         description:
-          "Pick campaigns that match your style and schedule while keeping full creative freedom.",
+          "Choose campaigns that align with your content style and schedule. Work when you want, how you want, and maintain creative freedom with every project.",
         icon: (
           <path
             strokeLinecap="round"
@@ -179,25 +175,27 @@ const creatorsContent = {
   howItWorks: {
     title: "How it Works for",
     title2: "Creators",
-    description: "Ready to Monetize Your Creativity?",
+    description: "Seamless Process to Earn",
     steps: [
       {
         number: 1,
         title: "Join & Filter",
-        description: "Create your Creator Account",
+        description:
+          "Sign up and create your profile in just a few minutes to unlock access to a wide range of brand campaigns. Whether you're an influencer, creator, or marketer, you'll be able to explore exciting opportunities, collaborate with top brands, and grow your network. Don't miss out—get started today and take the first step toward monetizing your influence!",
         icon: joinpay,
       },
       {
         number: 2,
         title: "Create & Submit",
-        description: "Find brands that match your style",
-
+        description:
+          "Explore a variety of opportunities tailored to your niche and content style. Browse through campaigns from top brands, filter based on your interests, and select the ones that align best with your audience. With countless options available, you can find the perfect fit to showcase your creativity and maximize your earning potential",
         icon: client2,
       },
       {
         number: 3,
         title: "Track & Cash Out",
-        description: "Produce videos based on campaign briefs",
+        description:
+          "Create high-quality videos that align with the brand’s vision by following their brief and guidelines. Ensure your content meets their expectations by maintaining authenticity, creativity, and professionalism. Deliver engaging videos that resonate with your audience while effectively representing the brand’s message and values",
         icon: client3,
       },
       // {
@@ -236,21 +234,26 @@ function FeatureCard({
   icon: React.ReactNode
 }) {
   return (
-    <div className="bg-[#FAFAFA] p-6 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
-      <div className="flex items-center justify-between pl-3">
-        <div className="text-black font-medium text-lg">{title}</div>
-        <div className="w-8 h-8 flex items-center justify-center rounded-full">
-          <svg
-            className="text-black w-8 h-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            {icon}
-          </svg>
+    <div className="border-[3px] border-[#C9D5ED]  p-4 rounded-3xl">
+      <div
+        className="py-9 px-4 relative bg-[#FFFFFF] rounded-2xl drop-shadow-md"
+        style={{ fontFamily: "'Satoshi Regular'" }}
+      >
+        <div className="flex flex-col gap-1">
+          <div className="w-12 h-12 rounded-full">
+            <svg
+              className=" text-[#333]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {icon}
+            </svg>
+          </div>
+          <div className="font-semibold text-black">{title}</div>
+          <div className="text-[#444444] pr-5">{description}</div>
         </div>
       </div>
-      <div className="text-[#71717A] font-normal mt-1 pr-2">{description}</div>
     </div>
   )
 }
@@ -259,22 +262,78 @@ function StepCard({
   number,
   title,
   description,
+  icon,
+  position,
 }: {
   number: number
   title: string
   description: string
+  icon: StaticImageData
+  position: "left" | "right"
 }) {
   return (
-    <div className="relative w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-4">
-      <div className="flex items-start mb-4 justify-start align-top">
-        <div className="w-10 h-10 rounded-full border-2 border-zinc-600 flex items-center justify-center text-zinc-600 font-semibold text-lg flex-shrink-0">
-          {number}
-        </div>
-        <div className="ml-4">
-          <h3 className="text-lg font-medium text-zinc-900">{title}</h3>
-          <p className="text-[#71717A]  md:w-3/4">{description}</p>
+    <div
+      className={`relative w-full max-w-lg mx-auto md:mx-20 ${
+        position === "left" ? "md:self-start" : "md:self-end"
+      }`}
+    >
+      {/* Large background step number */}
+      <div
+        className="absolute md:flex items-center gap-2 text-6xl md:text-9xl font-extrabold text-[#DFEEF6] select-none uppercase hidden"
+        style={{
+          top: "50%",
+          transform: "translateY(-50%)",
+          left: position === "left" ? "calc(100% + 30px)" : "auto",
+          right: position === "right" ? "calc(100% + 30px)" : "auto",
+          whiteSpace: "nowrap",
+        }}
+      >
+        STEP {number.toString().padStart(2, "0")}
+      </div>
+
+      {/* Card */}
+      <div className="border-[3px] border-[#C9D5ED]  p-4 rounded-3xl">
+        <div className="py-6 px-6 md:px-8 relative bg-white rounded-2xl shadow-md w-full z-10">
+          <div className="flex flex-col gap-3">
+            <div className="w-12 h-12 flex items-center justify-center">
+              {/* <div className="text-black">{icon}</div> */}
+              <Image src={icon} alt="Step Icon" />
+            </div>
+            <div className="font-semibold text-lg md:text-xl text-black">
+              {title}
+            </div>
+            <div className="text-gray-600 text-sm md:text-base">
+              {description}
+            </div>
+          </div>
         </div>
       </div>
+      {/* Connecting dotted line */}
+      {/* Connecting dotted line */}
+      {/* Connecting dotted line */}
+      {number < 3 && (
+        <>
+          {position === "left" ? (
+            <div className="hidden md:block absolute right-[-70px] top-[125%] translate-y-[-125%]">
+              <Image
+                src="/assets/dottedline2.svg"
+                alt="Dotted Line"
+                width={120}
+                height={10}
+              />
+            </div>
+          ) : (
+            <div className="hidden md:block absolute left-[-70px] top-[125%] translate-y-[-125%] rotate-180">
+              <Image
+                src="/assets/dottedline.svg"
+                alt="Dotted Line"
+                width={120}
+                height={10}
+              />
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }
@@ -286,94 +345,76 @@ interface LandingPageProps {
 export function LandingPage({ view }: LandingPageProps) {
   const content = view === "brands" ? brandsContent : creatorsContent
 
-  const router = useRouter()
-  const toggleView = () => {
-    router.push(view === "brands" ? "/creators" : "/")
-  }
-
   return (
-    <div className={"min-h-screen from-blue-50 to-white"}>
+    <div className="min-h-screen  from-blue-50 to-white">
       <LandingNav view={view} />
 
-      <main>
+      <main className="">
         {/* Hero Section */}
-        <div className="h-full mx-4 md:mx-8 mt-8 flex flex-col items-center rounded-3xl text-center bg-[url('/assets/heroImage.png')] bg-cover bg-center">
-          <div className="max-w-3xl mx-auto space-y-6 mt-16 md:mt-24 px-4">
-            {/* Toggle Switch */}
-            <label className="inline-flex items-center cursor-pointer font-bold text-lg md:text-2xl gap-4 mt-2">
-              <span
-                className={view === "creators" ? "text-gray-400" : "text-black"}
-              >
-                Brands
-              </span>
-              <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={view === "creators"}
-                onChange={toggleView}
-              />
-              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-gray-700 transition">
-                <div
-                  className={`absolute top-[2px] left-[2px] bg-white w-5 h-5 rounded-full transition ${view === "creators" ? "translate-x-full" : ""}`}
-                ></div>
-              </div>
-              <span
-                className={view === "creators" ? "text-black" : "text-gray-400"}
-              >
-                Creators
-              </span>
-            </label>
-
-            <h1 className="text-3xl md:text-5xl font-bold text-black">
+        {/* Hero Section */}
+        <div
+          className={`h-screen flex items-center justify-center text-center bg-[url('/assets/herobg.jpeg')] bg-cover bg-center ${figtree.className}`}
+        >
+          <div className="max-w-3xl mx-auto space-y-6">
+            <div className="flex justify-center">
+              <h1 className="text-[#2A577D] border border-[#EEE0FC] rounded-full text-center px-6 py-2 font-medium md:text-lg">
+                {" "}
+                Turn Visitors into Leads – Instantly!
+              </h1>{" "}
+            </div>
+            <h1
+              className={`text-4xl lg:text-6xl font-bold text-[#000000] ${figtree.className}`}
+            >
               {content.hero.title}
             </h1>
-            <p className="text-gray-600 text-base md:text-lg max-w-lg mx-auto -mt-2">
+            <p className="font-medium text-[#2D2D2D] max-w-md mx-4 md:mx-auto -mt-4">
               {content.hero.description}
             </p>
-
             <div className="flex items-center justify-center">
               <LaunchCampaign view={view} />
             </div>
-
-            {/* Free Plan Info */}
-            <div className="flex flex-col md:flex-row justify-center gap-2 text-gray-600 text-xs md:text-sm">
-              <div>No credit card needed</div>
-              <div>• Unlimited time on Free plan</div>
+            {/* <p className="text-sm ">
+      <CircleCheckBig/> No credit card needed • ⭕ Unlimited time on Free plan
+    </p> */}
+            <div className="flex flex-col md:flex-row  justify-center gap-8 mx-4">
+              <div className="flex gap-2 justify-center text-black">
+                <CircleCheckBig /> No credit card needed
+              </div>
+              <div className="flex gap-2 justify-center text-black">
+                <CircleCheckBig /> Unlimited time on Free plan
+              </div>
             </div>
-          </div>
-
-          {/* Hero Image */}
-          <div className="w-full mt-6">
-            {view === "brands" ? (
-              <Image
-                src={herocreator}
-                alt="Hero Creator"
-                className="w-full object-cover"
-              />
-            ) : (
-              <Image
-                src={herobrand}
-                alt="Hero Brand"
-                className="w-full object-cover"
-              />
-            )}
           </div>
         </div>
 
         {/* Features Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-black">
-              {content.features.title} ClipPay
+        <section className="bg-[#EAF8FF] h-full">
+          <div
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4 "
+            style={{ fontFamily: "'Satoshi Regular'" }}
+          >
+            <div className="flex justify-center">
+              <div className="bg-black text-white flex gap-4 items-center px-6 py-2 text-sm font-bold rounded-full   hover:bg-gray-900 transition">
+                Why Choose Clippay
+              </div>
+            </div>
+            <h2
+              className={`text-5xl font-bold text-center text-black mt-4  ${figtree.className}`}
+            >
+              {content.features.title}{" "}
+              <span className="text-[#00000099] font-extrabold">ClipPay</span>
             </h2>
-
-            {/* Feature Grid */}
+            <div className="flex justify-center">
+              <h2 className="text-center text-[#2D2D2D] max-w-xl m-4">
+                {content.features.description}
+              </h2>
+            </div>
             <div
-              className={`grid gap-6 mt-8 ${
-                content.features.items.length === 3
-                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center"
-                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-              } justify-center`}
+              className={`grid gap-8 md:mx-6 ${
+                view === "brands"
+                  ? "md:grid-cols-2 lg:grid-cols-2"
+                  : "md:grid-cols-3 lg:grid-cols-3"
+              }`}
             >
               {content.features.items.map((feature, index) => (
                 <FeatureCard
@@ -387,59 +428,97 @@ export function LandingPage({ view }: LandingPageProps) {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="bg-gradient-to-br from-[#E8F0FF] via-[#E0ECFF] to-[#F5E8FF] rounded-3xl p-6 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-zinc-900">
+        {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="bg-gradient-to-br from-[#E8F0FF] via-[#E0ECFF] to-[#F5E8FF] rounded-[32px] p-6">
+            <h2 className="text-3xl font-bold text-zinc-900 mb-8 text-center">
               Join the ClipPay Revolution
             </h2>
-            <p className="text-zinc-600 text-sm md:text-base max-w-md mx-auto my-4">
+            <div className="text-zinc-500 text-base max-w-md mx-auto mb-8 text-center">
               Whether you're a brand looking to boost your visibility or a
               creator ready to monetize your talent, ClipPay is your gateway to
               success in the digital content world.
-            </p>
+            </div>
             <div className="flex items-center justify-center">
               <Link href="/signup/creator">
-                <button className="relative p-[2px] rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:brightness-110 group">
-                  <div className="text-md bg-white rounded-xl w-[250px] md:w-[300px] flex items-center justify-center p-3 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-pink-50 group-hover:to-purple-50 group-hover:text-gray-800">
-                    Start Your Creator Journey
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-purple-600" />
+                <Button className="bg-gradient-to-r from-pink-500 to-purple-500 text-zinc-800 rounded-full rounded-xl p-[2px]">
+                  <div className="text-md bg-white rounded-xl w-[300px] flex items-center justify-center p-2">
+                    Start Your Creator Journey{" "}
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </div>
-                </button>
+                </Button>
               </Link>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        {/* How It Works Section */}
-        <section className="py-10" id="how-it-works">
+        {/* How it Work */}
+        <section
+          className="bg-[#EAF8FF] pt-20"
+          style={{ fontFamily: "'Satoshi Regular'" }}
+        >
+          <div className="flex justify-center">
+            <div className="bg-black text-white flex gap-4 items-center px-6 py-2 text-sm font-bold rounded-full   hover:bg-gray-900 transition">
+              How Clippay Works
+            </div>
+          </div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-black text-center">
-              {content.howItWorks.title}
+            <h2
+              className={`text-5xl font-bold text-center text-black mt-4  ${figtree.className}`}
+            >
+              {content.howItWorks.title}{" "}
+              <span className="text-[#00000099] font-extrabold">
+                {content.howItWorks.title2}
+              </span>
             </h2>
-
-            <div className="flex flex-wrap  items-center md:justify-center gap-8 mt-8 mx-4">
-              {content.howItWorks.steps.map((step) => (
+            <div className="flex justify-center">
+              <h2 className="text-center text-[#2D2D2D] max-w-xl m-4">
+                {content.howItWorks.description}
+              </h2>
+            </div>
+            <div className="flex flex-col relative gap-20 my-10 px-4 md:px-0">
+              {content.howItWorks.steps.map((step, index) => (
                 <StepCard
                   key={step.number}
                   number={step.number}
                   title={step.title}
                   description={step.description}
+                  icon={step.icon}
+                  position={index % 2 === 0 ? "left" : "right"}
                 />
               ))}
             </div>
           </div>
         </section>
 
-        <p className="text-center text-lg md:text-2xl font-bold">
-          {content.howItWorks.description}
-        </p>
+        {/* <h2 className="text-3xl font-bold text-center mb-6 mt-6 text-zinc-900">
+          {view === "brands"
+            ? "Ready to Boost Your Brand with Creator Content?"
+            : "Ready to Monetize Your Creativity?"}
+        </h2> */}
+        {/* CTA Section */}
+        {/* <div className="bg-[#7a7aaa] border-y border-[#5865F2]/10">
+          <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mx-auto">
+            <div className="text-center flex items-center justify-center">
+              <p className="text-lg text-white mr-4">
+                {view === "brands"
+                  ? "Connect with talented creators to amplify your brand message."
+                  : "Join Clip Pay and start earning for your creative content today."}
+              </p>
+              <Link
+                href={view === "brands" ? "/signup/brand" : "/signup/creator"}
+              >
+                <Button className="bg-gradient-to-r from-pink-500 to-purple-500 text-zinc-800 rounded-full rounded-xl p-[2px]">
+                  <div className="text-md bg-[#7a7aaa] rounded-xl w-[200px] flex items-center justify-center p-2 text-white">
+                    Get Started Now <ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div> */}
 
-        {/* FAQ + Footer */}
-        <section id="faq">
-          <FAQSection view={view} />
-        </section>
-        <BrandCTA />
+        <FAQSection view={view} />
+        {/* Footer */}
         <Footer view={view} />
       </main>
     </div>
