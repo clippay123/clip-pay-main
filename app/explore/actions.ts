@@ -377,26 +377,9 @@ export async function submitVideo({
 
     let finalVideoUrl = videoUrl
     let filePath = null
-    let transcription = null
 
-    // If a file was provided, process it
+    // ✅ If a file was provided, upload it directly to Supabase Storage
     if (file) {
-      // First save the file temporarily
-      const tempDir = os.tmpdir()
-      const tempVideoPath = join(
-        tempDir,
-        `${user.id}_${Date.now()}_${file.name}`
-      )
-      await writeFile(tempVideoPath, Buffer.from(await file.arrayBuffer()))
-
-      // Process the video to extract audio and get transcription
-      const processedData = await processVideo(tempVideoPath, user.id)
-      transcription = processedData.transcription
-
-      // Clean up the temporary video file
-      await unlink(tempVideoPath)
-
-      // Upload the original video to Supabase Storage
       const fileExt = file.name.split(".").pop()
       const fileName = `${Math.random().toString(36).slice(2)}_${Date.now()}.${fileExt}`
       filePath = `${user.id}/${fileName}`
@@ -409,7 +392,7 @@ export async function submitVideo({
         throw uploadError
       }
 
-      // Get the public URL for the uploaded file
+      // ✅ Get the public URL for the uploaded file
       const {
         data: { publicUrl },
       } = supabase.storage.from("videos").getPublicUrl(filePath)
@@ -417,15 +400,14 @@ export async function submitVideo({
       finalVideoUrl = publicUrl
     }
 
-    // Create the submission with transcription
+    // ✅ Insert submission data into Supabase (No FFmpeg processing)
     const { data: submission, error: submissionError } = await supabase
       .from("submissions")
       .insert({
         campaign_id: campaignId,
         user_id: user.id,
-        video_url: videoUrl || null, // Only set if explicitly provided
+        video_url: finalVideoUrl, // Store the uploaded video URL
         file_path: filePath,
-        transcription,
         status: "pending",
         created_at: new Date().toISOString(),
         views: 0,
@@ -440,7 +422,6 @@ export async function submitVideo({
         user_id,
         created_at,
         views,
-        transcription,
         creator:creators!inner (
           profiles (
             organization_name
@@ -454,7 +435,7 @@ export async function submitVideo({
       throw submissionError
     }
 
-    // Transform the submission to match the expected type
+    // ✅ Transform the submission to match the expected type
     const transformedSubmission: Submission = {
       id: submission.id,
       status: submission.status,
@@ -464,13 +445,13 @@ export async function submitVideo({
       user_id: submission.user_id,
       created_at: submission.created_at,
       views: submission.views,
-      transcription: submission.transcription,
       creator: {
         organization_name:
           submission.creator[0]?.profiles[0]?.organization_name || null,
       },
       video_urls: null,
-      platform: null, // ✅ Add platform property to match the Submission type
+      platform: null,
+      transcription: null,
     }
 
     revalidatePath("/dashboard")
