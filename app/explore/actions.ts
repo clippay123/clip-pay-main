@@ -406,7 +406,6 @@ export async function submitVideo({
       .insert({
         campaign_id: campaignId,
         user_id: user.id,
-        video_url: finalVideoUrl, // Store the uploaded video URL
         file_path: filePath,
         status: "pending",
         created_at: new Date().toISOString(),
@@ -416,7 +415,6 @@ export async function submitVideo({
         `
         id,
         status,
-        video_url,
         file_path,
         campaign_id,
         user_id,
@@ -439,7 +437,6 @@ export async function submitVideo({
     const transformedSubmission: Submission = {
       id: submission.id,
       status: submission.status,
-      video_url: submission.video_url,
       file_path: submission.file_path,
       campaign_id: submission.campaign_id,
       user_id: submission.user_id,
@@ -452,6 +449,7 @@ export async function submitVideo({
       video_urls: null,
       platform: null,
       transcription: null,
+      video_url: null,
     }
 
     revalidatePath("/dashboard")
