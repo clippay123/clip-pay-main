@@ -165,9 +165,9 @@ export function DashboardAnalysisBrand({
           <Metrics campaigns={campaigns} />
           {brandId && <TeamManagement brandId={brandId} />}
           <div className="mt-8">
-            <div className="border-2 rounded-md border-zinc-200 overflow-hidden divide-y divide-zinc-200">
+            <div className="rounded-2xl border-zinc-200 overflow-hidden divide-y divide-zinc-200">
               {campaigns.length === 0 ? (
-                <div className="p-4 text-center">
+                <div className="p-4 text-center bg-white">
                   <p className="text-zinc-600">No campaigns created yet.</p>
                   <p className="text-sm text-zinc-500 mt-1">
                     Create your first campaign to start receiving submissions!

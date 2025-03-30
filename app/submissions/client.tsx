@@ -55,8 +55,6 @@ export function SubmissionsClient({
   }
   return (
     <div className="min-h-screen bg-[#F2F6FA]">
-      <DashboardHeader userType="creator" email={email} />
-
       {/* Main content */}
       <main className="lg:ml-72 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 lg:py-8 pt-20 lg:pt-8">
@@ -217,7 +215,7 @@ export function SubmissionsClient({
                 </div>
               </div>
             ) : (
-              <div className="p-4 text-center bg-white">
+              <div className="p-4 text-center bg-white rounded-2xl">
                 <p className="text-zinc-600">
                   You don't have any submissions yet.
                 </p>

@@ -272,7 +272,7 @@ export function DashboardClient({
 
             <div className="">
               {campaigns.length === 0 ? (
-                <div className="border-2 rounded-md border-zinc-200 overflow-hidden divide-y divide-zinc-200 p-4 text-center">
+                <div className=" rounded-2xl bg-white overflow-hidden  p-4 text-center">
                   <p className="text-zinc-600">No campaigns created yet.</p>
                   <p className="text-sm text-zinc-500 mt-1">
                     Create your first campaign to start receiving submissions!

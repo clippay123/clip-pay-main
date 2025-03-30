@@ -191,14 +191,15 @@ export function CreatorAnalysisDashboard({
             {/* <h2 className="text-xl font-semibold text-zinc-900">Available Campaigns</h2>
             <p className="text-sm text-zinc-500">Apply to campaigns and start earning</p> */}
 
-            <div className="border-2 rounded-2xl  overflow-hidden">
+            <div className="rounded-2xl  overflow-hidden">
               {campaigns.length === 0 ? (
-                <div className="p-4 text-center">
+                <div className="p-4 text-center bg-white">
                   <p className="text-zinc-600">
-                    No campaigns available at the moment.
+                    You don't have any completed or active submissions.
                   </p>
                   <p className="text-sm text-zinc-500 mt-1">
-                    Check back soon for new opportunities!
+                    Check out open campaigns on the Explore page and start
+                    earning now!
                   </p>
                 </div>
               ) : (

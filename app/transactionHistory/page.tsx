@@ -24,6 +24,11 @@ export default async function TransactionHistory() {
     .select("id, profiles(user_type, organization_name)")
     .eq("user_id", user.id)
     .single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("user_type, organization_name")
+    .eq("user_id", user.id)
+    .single()
 
   if (!brand) {
     redirect("/dashboard")
@@ -68,7 +73,7 @@ export default async function TransactionHistory() {
       <DashboardHeader
         userType="brand"
         email={user.email || ""}
-        organization_name={brand.profiles?.[0]?.organization_name}
+        organization_name={profile?.organization_name}
       />
       <main className="lg:ml-72 min-h-screen pt-20 lg:pt-8">
         <div className="p-6">

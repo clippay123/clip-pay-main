@@ -21,10 +21,11 @@ export default async function ReferPage() {
   // Get user profile with type
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
-    .select("user_type")
+    .select("user_type,organization_name")
     .eq("user_id", user.id)
     .single()
 
+  const organization_name = profile?.organization_name
   if (profileError || !profile) {
     console.error("Profile error:", profileError)
     redirect("/signin")
@@ -141,7 +142,11 @@ export default async function ReferPage() {
 
   return (
     <div className="min-h-screen bg-[#F2F6FA]">
-      <DashboardHeader userType="creator" email={user.email || ""} />
+      <DashboardHeader
+        userType="creator"
+        email={user.email || ""}
+        organization_name={organization_name || ""}
+      />
       <main className="lg:ml-72 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 lg:py-8 pt-20 lg:pt-8">
           <div className="mx-auto">
