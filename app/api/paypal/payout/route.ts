@@ -44,11 +44,6 @@ export async function POST(req: NextRequest) {
       0
     )
 
-    // console.log("Payable amount: ", payableAmount)
-    // if (submission.creator_amount<25) {
-    //     return NextResponse.json({ error: "Creator amount is too low. below $25!" }, { status: 400 })
-    // }
-
     const payoutResponse = await fetch(
       `https://api-m${process.env.PAYPAL_MODE === "sandbox" ? ".sandbox" : ""}.paypal.com/v1/payments/payouts`,
       {

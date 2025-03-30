@@ -19,6 +19,7 @@ interface ReferredCreator {
     | {
         total_earned: number | null
         total_views: number | null
+        referral_earned?: number | null
       }[]
     | null
 }
@@ -26,13 +27,15 @@ interface ReferredCreator {
 interface ReferralClientProps {
   referralCode: string
   referredCreators: ReferredCreator[]
-  hasStripeAccount: boolean
+  hasPayPalAccount: boolean
+  totalReferralEarnings: number
 }
 
 export function ReferralClient({
   referralCode,
   referredCreators,
-  hasStripeAccount,
+  hasPayPalAccount,
+  totalReferralEarnings,
 }: ReferralClientProps) {
   const [copied, setCopied] = useState(false)
 
@@ -44,9 +47,9 @@ export function ReferralClient({
   }
 
   // Calculate total earnings from referrals (actual earned amounts)
-  const totalReferralEarnings = referredCreators.reduce((total, creator) => {
-    return total + (creator.creators?.[0]?.total_earned || 0)
-  }, 0)
+  // const totalReferralEarnings = referredCreators.reduce((total, creator) => {
+  //   return total + (creator.creators?.[0]?.total_earned || 0)
+  // }, 0)
 
   const totalReferralViews = referredCreators.reduce((total, creator) => {
     return total + (creator.creators?.[0]?.total_views || 0)
@@ -63,10 +66,41 @@ export function ReferralClient({
       toast.info("Link copied! Share it with your friends")
     }
   }
+
+  const handleCashout = async () => {
+    if (!hasPayPalAccount) {
+      toast.error("You need to connect a PayPal account to cash out.")
+      return
+    }
+
+    try {
+      const response = await fetch("/api/paypal/cashoutrefer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          referralEarnings: totalReferralEarnings,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        toast.success("Cashout successful! Funds will be transferred shortly.")
+      } else {
+        toast.error(data.message || "Failed to cash out.")
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("An error occurred while processing your cashout.")
+    }
+  }
+
   const referralLink = `${process.env.NEXT_PUBLIC_BASE_URL}/signup/creator?ref=${referralCode}`
   return (
     <>
-      <div className={"grid grid-cols-2 lg:grid-cols-5 gap-8 mb-4"}>
+      <div className={"grid grid-cols-2 lg:grid-cols-4 gap-8 mb-4"}>
         <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-zinc-600">
@@ -101,18 +135,29 @@ export function ReferralClient({
           </p>
         </Card>
 
-        <Card className="p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-zinc-600">
-              Pending Balance
-            </span>
+        <Card className="p-4  rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] bg-white inline-flex flex-col">
+          <div className="flex  justify-between">
+            <div className="flex flex-col gap-2">
+              <span className="text-sm font-medium text-zinc-600">
+                Pending Balance
+              </span>
+              <p className="text-2xl font-semibold text-zinc-900">
+                {" "}
+                $ {totalReferralEarnings}
+              </p>
+            </div>
             <div className="">
-              <Image src={totalEarImg} alt="Wallet Image" className="w-5 h-5" />
+              <Button
+                className="bg-[#094283] flex gap-2  px-4 rounded-xl text-white"
+                onClick={handleCashout}
+              >
+                Cashout
+              </Button>
             </div>
           </div>
-          <p className="text-2xl font-semibold text-zinc-900"> $ 1</p>
         </Card>
       </div>
+
       <div className="space-y-6">
         <div>
           <div className="bg-[#FFBC0F] p-3 text-center font-bold">
@@ -133,7 +178,7 @@ export function ReferralClient({
 
           <div className="flex justify-center">
             <div className="space-y-4 ">
-              <div className="flex items-center gap-4">
+              <div className="flex item-center gap-4">
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +311,8 @@ export function ReferralClient({
                       {creator?.creators?.[0]?.total_views || 0} Views
                     </p>
                     <p className="font-medium">
-                      ${(creator.creators?.[0]?.total_earned || 0).toFixed(2)}
+                      $
+                      {(creator.creators?.[0]?.referral_earned || 0).toFixed(2)}
                     </p>
                   </div>
                 </div>

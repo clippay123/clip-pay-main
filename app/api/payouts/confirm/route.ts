@@ -13,12 +13,7 @@ export async function POST(request: Request) {
 
   try {
     const { paymentIntentId } = await request.json()
-    // console.log(
-    //   "[DEBUG] Starting payment confirmation for paymentIntentId:",
-    //   paymentIntentId
-    // )
 
-    // Get the authenticated user first
     const {
       data: { user },
     } = await supabase.auth.getUser()

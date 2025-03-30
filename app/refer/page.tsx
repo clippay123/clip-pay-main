@@ -37,11 +37,11 @@ export default async function ReferPage() {
   // Get creator's Stripe account status
   const { data: creator } = await supabase
     .from("creators")
-    .select("stripe_account_id, stripe_account_status")
+    .select("paypal_connected, totalPaidReferralEarnings")
     .eq("user_id", user.id)
     .single()
 
-  const hasStripeAccount = creator?.stripe_account_status === "active"
+  const hasPayPalAccount = creator?.paypal_connected
 
   // Get user's referral code
   let { data: referralData } = await supabase
@@ -85,6 +85,7 @@ export default async function ReferPage() {
       stripe_account_id,
       stripe_account_status,
       total_views,
+      totalPaidReferralEarnings,
       submissions (
         creator_amount,
         status
@@ -93,33 +94,50 @@ export default async function ReferPage() {
   `
     )
     .eq("referred_by", user.id)
+  const referralCommissionPerThousandViews = 0.3 // 0.3 cents per 1,000 views
 
-  // console.log("Referred creators:", referredCreators)
-  // console.log("Referred error:", referredError)
-
-  // Calculate total earned for each creator from their submissions
   const referredCreatorsWithEarnings =
-    referredCreators?.map((creator: any) => ({
-      user_id: creator.user_id,
-      organization_name: creator.organization_name,
-      created_at: creator.created_at,
-      total_views: creator.creators?.total_views || 0, // Fetch total_views from creators table
-      creators: [
-        {
-          total_earned:
-            creator.creators?.submissions?.reduce((total: number, sub: any) => {
-              if (
-                sub.status === "fulfilled" &&
-                creator.creators?.stripe_account_status === "active"
-              ) {
-                return total + (Number(sub.creator_amount) || 0)
-              }
-              return total
-            }, 0) || 0,
-          total_views: creator.creators?.total_views || 0, // Include total_views
-        },
-      ],
-    })) || []
+    referredCreators?.map((creator: any) => {
+      // Get total views from the creators table
+      // console.log("creat",creator.creators)
+      const totalViews = creator.creators?.total_views || 0
+
+      // Calculate referral earnings based on creators' total views
+      const referralEarnings =
+        (totalViews / 1000) * referralCommissionPerThousandViews
+
+      // console.log("referral earning",referralEarnings);
+      return {
+        user_id: creator.user_id,
+        organization_name: creator.organization_name,
+        created_at: creator.created_at,
+        totalPaidReferralEarnings: creator.totalPaidReferralEarnings,
+        total_views: totalViews, // Take views from creators table
+        referral_earned: referralEarnings.toFixed(2), // Format to 2 decimal places
+        creators: [
+          {
+            total_earned: null, // Placeholder value
+            total_views: totalViews, // Use total views from creators table
+          },
+        ],
+      }
+    }) || []
+
+  // Calculate total re
+  // ferral earnings for the user
+  const totalPaidReferralEarnings = creator?.totalPaidReferralEarnings || 0
+  const totalReferralEarnings = referredCreatorsWithEarnings.reduce(
+    (sum, creator) => {
+      return sum + parseFloat(creator.referral_earned)
+    },
+    0
+  )
+
+  const availableReferralEarnings = Math.max(
+    totalReferralEarnings - totalPaidReferralEarnings,
+    0
+  )
+  // console.log("total ",totalReferralEarnings);
 
   return (
     <div className="min-h-screen bg-[#F2F6FA]">
@@ -130,7 +148,10 @@ export default async function ReferPage() {
             <ReferralClient
               referralCode={referralData?.code || ""}
               referredCreators={referredCreatorsWithEarnings}
-              hasStripeAccount={hasStripeAccount}
+              hasPayPalAccount={hasPayPalAccount}
+              totalReferralEarnings={parseFloat(
+                availableReferralEarnings.toFixed(2)
+              )}
             />
           </div>
         </div>
