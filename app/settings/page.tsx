@@ -58,16 +58,16 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader
         userType={profile.user_type as "creator" | "brand"}
         email={user.email || ""}
         organization_name={profile.organization_name}
       />
 
-      <main className="lg:ml-64 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 lg:py-8 pt-20 lg:pt-8">
-          <div className="max-w-2xl mx-auto">
+      <main className="lg:ml-72 min-h-screen">
+        <div className="w-full mx-auto px-4 py-8 lg:py-8 pt-20 lg:pt-8">
+          <div className="max-w-5xl mx-auto">
             <div className="space-y-6">
               <div>
                 <h1 className="text-2xl font-bold text-zinc-900">

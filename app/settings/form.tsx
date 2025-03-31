@@ -10,9 +10,23 @@ import {
   updateUserPassword,
   updateAutoApproval,
 } from "./actions"
-import { ArrowRight, Shield } from "lucide-react"
+import {
+  CheckCircle,
+  ExternalLink,
+  Mail,
+  Instagram,
+  InstagramIcon as BrandTiktok,
+  CreditCard,
+  Badge,
+} from "lucide-react"
 import Link from "next/link"
-import { Card } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -24,7 +38,10 @@ import { PaymentMethodDisplay } from "./payment-method"
 import { Switch } from "@/components/ui/switch"
 import { useRouter } from "next/navigation"
 import { InstagramModal } from "@/components/instausermodel"
-
+import { Separator } from "@/components/ui/separator"
+import tittoklogo from "@/public/assets/tittoklogo.svg"
+import paypallogo from "@/public/assets/paypallogo.svg"
+import Image from "next/image"
 interface SettingsFormProps {
   email: string
   userType: "creator" | "brand"
@@ -138,11 +155,9 @@ export function SettingsForm({
     setSuccess(null)
 
     if (!username) {
-      setError("Please enter a username.")
+      toast.error("Please enter a username.")
       return
     }
-
-    // console.log("Submitting username:", username) // Debugging log
 
     try {
       const response = await fetch("/api/instagram", {
@@ -158,10 +173,10 @@ export function SettingsForm({
 
       if (!response.ok) throw new Error(data.error || "Failed to update")
 
-      setSuccess("Instagram username updated successfully!")
-      setTimeout(() => {
-        router.push("/dashboard")
-      }, 1500)
+      toast.success("Instagram username updated successfully!")
+      // setTimeout(() => {
+      //   router.push("/dashboard")
+      // }, 1500)
       setInstagramModalOpen(false)
     } catch (err) {
       console.error("API call failed:", err)
@@ -170,267 +185,304 @@ export function SettingsForm({
   }
 
   return (
-    <div className="divide-y divide-zinc-200">
-      {/* Email Section */}
-      <div className="py-6 flex items-center justify-between">
-        <div>
-          <h3 className="text-sm font-medium text-zinc-900">Email</h3>
-          <p className="text-sm text-zinc-600 mt-1">{email}</p>
-        </div>
-        <Dialog open={showEmailDialog} onOpenChange={setShowEmailDialog}>
-          <DialogTrigger asChild>
-            <Button
-              className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-              size="sm"
-            >
-              Change email
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Change email address</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleUpdateEmail} className="space-y-4 pt-4">
-              <div>
-                <Label htmlFor="email">New Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  className="mt-1.5"
-                  placeholder="Enter new email address"
-                />
-              </div>
-              <div>
-                <Label htmlFor="confirmEmail">Confirm Email Address</Label>
-                <Input
-                  id="confirmEmail"
-                  type="email"
-                  value={confirmEmail}
-                  onChange={(e) => setConfirmEmail(e.target.value)}
-                  className="mt-1.5"
-                  placeholder="Confirm new email address"
-                />
-              </div>
-              {emailError && (
-                <p className="text-sm text-red-600">{emailError}</p>
-              )}
-              <div className="flex justify-end gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setShowEmailDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={!newEmail || !confirmEmail}
-                  className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-                >
-                  Update Email
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {/* Password Section */}
-      <div className="py-6 flex items-center justify-between">
-        <div>
-          <h3 className="text-sm font-medium text-zinc-900">Password</h3>
-          {/* <p className="text-sm text-zinc-600 mt-1">
-            Last changed 3 months ago
-          </p> */}
-        </div>
-        <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
-          <DialogTrigger asChild>
-            <Button
-              className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-              size="sm"
-            >
-              Change password
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Change password</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleUpdatePassword} className="space-y-4 pt-4">
-              <div>
-                <Label htmlFor="password">New Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="mt-1.5"
-                  placeholder="Enter new password"
-                />
-              </div>
-              <div>
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="mt-1.5"
-                  placeholder="Confirm new password"
-                />
-              </div>
-              {passwordError && (
-                <p className="text-sm text-red-600">{passwordError}</p>
-              )}
-              <div className="flex justify-end gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setShowPasswordDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={!newPassword || !confirmPassword}
-                  className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-                >
-                  Update Password
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {userType === "creator" && (
-        <>
-          <div className="py-6 flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium text-zinc-900">
-                Tiktok Account
-              </h3>
-            </div>
-
-            <Button
-              onClick={handleTikTokAuth}
-              className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-              size="sm"
-            >
-              {tittokConnected ? "Connected" : "Connect Tiktok"}
-            </Button>
-          </div>
-          <div className="py-6 flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium text-zinc-900">
-                Instagram Account
-              </h3>
-            </div>
-
-            <Button
-              onClick={() => setInstagramModalOpen(true)}
-              className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-              size="sm"
-            >
-              {instaConnected ? "Connected" : "Connect Instagram"}
-            </Button>
-          </div>
-        </>
-      )}
-      {/* Auto-Approval Section for Brands */}
-      {/* {userType === "brand" && (
-        <div className="py-6">
-          <div className="flex items-center justify-between">
-            <div>
+    <div className="container px-4 mx-auto">
+      <Card>
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            Authentication
+          </CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
+            Manage your login credentials and account security
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6 px-4 sm:px-6">
+          {/* Email Section */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-medium text-zinc-900">
-                  Auto-Approval Settings
-                </h3>
-                <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">
-                  Beta
-                </span>
+                <h3 className="font-medium">Email Address</h3>
               </div>
-              <p className="text-sm text-zinc-600 mt-1">
-                Automatically approve or reject submissions based on your
-                campaign requirements
-              </p>
+              <p className="text-sm text-muted-foreground">{email}</p>
             </div>
-            <Switch
-              checked={isAutoApprovalEnabled}
-              onCheckedChange={async (checked) => {
-                try {
-                  await updateAutoApproval(checked)
-                  setIsAutoApprovalEnabled(checked)
-                  toast.success(
-                    checked
-                      ? "Auto-approval enabled successfully"
-                      : "Auto-approval disabled successfully"
-                  )
-                } catch (error) {
-                  toast.error(
-                    error instanceof Error
-                      ? error.message
-                      : "Failed to update auto-approval settings"
-                  )
-                }
-              }}
-            />
+            <Dialog open={showEmailDialog} onOpenChange={setShowEmailDialog}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full sm:w-auto"
+                >
+                  Change
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Change email address</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleUpdateEmail} className="space-y-4 pt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">New Email Address</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={newEmail}
+                      onChange={(e) => setNewEmail(e.target.value)}
+                      placeholder="Enter new email address"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmEmail">Confirm Email Address</Label>
+                    <Input
+                      id="confirmEmail"
+                      type="email"
+                      value={confirmEmail}
+                      onChange={(e) => setConfirmEmail(e.target.value)}
+                      placeholder="Confirm new email address"
+                    />
+                  </div>
+                  {emailError && (
+                    <p className="text-sm text-destructive">{emailError}</p>
+                  )}
+                  <div className="flex flex-col-reverse sm:flex-row justify-end gap-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowEmailDialog(false)}
+                      className="mt-2 sm:mt-0"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={!newEmail || !confirmEmail}
+                      className="w-full sm:w-auto"
+                    >
+                      Update Email
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
-          {isAutoApprovalEnabled && (
-            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-sm text-blue-700">
-                When enabled, submissions will be automatically approved if they
-                meet your campaign requirements. This includes minimum view
-                count, engagement rate, and other metrics you've specified.
-              </p>
-            </div>
-          )}
-        </div>
-      )} */}
 
-      {/* Payment Settings Section for Creators */}
+          <Separator />
+
+          {/* Password Section */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-medium">Password</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">••••••••••••</p>
+            </div>
+            <Dialog
+              open={showPasswordDialog}
+              onOpenChange={setShowPasswordDialog}
+            >
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full sm:w-auto"
+                >
+                  Change
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Change password</DialogTitle>
+                </DialogHeader>
+                <form
+                  onSubmit={handleUpdatePassword}
+                  className="space-y-4 pt-4"
+                >
+                  <div className="space-y-2">
+                    <Label htmlFor="password">New Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Enter new password"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input
+                      id="confirmPassword"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm new password"
+                    />
+                  </div>
+                  {passwordError && (
+                    <p className="text-sm text-destructive">{passwordError}</p>
+                  )}
+                  <div className="flex flex-col-reverse sm:flex-row justify-end gap-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowPasswordDialog(false)}
+                      className="mt-2 sm:mt-0"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={!newPassword || !confirmPassword}
+                      className="w-full sm:w-auto"
+                    >
+                      Update Password
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardContent>
+      </Card>
+
       {userType === "creator" && (
-        <div className="py-6 flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-medium text-zinc-900">
-                Payment Settings
-              </h3>
+        <Card>
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+              Connected Accounts
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm">
+              Link your social media accounts to enable content sharing
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6 px-4 sm:px-6">
+            {/* TikTok Account */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shrink-0 border">
+                  {/* <Tittok className="h-5 w-5 text-white" /> */}
+                  <Image
+                    src={tittoklogo}
+                    alt="Tittok logo"
+                    className="h-5 w-5 text-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-medium">TikTok</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {tittokConnected
+                      ? "Connected to your TikTok account"
+                      : "Connect your TikTok account"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={handleTikTokAuth}
+                variant={tittokConnected ? "outline" : "default"}
+                size="sm"
+                className="gap-2 w-full sm:w-auto"
+              >
+                {tittokConnected ? (
+                  <>
+                    <CheckCircle className="h-4 w-4" />
+                    Connected
+                  </>
+                ) : (
+                  "Connect"
+                )}
+              </Button>
+            </div>
+
+            <Separator />
+
+            {/* Instagram Account */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-purple-600 via-pink-500 to-orange-400 shrink-0">
+                  <Instagram className="h-5 w-5 text-white" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-medium">Instagram</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {instaConnected
+                      ? "Connected to your Instagram account"
+                      : "Connect your Instagram account"}
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={() => setInstagramModalOpen(true)}
+                variant={instaConnected ? "outline" : "default"}
+                size="sm"
+                className="gap-2 w-full sm:w-auto"
+              >
+                {instaConnected ? (
+                  <>
+                    <CheckCircle className="h-4 w-4" />
+                    Connected
+                  </>
+                ) : (
+                  "Connect"
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {userType === "creator" && (
+        <Card>
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+              Payment Settings
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm">
+              Manage your payment methods and earnings
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="px-4 sm:px-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-blue-600 shrink-0 border ">
+                  <Image
+                    src={paypallogo}
+                    alt="Paypal logo"
+                    className="h-6 w-6"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-medium">PayPal</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {hasPaypalAccount
+                      ? "Your PayPal account is connected for payments"
+                      : "Connect PayPal to receive payments"}
+                  </p>
+                </div>
+              </div>
               {hasPaypalAccount ? (
-                <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  Connected
-                </span>
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                  <Button
+                    onClick={() => (window.location.href = "/earnings")}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 w-full sm:w-auto"
+                  >
+                    <CheckCircle className="h-4 w-4" />
+                    View earnings
+                  </Button>
+                </div>
               ) : (
-                <span className="inline-flex items-center gap-1.5 bg-yellow-50 text-yellow-700 px-2 py-0.5 rounded text-xs font-medium">
-                  Not Connected
-                </span>
+                <Button
+                  onClick={() => (window.location.href = "/api/paypal/connect")}
+                  size="sm"
+                  className="w-full sm:w-auto"
+                >
+                  Connect PayPal
+                </Button>
               )}
             </div>
-            <p className="text-sm text-zinc-600 mt-1">
-              Manage your bank account for receiving payments
-            </p>
-          </div>
-          {hasPaypalAccount ? (
-            <Button
-              className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-              size="sm"
-              onClick={() => (window.location.href = "/earnings")}
-            >
-              View earnings
-            </Button>
-          ) : (
-            <Button
-              className="bg-[#5865F2] hover:bg-[#4752C4] text-white dark:bg-[#5865F2] dark:hover:bg-[#4752C4] dark:text-white"
-              size="sm"
-              onClick={() => (window.location.href = "/api/paypal/connect")}
-            >
-              Connect bank
-            </Button>
-          )}
-        </div>
+          </CardContent>
+        </Card>
       )}
       <InstagramModal
         isOpen={isInstagramModalOpen}
