@@ -4,6 +4,7 @@ import { DashboardHeader } from "@/components/dashboard-header"
 import { PayoutsClient } from "./client"
 import { Database } from "@/types/supabase"
 import { TikTokAPI } from "@/lib/tiktok"
+import Link from "next/link"
 
 type Tables = Database["public"]["Tables"]
 type SubmissionRow = Tables["submissions"]["Row"]
@@ -100,7 +101,24 @@ export default async function PayoutsPage() {
     .eq("user_id", user.id)
     .single()
 
-  if (!brand || brand.profiles?.user_type !== "brand") {
+  if (!brand) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-xl font-semibold">
+        <p className="mb-4">This page is only available to the team admin.</p>
+        <Link
+          href={"/dashboard"}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        >
+          Go Home
+        </Link>
+      </div>
+    )
+  }
+  if (
+    !brand ||
+    (brand.profiles?.user_type !== "brand" &&
+      brand.profiles?.user_type !== "brand_team")
+  ) {
     redirect("/dashboard")
   }
 
@@ -204,19 +222,6 @@ export default async function PayoutsPage() {
     .gte("views", 1000)
     .order("payout_due_date", { ascending: true })
     .returns<SubmissionQueryResult[]>()
-
-  // console.log(
-  //   "Filtered submissions:",
-  //   submissions?.map((s: SubmissionQueryResult) => ({
-  //     id: s.id,
-  //     status: s.status,
-  //     has_video_url: !!s.video_url,
-  //     payout_due_date: s.payout_due_date,
-  //     views: s.views,
-  //     stripe_status: s.creator.stripe_account_status,
-  //     has_stripe_account: !!s.creator.stripe_account_id,
-  //   }))
-  // )
 
   if (submissionsError) {
     console.error("Error fetching submissions:", {
@@ -343,7 +348,7 @@ export default async function PayoutsPage() {
         email={user.email || ""}
         organization_name={brand.profiles.organization_name}
       />
-      <main className="lg:ml-64 min-h-screen pt-20 lg:pt-8">
+      <main className="lg:ml-80 min-h-screen pt-20 lg:pt-8">
         <PayoutsClient submissions={qualifiedSubmissions || []} />
       </main>
     </div>

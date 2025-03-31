@@ -166,6 +166,11 @@ export function DashboardHeader({
           <div className="mx-2">
             <div className="p-3 bg-white m-4 rounded-2xl shadow-sm border border-zinc-200">
               <div className="px-3 py-2 rounded-lg bg-zinc-50 mb-2">
+                {organization_name && userType !== "creator" && (
+                  <span className="text-sm font-medium text-zinc-900 max-w-[180px] truncate block">
+                 Team Name {organization_name}
+                  </span>
+                )}
                 {organization_name && (
                   <span className="text-sm font-medium text-zinc-900 max-w-[180px] truncate block">
                     {organization_name}

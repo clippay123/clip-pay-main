@@ -18,35 +18,62 @@ export default async function TransactionHistory() {
     redirect("/signin")
   }
 
-  // Fetch brand details
-  const { data: brand } = await supabase
-    .from("brands")
-    .select("id, profiles(user_type, organization_name)")
-    .eq("user_id", user.id)
-    .single()
+  // Fetch user profile
   const { data: profile } = await supabase
     .from("profiles")
     .select("user_type, organization_name")
     .eq("user_id", user.id)
     .single()
 
-  if (!brand) {
+  if (!profile) {
     redirect("/dashboard")
   }
 
-  // Fetch transactions with submission_id and campaign_id
+  let brandId = null
+
+  if (profile.user_type === "brand") {
+    // Fetch brand details for brand users
+    const { data: brand } = await supabase
+      .from("brands")
+      .select("id")
+      .eq("user_id", user.id)
+      .single()
+
+    if (!brand) {
+      redirect("/dashboard")
+    }
+    brandId = brand.id
+  } else if (profile.user_type === "brand_team") {
+    // Fetch brand_id for brand_team members
+    const { data: teamMember } = await supabase
+      .from("brand_team_members")
+      .select("brand_id")
+      .eq("user_id", user.id)
+      .single()
+
+    if (!teamMember) {
+      redirect("/dashboard")
+    }
+    brandId = teamMember.brand_id
+  }
+
+  if (!brandId) {
+    redirect("/dashboard")
+  }
+
+  // Fetch transactions
   const { data: transactions } = await supabase
     .from("transactions")
     .select(
       `
-    id, 
-    amount, 
-    created_at, 
-    submission_id,
-    submissions ( campaign_id, campaigns:campaigns!inner(title) )
-  `
+      id, 
+      amount, 
+      created_at, 
+      submission_id,
+      submissions ( campaign_id, campaigns:campaigns!inner(title) )
+      `
     )
-    .eq("brand_id", brand.id)
+    .eq("brand_id", brandId)
     .order("created_at", { ascending: false })
 
   // Calculate total amount spent
@@ -57,7 +84,7 @@ export default async function TransactionHistory() {
   const { data: campaigns, error: campaignError } = await supabase
     .from("campaigns")
     .select("remaining_budget")
-    .eq("user_id", user.id)
+    .eq("user_id", brandId)
 
   if (campaignError) {
     console.error("Error fetching campaigns:", campaignError.message)
@@ -71,9 +98,9 @@ export default async function TransactionHistory() {
   return (
     <div className="min-h-screen bg-[#F2F6FA]">
       <DashboardHeader
-        userType="brand"
+        userType={profile.user_type}
         email={user.email || ""}
-        organization_name={profile?.organization_name}
+        organization_name={profile.organization_name}
       />
       <main className="lg:ml-72 min-h-screen pt-20 lg:pt-8">
         <div className="p-6">
@@ -88,7 +115,7 @@ export default async function TransactionHistory() {
                 <div className="">
                   <Image
                     src={equlImg}
-                    alt="Total Speent"
+                    alt="Total Spent"
                     className="w-5 h-5 text-zinc-600"
                   />
                 </div>
@@ -104,7 +131,7 @@ export default async function TransactionHistory() {
                 </span>
                 <div className="">
                   <Image
-                    alt="REmainig budget"
+                    alt="Remaining Budget"
                     src={loadImg}
                     className="w-5 h-5 text-zinc-600"
                   />
@@ -115,6 +142,7 @@ export default async function TransactionHistory() {
               </p>
             </Card>
           </div>
+
           <div className="mt-4">
             <div className="text-xl font-medium">Transaction History</div>
             <div className="text-sm font-light text-[#272830]">
@@ -132,11 +160,9 @@ export default async function TransactionHistory() {
                         <CircleArrowUpIcon />
                         <div>
                           <h3 className="font-medium text-zinc-900 text-xl">
-                            title
+                            {txn.submissions?.[0]?.campaigns?.[0]?.title ||
+                              "Unknown"}
                           </h3>
-                          {/* <p className="text-sm text-zinc-600">
-  {submission.brand_name}
-</p> */}
                           <p className="text-xs text-zinc-500">
                             {new Date(txn.created_at).toLocaleString()}
                           </p>

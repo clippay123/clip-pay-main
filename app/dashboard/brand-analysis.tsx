@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 
 import { useRouter } from "next/navigation"
@@ -176,31 +176,33 @@ export function DashboardAnalysisBrand({
               ) : (
                 campaigns.map((campaign) => (
                   <>
-                    <CampaignCardBrand
-                      key={campaign.id} // Ensure each item in the list has a unique key
-                      campaign={campaign}
-                      onClick={() => handleCardClick(campaign)}
-                      isExpanded={selectedCampaign?.id === campaign.id}
-                      organization_name={organization_name}
-                    />
-                    {selectedCampaign?.id === campaign.id && (
-                      <BrandsCampaignSlideIn
-                        selectedCampaign={selectedCampaign}
-                        setSelectedCampaign={setSelectedCampaign}
-                        isRefreshingViews={isRefreshingViews}
-                        setSelectedSubmission={setSelectedSubmission}
-                        selectedSubmission={selectedSubmission}
-                        setCampaigns={setCampaigns}
-                        setIsRefreshingViews={setIsRefreshingViews}
-                        updateCampaignViews={updateCampaignViews}
-                        handleApprove={function (submissionId: string): void {
-                          throw new Error("Function not implemented.")
-                        }}
-                        handleReject={function (submissionId: string): void {
-                          throw new Error("Function not implemented.")
-                        }}
+                    <React.Fragment key={campaign.id}>
+                      <CampaignCardBrand
+                        key={campaign.id} // Ensure each item in the list has a unique key
+                        campaign={campaign}
+                        onClick={() => handleCardClick(campaign)}
+                        isExpanded={selectedCampaign?.id === campaign.id}
+                        organization_name={organization_name}
                       />
-                    )}
+                      {selectedCampaign?.id === campaign.id && (
+                        <BrandsCampaignSlideIn
+                          selectedCampaign={selectedCampaign}
+                          setSelectedCampaign={setSelectedCampaign}
+                          isRefreshingViews={isRefreshingViews}
+                          setSelectedSubmission={setSelectedSubmission}
+                          selectedSubmission={selectedSubmission}
+                          setCampaigns={setCampaigns}
+                          setIsRefreshingViews={setIsRefreshingViews}
+                          updateCampaignViews={updateCampaignViews}
+                          handleApprove={function (submissionId: string): void {
+                            throw new Error("Function not implemented.")
+                          }}
+                          handleReject={function (submissionId: string): void {
+                            throw new Error("Function not implemented.")
+                          }}
+                        />
+                      )}
+                    </React.Fragment>
                   </>
                 ))
               )}

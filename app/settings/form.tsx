@@ -344,7 +344,7 @@ export function SettingsForm({
       </Card>
 
       {userType === "creator" && (
-        <Card>
+        <Card className="mt-8">
           <CardHeader className="px-4 sm:px-6">
             <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
               <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
@@ -430,7 +430,7 @@ export function SettingsForm({
       )}
 
       {userType === "creator" && (
-        <Card>
+        <Card className="mt-8">
           <CardHeader className="px-4 sm:px-6">
             <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
               <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
